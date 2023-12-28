@@ -163,8 +163,6 @@
 
 
 
-Add update Button to update the app if updates is available
-
                 @if (Session::has('success'))
                     <center>
                         <div class="alert alert-success" role="alert">
