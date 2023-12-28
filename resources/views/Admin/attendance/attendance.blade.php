@@ -1,0 +1,172 @@
+<x-admin-master>
+    @section('content')
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12 col-lg-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                            <div class="header-title">
+                                <h6 class="card-title">MVC midwifery Attendance </h6>
+                            </div>
+                        </div>
+
+
+                        @if (Session::has('message'))
+                            <center>
+                                <div class="alert alert-primary" role="alert">
+                                    <div class="iq-alert-text">{{ Session::get('message') }}</div>
+                                </div>
+                            </center>
+                        @endif
+
+
+                        <div class="row">
+
+
+                            <div id="my_camera" hidden class="pre_capture_frame"></div>
+                            <input type="hidden" name="captured_image_data" id="captured_image_data">
+
+                        </div>
+
+                        <div class="card-body">
+                            <form id="attendanceForm" action="{{ route('Admin.attendance.attendance_store') }}" method="post"
+                                enctype="multipart/form-data">
+                                @csrf
+
+                                <div class="form-row">
+                                    <div class="form-group">
+
+                                        <div id="results">
+                                            <center> <img style="width: 350px;" name="image" class="after_capture_frame"
+                                                    src="image_placeholder.jpg" /></center>
+                                        </div>
+                                        <br>
+
+                                        <center> <button type="button" class="btn btn-danger"
+                                                value="Take Snapshot" onClick="take_snapshot()">Take Snapshot</button>
+                                        </center>
+                                        <br>
+                                        <label>Staff Name</label>
+                                        <input type="text" class="form-control" readonly name="staff_name"
+                                            value="{{ auth()->user()->name }}" id="">
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Clock</label>
+                                            <select class="form-control mb-3" name="clockin">
+                                                <option selected disabled>Select</option>
+                                                <option value="Clockin">Clockin</option>
+                                                <option value="clockout">Clock out</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="Time" value=" {{ date('H:i A') }}">
+                                <input type="hidden" name="date" value="{{ date('d/m/y') }}">
+                                <input type="hidden" name="month" value="{{ date('F') }}">
+                                <input type="hidden" name="year" value="{{ date('Y') }}">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-12 col-lg-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                            <div class="header-title">
+                                <h6 class="card-title">Today Attendance</h6>
+                            </div>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="container-fluid">
+
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="datatable" class="table data-table table-striped">
+                                        <thead>
+                                            <tr class="ligth">
+                                                <th>Id</th>
+                                                <th>Name</th>
+                                                <th>Clock In</th>
+                                                <th>Clock Out</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($attendance as $attendance)
+                                                <tr>
+                                                    <td>{{ $attendance->id }}</td>
+                                                    <td>{{ $attendance->staff_name }}</td>
+                                                    <td>{{ $attendance->Time }}</td>
+                                                    <td>{{ $attendance->Timeout }}</td>
+
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        </div>
+
+        <script>
+            document.getElementById('attendanceForm').addEventListener('submit', function(event) {
+                // Check if the image is captured or not
+                var imageSrc = document.querySelector('.after_capture_frame').src;
+                if (imageSrc.includes('image_placeholder.jpg')) {
+                    // Prevent form submission if the image placeholder is still displayed
+                    event.preventDefault();
+                    alert('Please capture your picture before submitting.');
+                }
+            });
+        </script>
+
+        <script language="JavaScript">
+
+            // Configure a few settings and attach camera 250x187
+            Webcam.set({
+                width: 350,
+                height: 287,
+                image_format: 'jpeg',
+                jpeg_quality: 90
+            });
+            Webcam.attach('#my_camera');
+
+            function take_snapshot() {
+                // play sound effect
+                //shutter.play();
+                // take snapshot and get image data
+                Webcam.snap(function(data_uri) {
+                    // display results in page
+                    document.getElementById('results').innerHTML =
+                        '<img class="after_capture_frame" src="' + data_uri + '"/>';
+                    $("#captured_image_data").val(data_uri);
+                });
+            }
+
+            function saveSnap() {
+                var base64data = $("#captured_image_data").val();
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "capture_image_upload.php",
+                    data: {
+                        image: base64data
+                    },
+                    success: function(data) {
+                        alert(data);
+                    }
+                });
+            }
+        </script>
+    @endsection
+</x-admin-master>
