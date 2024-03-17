@@ -32,16 +32,14 @@
                                     <th>Tracking No</th>
                                     <th>Order Status</th>
                                     <th>Date</th>
-                                    <th>Invoice</th>
+                                    <th>Make payment</th>
                                     <th>View</th>
- <th>Actions</th>
+                                    {{-- <th>Actions</th> --}}
                                     @if (auth()->user()->userHasRole('Admin'))
-                                    <th>Delete</th>
+                                    <th>Actions</th>
                                     @endif
-
-
                                     @if (auth()->user()->userHasRole('Cashier'))
-                                    <th>Delete</th>
+                                    <th>Actions</th>
                                     @endif
                                  </tr>
                               </thead>
@@ -55,22 +53,23 @@
                                 <td><button type="button" class="btn btn-danger btn-sm mr-2">{{$pos_view->order_status}}</button></td>
                                 <td>{{$pos_view->date}}</td>
                                 <td>
-                                   <a href="{{route('Admin.Pos.Pos_invoice',$pos_view->id)}}"><button type="button" class="btn btn-primary btn-sm mr-2">Invoice</button></a>
+                                   <a href="{{route('Admin.Pos.Pos_invoice',$pos_view->id)}}"><button type="button" class="btn btn-dark btn-sm mr-2">make payment</button></a>
                                 </td>
 
                                     <td>
                                         <div class="d-flex align-items-center list-action">
-                                            <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
+                                            <a class="badge badge-info mr-2"  data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
                                                 href="{{route('Admin.Pos.Pos_invoice_view',$pos_view->id)}}"><i class="ri-eye-line mr-0"></i></a>
                                         </div>
                                      </td>
+
                                     <td>
                                         @if (auth()->user()->userHasRole('Admin'))
                                         <form action="{{ route('Admin.Pos.Pos_pending_delete',$pos_view->id) }}" method="post" enctype="multipart/form-data">
                                             @csrf
                                             @method('DELETE')
                                         <div class="d-flex align-items-center list-action">
-                                          <a href="{{ route('Admin.Pos.Pos_pending_delete',$pos_view->id) }}"> <button class="btn btn-danger">Delete</button></a>
+                                          <a href="{{ route('Admin.Pos.Pos_pending_delete',$pos_view->id) }}"> <button class="btn btn-danger" >Delete</button></a>
                                         </div>
                                     </form>
                                     @elseif (auth()->user()->userHasRole('Manager'))
@@ -81,6 +80,7 @@
                                       <a href="{{ route('Admin.Pos.Pos_pending_delete',$pos_view->id) }}"> <button class="btn btn-danger">Delete</button></a>
                                     </div>
                                 </form>
+                                @else
                                     @endif
 
                                     @if (auth()->user()->userHasRole('Cashier'))
@@ -88,6 +88,8 @@
                                   <button type="button" class="btn btn-danger mt-2" data-toggle="modal" data-target="#exampleModalScrollable">Delete
                                    </button>
                                 </form>
+                                @else
+
                                 @endif
                                     </td>
                                  </tr>

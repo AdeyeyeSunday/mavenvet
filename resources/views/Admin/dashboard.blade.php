@@ -147,19 +147,13 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-lg-4">
-                    <div class="card-transparent card-block card-stretch mb-4">
-                        <div class="card-header d-flex align-items-center justify-content-between p-0">
-                            <div class="header-title">
-                                <h4 class="card-title mb-0">Today Attendance</h4>
-                            </div>
-                            <div class="card-header-toolbar d-flex align-items-center">
-                                {{-- <div><a href="#" class="btn btn-primary view-btn font-size-14">View All</a></div> --}}
-                            </div>
-                        </div>
-                    </div>
+                    <br>
                     <div class="card card-block card-stretch card-height-helf">
+                        <div class="header-title">
+                            <br>
+                        <center>    <h5 class="card-title mb-0">Today Attendance</h5></center>
+                        </div>
                         <div class="card-body card-item-right">
                             <div class="d-flex align-items-top">
                                 <table class="table">
@@ -226,7 +220,7 @@
                                 <option>Expense</option>
                             </select>
                             <br>
-                          <center>  <button class="btn btn-primary" type="submit">Submit</button></center>
+                          <center>  <button class="btn btn-dark btn-block btn-lg" type="submit">Process</button></center>
                         </form>
                     </div>
                     <div class="col-lg-4">
@@ -283,7 +277,7 @@
                             <br>
                             <center> <h5>{{ $tittle }}  {{  number_format($serviceMonly, 2)  }}</h5></center>
                             <br>
-                           <center> <button class="btn btn-primary" type="submit">Submit</button></center>
+                           <center> <button class="btn btn-dark btn-block btn-lg" type="submit">Process</button></center>
 
                         </form>
                         <br>

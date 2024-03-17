@@ -69,7 +69,6 @@
                                   <tbody>
                                       @foreach ($cash as $cash)
                                      <tr>
-                                         <td>{{$cash->id}}</td>
                                         <td>{{$cash->customer_name}}</td>
                                         <td>{{$cash->mode}}</td>
                                         <td>{{$cash->amount}}</td>
@@ -78,17 +77,6 @@
                                      </tr>
                                      @endforeach
                                   </tbody>
-                                  <tfoot>
-                                     <tr>
-                                        <th>Id</th>
-                                        <th>Customet Name</th>
-                                        <th>Mode</th>
-                                        <th>Amount</th>
-                                        <th>Date</th>
-                                        <th>Action</th>
-
-                                     </tr>
-                                  </tfoot>
                                </table>
                             </div>
                          </div>

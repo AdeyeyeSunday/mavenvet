@@ -6,8 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title> MVC midwifery</title>
-
+    <title> MVC</title>
     <!-- Favicon -->
     <link rel="shortcut icon" href="http://iqonic.design/themes/posdash/html/assets/images/favicon.ico" />
     <link rel="stylesheet" href="{{ asset('assets/css/backend-plugin.min.css') }}">
@@ -16,13 +15,10 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/remixicon/fonts/remixicon.css') }}">
     <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
-
     <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/print/bootstrap-table-print.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.24/webcam.js"></script>
-
-
 </head>
 
 
@@ -41,16 +37,12 @@
                 <a href="{{ route('Admin.dashboard') }}" class="header-logo">
                     <img src="{{ asset('assets/images/logo.png') }}" class="img-fluid rounded-normal light-logo"
                         alt="logo">
-                    <h5 class="logo-title light-logo ml-3">MVC midwifery</h5>
+                    <h5 class="logo-title light-logo ml-3">MVC</h5>
                 </a>
                 <div class="iq-menu-bt-sidebar ml-0">
                     <i class="las la-bars wrapper-menu"></i>
                 </div>
             </div>
-
-
-
-
 
             @if (auth()->user()->userHasRole('Admin'))
                 <x-Dashboard></x-Dashboard>
@@ -99,6 +91,7 @@
                 {{-- <x-Expenditure></x-Expenditure> --}}
                 <x-Orders_Sales_Report></x-Orders_Sales_Report>
                 <x-Attendance></x-Attendance>
+                <x-Admin_Report></x-Admin_Report>
             @endif
 
             @if (auth()->user()->userHasRole('Manager'))
@@ -113,10 +106,10 @@
             @endif
             </nav>
             <div class="p-3"></div>
-            <div class="p-3">
-                <p>You need Internet to update software</p>
-                <button class="btn btn-primary">Update Software</button>
-              </div>
+            {{-- <div class="p-3">
+                <center>   <p>You need Internet to update software</p>
+            <a href="{{ route("Admin.update_software") }}"> <button class="btn btn-danger">Update Software</button></a></center>
+              </div> --}}
         </div>
     </div>
     <div class="iq-top-navbar">
@@ -135,7 +128,7 @@
 
 
                     <div class="dropdown show">
-                        <a href="{{ route('update2') }}" class="btn btn-primary">Update Product</a>
+                        <a href="{{ route('update2') }}" class="btn btn-primary btn-lg">Update Product</a>
 
                     </div>
                 </div>
@@ -210,7 +203,7 @@
                         <ul class="navbar-nav ml-auto navbar-list align-items-center">
 
                             <div>
-                                <a href="{{ route('sync') }}" class="btn btn-secondary">
+                                <a href="{{ route('sync') }}" class="btn btn-secondary btn-lg">
                                     Push Button
                                 </a>
                             </div>
@@ -237,8 +230,8 @@
                                                 <div class="d-flex align-items-center justify-content-center mt-3">
 
 
-                                                    <a href="  {{ route('profile.show') }}   "
-                                                        class="btn border mr-2">Profile</a>
+                                                    {{-- <a href="  {{ route('profile.show') }}   "
+                                                        class="btn border mr-2">Profile</a> --}}
 
                                                     <form action="{{ URL::to('logout') }}" method="post">
                                                         @csrf
@@ -269,8 +262,6 @@
         </div>
     </div>
     </div>
-
-
     <!-- Wrapper End-->
     <footer class="iq-footer">
         <div class="container-fluid">
@@ -315,9 +306,5 @@
 
     @yield('scripts')
 
-
-
 </body>
-
-
 </html>

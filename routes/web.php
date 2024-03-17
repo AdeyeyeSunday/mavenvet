@@ -27,7 +27,7 @@ Route::get('/Admin/dashboard', 'AdminController@index')->name('Admin.dashboard')
 Route::post('/Admin/store_profit', 'AdminController@store_profit')->name('Admin.store_profit');
 Route::post('/Admin/dashboard', 'AdminController@dashboard')->name('Admin.dashboard');
 Route::get('/Admin/admin_dashboard', 'AdminController@admin_dashboard')->name('Admin.admin_dashboard');
-
+Route::get('/Admin/update_software', 'AdminController@update_software')->name('Admin.update_software');
 //Product start from here
 Route::get('/Admin/Product/Product', 'ProductController@Product')->name('Admin.Product.Product');
 Route::get('/Admin/Product/Product_subtact', 'ProductController@Product_subtact')->name('Admin.Product.Product_subtact');
@@ -189,18 +189,7 @@ Route::post('/Admin/Payment/{id}/Payment_update', 'PaymentController@Payment_upd
 Route::get('/Admin/Payment/Payment_admin_outstanding', 'PaymentController@Payment_admin_outstanding')->name('Admin.Payment.Payment_admin_outstanding');
 Route::get('/Admin/Payment/{id}/Payment_list_edit', 'PaymentController@Payment_list_edit')->name('Admin.Payment.Payment_list_edit');
 Route::patch('/Admin/Payment/{id}/Payment_list_update', 'PaymentController@Payment_list_update')->name('Admin.Payment.Payment_list_update');
-// Route::get('/Admin/Payment/January', 'PaymentController@January')->name('Admin.Payment.January');
-// Route::get('/Admin/Payment/February', 'PaymentController@February')->name('Admin.Payment.February');
-// Route::get('/Admin/Payment/March', 'PaymentController@March')->name('Admin.Payment.March');
-// Route::get('/Admin/Payment/April', 'PaymentController@April')->name('Admin.Payment.April');
-// Route::get('/Admin/Payment/May', 'PaymentController@May')->name('Admin.Payment.May');
-// Route::get('/Admin/Payment/June', 'PaymentController@June')->name('Admin.Payment.June');
-// Route::get('/Admin/Payment/July', 'PaymentController@July')->name('Admin.Payment.July');
-// Route::get('/Admin/Payment/August', 'PaymentController@August')->name('Admin.Payment.August');
-// Route::get('/Admin/Payment/September', 'PaymentController@September')->name('Admin.Payment.September');
-// Route::get('/Admin/Payment/October', 'PaymentController@October')->name('Admin.Payment.October');
-// Route::get('/Admin/Payment/November', 'PaymentController@November')->name('Admin.Payment.November');
-// Route::get('/Admin/Payment/December', 'PaymentController@December')->name('Admin.Payment.December');
+
 Route::get('/Admin/Payment/fullpayments', 'PaymentController@fullpayment')->name('Admin.Payment.fullpayments');
 Route::get('/Admin/Payment/{id}/fullpayment', 'PaymentController@fullpayment_view')->name('Admin.Payment.fullpayment_view');
 Route::get('/Admin/Payment/outstandingpayment', 'PaymentController@outstandingpayment')->name('Admin.Payment.outstandingpayment');
@@ -246,6 +235,7 @@ Route::get('/Admin/Customer/{id}/add_customer_destory', 'CustomerController@add_
 //pos outstanding work start here
 Route::get('/Admin/Pos/Pos', 'PosController@Pos')->name('Admin.Pos.Pos');
 Route::post('/Admin/Pos/Pos_store', 'PosController@Pos_store')->name('Admin.Pos.Pos_store');
+Route::post('/Admin/Pos/directPayment', 'PosController@directPayment')->name('Admin.Pos.directPayment');
 Route::patch('/Admin/Pos/{id}/Pos_update', 'PosController@Pos_update')->name('Admin.Pos.Pos_update');
 Route::get('/Admin/Pos/{id}/Pos_invoice', 'PosController@Pos_invoice')->name('Admin.Pos.Pos_invoice');
 Route::get('/Admin/Pos/{id}/Pos_invoice_view', 'PosController@Pos_invoice_view')->name('Admin.Pos.Pos_invoice_view');
@@ -278,6 +268,7 @@ Route::get('/Admin/Pos/today_items_cashier', 'PosController@today_items_cashier'
 Route::patch('/Admin/Pos/{id}/daily_sales_update', 'PosController@daily_sales_update')->name('Admin.Pos.daily_sales_update');
 Route::get('/Admin/Pos/{id}/daily_sales_edit', 'PosController@daily_sales_edit')->name('Admin.Pos.daily_sales_edit');
 Route::get('/Admin/Pos/balance', 'PosController@balance')->name('Admin.Pos.balance');
+Route::get('/Admin/Pos/direct_print', 'PosController@direct_print')->name('Admin.Pos.direct_print');
 //search start from here
 
 Route::post('/Admin/Pos/search', 'PosController@search')->name('Admin.search.search');

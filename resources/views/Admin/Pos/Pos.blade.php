@@ -6,7 +6,7 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <div class="header-title">
-                                <h6 class="card-title">MVC midwifery Pos (Point of Sale)</h6>
+                                <h6 class="card-title">MVC Pos (Point of Sale)</h6>
                             </div>
                         </div>
 
@@ -16,13 +16,9 @@
                                     <div class="card">
                                         <div class="card-header d-flex justify-content-between">
                                             <div class="header-title">
-
-
                                                 </select>
                                             </div>
                                         </div>
-
-
                                         <div class="card-body">
                                             <div class="input-group mb-4">
 
@@ -59,20 +55,22 @@
                                                                                     enctype="multipart/form-data">
                                                                                     @csrf
                                                                                     @method('PATCH')
-                                                                                        <input type="hidden" name="Qty[]"
+                                                                                    <input type="hidden" name="Qty[]"
                                                                                         value="{{ $get_cart->Qty }}">
 
 
                                                                                     <input type="number" name="Quantity[]"
-                                                                                        value="{{ $get_cart->Quantity }}" style="width: 100px">
+                                                                                        value="{{ $get_cart->Quantity }}"
+                                                                                        style="width: 100px">
 
-                                                                                        <input type="hidden" name="Name[]"
+                                                                                    <input type="hidden" name="Name[]"
                                                                                         value="{{ $get_cart->Name }}">
 
-                                                                                        <input type="hidden" name="Price[]"
+                                                                                    <input type="hidden" name="Price[]"
                                                                                         value="{{ $get_cart->Price }}">
 
-                                                                                        <input type="hidden" name="product_id[]"
+                                                                                    <input type="hidden"
+                                                                                        name="product_id[]"
                                                                                         value="{{ $get_cart->product_id }}">
 
                                                                             </th>
@@ -82,70 +80,132 @@
                                                                             <th>{{ $get_cart->Price * $get_cart->Quantity }}
                                                                             </th>
                                                                             <th>
-                                                                                {{-- <form
-                                                                                    action="{{ route('Admin.Cart.destory_cart', $get_cart->id) }}"
-                                                                                    method="post"
-                                                                                    enctype="multipart/form-data">
-                                                                                    @csrf
-                                                                                    @method('DELETE') --}}
-                                                                                    <a class="badge bg-warning mr-2"
-                                                                                        data-toggle="tooltip"
-                                                                                        data-placement="top" title=""
-                                                                                        data-original-title="Delete"
-                                                                                        href="{{ route('Admin.Cart.destory_cart', $get_cart->id) }}"><i
-                                                                                            class="r4
+
+                                                                                <a class="badge bg-warning mr-2"
+                                                                                    data-toggle="tooltip"
+                                                                                    data-placement="top" title=""
+                                                                                    data-original-title="Delete"
+                                                                                    href="{{ route('Admin.Cart.destory_cart', $get_cart->id) }}"><i
+                                                                                        class="r4
                                                                                             4i-delete-bin-line mr-0">Delete</i></a>
                                                                                 {{-- </form> --}}
                                                                             </th>
                                                                         </tr>
 
                                                                         @php
-                                                                            $total += $get_cart->Price * $get_cart->Quantity;
+                                                                            $total +=
+                                                                                $get_cart->Price * $get_cart->Quantity;
                                                                         @endphp
                                                                     @endforeach
 
-                                                                    <h6>Grand Total : {{ $total }}</h6>
+                                                                    <h6>Grand Total : {{ number_format($total, 2) }}</h6>
+                                                                    <br>
                                                                 </tbody>
                                                             </table>
                                                         </ul>
-                                                    <button class="btn btn-dark" style="margin-left: 90%;">Update Cart</button>
-                                                </form>
+                                                        @if ($total != '0.00')
+                                                            <button class="btn btn-dark btn-lg btn-block">Update
+                                                                Cart</button>
+                                                        @endif
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
 
-
-
-
-
-
                                             <div class="card">
                                                 <div class="card-header d-flex justify-content-between">
                                                     <div class="header-title">
-                                                        <h6 class="card-title">Basic Details</h6>
+                                                        @if ($total != '0.00')
+                                                            <h6 class="card-title">Full direct payment section only </h6>
+                                                        @endif
                                                     </div>
-
-
+                                                    <a href="{{ route("Admin.Pos.direct_print") }}"><button class="btn btn-secondary btn-lg ">Print invoice</button></a>
                                                     <div class="header-title">
                                                         <div class="header-title">
                                                             <a href="{{ route('Admin.Pos.Pos_pending') }}">
-                                                                <h6 class="card-title">View pending</h6>
+                                                                View pending
                                                             </a>
                                                         </div>
-
                                                     </div>
                                                 </div>
+
+                                                @if ($total != '0.00')
+                                                    <form action="{{ route('Admin.Pos.directPayment') }}"
+                                                        enctype="multipart/form-data" method="post">
+                                                        @csrf
+                                                        <center>
+                                                            <p>This section doesn't accept double payments; you can only use
+                                                                a single payment method. For double payments, you can
+                                                                utilize the "Process double payment" button below.</p>
+                                                        </center>
+                                                        <div class="row  col-md-12">
+                                                            <div class="col-md-4 off col-md-4">
+                                                                <br>
+                                                                <label for="">Amount</label>
+                                                                <input type="text" disabled name=""
+                                                                    value="{{ $total }}" class="form-control"
+                                                                    id="">
+                                                                <br>
+                                                            </div>
+                                                            <div class="col-md-8 off col-md-1">
+                                                                <br>
+                                                                <h6 class="card-title">Mode of payment </h6>
+                                                                <select name="Mode_of_payment" id=""
+                                                                    class="form-control" required>
+                                                                    <option value="" selected>select</option>
+                                                                    <option value="Cash">Cash</option>
+                                                                    <option value="Pos">Pos</option>
+                                                                    <option value="Transfer">Transfer</option>
+                                                                </select>
+                                                                <br>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <center> <button
+                                                                        class="btn btn-dark btn-lg btn-block">Process direct
+                                                                        payment</button></center>
+                                                            </div>
+                                                            <input type="hidden" name="fname" class="form-control"
+                                                                value="****" placeholder="Full Name"><br>
+                                                            <input type="hidden" name="phone" value="****"
+                                                                class="form-control" placeholder="Phone"><br>
+                                                            <input type="hidden" name="address" value="****"
+                                                                class="form-control" placeholder="Address">
+                                                            <input type="hidden" name="discount" class="form-control"
+                                                                placeholder="discount">
+                                                            <input type="hidden" name="order_status" class="form-control"
+                                                                value="success">
+                                                            <input type="hidden" name="pay"
+                                                                value="{{ $total }}" class="form-control">
+                                                            <input type="hidden" name="due" class="form-control"
+                                                                value="0">
+                                                            <input type="hidden" name="Payment_type"
+                                                                class="form-control" value="Full Payment">
+                                                            <input type="hidden" name="date"
+                                                                value="{{ date('Y-d-m') }}">
+                                                            <input type="hidden" name="location" value="MVC midwifery">
+                                                            <input type="hidden" name="month"
+                                                                value="{{ date('F') }}">
+                                                            <input type="hidden" name="year"
+                                                                value=" {{ date('Y') }}">
+                                                            <input type="hidden" name="user_id"
+                                                                value=" {{ auth()->user()->id }}">
+                                                            {{-- </div> --}}
+
+
+                                                        </div>
+                                                    </form>
+                                                @endif
+
 
                                                 <form action="{{ route('Admin.Pos.Pos_store') }}" method="post"
                                                     enctype="multipart/form-data">
                                                     @csrf
                                                     <div class="card-body">
-
-                                                        <input type="text" name="fname" class="form-control"
+                                                        <input type="hidden" name="fname" class="form-control"
                                                             value="****" placeholder="Full Name"><br>
-                                                        <input type="text" name="phone" value="****"
+                                                        <input type="hidden" name="phone" value="****"
                                                             class="form-control" placeholder="Phone"><br>
-                                                        <input type="text" name="address" value="****"
+                                                        <input type="hidden" name="address" value="****"
                                                             class="form-control" placeholder="Address">
                                                         <input type="hidden" name="discount" class="form-control"
                                                             placeholder="discount">
@@ -159,7 +219,8 @@
                                                             value="0">
                                                         <input type="hidden" name="Payment_type" class="form-control"
                                                             value="0">
-                                                        <input type="hidden" name="date" value="{{ date('Y-d-m') }}">
+                                                        <input type="hidden" name="date"
+                                                            value="{{ date('Y-d-m') }}">
                                                         <input type="hidden" name="location" value="MVC midwifery">
                                                         <input type="hidden" name="month"
                                                             value="{{ date('F') }}">
@@ -169,7 +230,6 @@
                                                             value=" {{ auth()->user()->id }}">
                                                     </div>
                                             </div>
-
                                             @foreach ($get_post as $get_post)
                                                 <input type="hidden" name="Quantity[]"
                                                     value="{{ $get_post->Quantity }}">
@@ -178,12 +238,15 @@
                                                 <input type="hidden" name="subtotal[]"
                                                     value="{{ $get_post->Price * $get_post->Quantity }}">
                                             @endforeach
-
-                                            <center> <button type="submit" class="btn btn-primary">Place Order</button>
-                                            </center>
+                                            @if ($total != '0.00')
+                                                <div class="col-md-12 off col-md-1">
+                                                    <center> <button type="submit"
+                                                            class="btn btn-success btn-lg btn-block">Process double
+                                                            payment section</button>
+                                                    </center>
+                                                </div>
+                                            @endif
                                             </form>
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -197,6 +260,7 @@
 
                                         <div class="input-group mb-6">
                                             <div class="col-lg-12">
+                                                <br>
                                                 <div class="table-responsive rounded mb-3">
                                                     <table class="data-table table mb-0 tbl-server-info">
                                                         <thead class="bg-white text-uppercase">
@@ -214,9 +278,6 @@
 
                                                             @foreach ($product as $product)
                                                                 <tr>
-
-
-
                                                                     <form action="{{ route('Admin.Cart.add_cart') }}"
                                                                         method="post" enctype="multipart/form-data">
                                                                         @csrf
@@ -251,14 +312,17 @@
                                                                         <td>{{ $product->Quantity }}</td>
 
                                                                         <td>
-
-
-
                                                                             {{-- //Quantity_level start from here --}}
                                                                             @php
-                                                                                if ($product->Quantity <= $product->Quantity_level) {
-                                                                                    echo '<button type="button" class="btn btn-danger btn-sm mr-2">Low stock restock it</button>';
-                                                                                } elseif ($product->Quantity > $product->Quantity_level) {
+                                                                                if (
+                                                                                    $product->Quantity <=
+                                                                                    $product->Quantity_level
+                                                                                ) {
+                                                                                    echo '<button type="button" class="btn btn-danger btn-sm mr-2">Low stock</button>';
+                                                                                } elseif (
+                                                                                    $product->Quantity >
+                                                                                    $product->Quantity_level
+                                                                                ) {
                                                                                     echo ' <button type="button" class="btn btn-primary btn-sm mr-2">In Stock</button>';
                                                                                 }
 
@@ -271,7 +335,7 @@
 
                                                                             @if ($product->Quantity <= 0)
                                                                                 <button disabled><i
-                                                                                        class="ri-moon-fill pr-0"></i></button>
+                                                                                        class="ri-mark-fill"></i></button>
                                                                             @else
                                                                                 <button type="submit"
                                                                                     class="btn btn-link"><i

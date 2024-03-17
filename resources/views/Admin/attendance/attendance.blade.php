@@ -6,11 +6,9 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <div class="header-title">
-                                <h6 class="card-title">MVC midwifery Attendance </h6>
+                                <h6 class="card-title">MVC Attendance </h6>
                             </div>
                         </div>
-
-
                         @if (Session::has('message'))
                             <center>
                                 <div class="alert alert-primary" role="alert">
@@ -19,33 +17,36 @@
                             </center>
                         @endif
 
-
                         <div class="row">
-
-
                             <div id="my_camera" hidden class="pre_capture_frame"></div>
                             <input type="hidden" name="captured_image_data" id="captured_image_data">
 
                         </div>
 
                         <div class="card-body">
-                            <form id="attendanceForm" action="{{ route('Admin.attendance.attendance_store') }}" method="post"
-                                enctype="multipart/form-data">
+                            <form id="attendanceForm" action="{{ route('Admin.attendance.attendance_store') }}"
+                                method="post" enctype="multipart/form-data">
                                 @csrf
-
+                                @php
+                                    $check_tmer = App\Models\Attendance::where('Time', '!=', null)
+                                        ->where('staff_name', auth()->user()->name)
+                                        ->latest()
+                                        ->first();
+                                @endphp
+                                @if (strtotime(date('H:i')) > strtotime('01:00'))
+                                    <center>
+                                        @if ($check_tmer->late_comment == null)
+                                            <p style="color: red">
+                                                You are already late, and your charge is
+                                                {{ number_format(Auth::user()->late_charge, 2) }}. Please start below.
+                                                Please
+                                                note that this will be deducted from your salary.Thank you
+                                            </p>
+                                        @endif
+                                    </center>
+                                @endif
                                 <div class="form-row">
                                     <div class="form-group">
-
-                                        <div id="results">
-                                            <center> <img style="width: 350px;" name="image" class="after_capture_frame"
-                                                    src="image_placeholder.jpg" /></center>
-                                        </div>
-                                        <br>
-
-                                        <center> <button type="button" class="btn btn-danger"
-                                                value="Take Snapshot" onClick="take_snapshot()">Take Snapshot</button>
-                                        </center>
-                                        <br>
                                         <label>Staff Name</label>
                                         <input type="text" class="form-control" readonly name="staff_name"
                                             value="{{ auth()->user()->name }}" id="">
@@ -53,7 +54,7 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label>Clock</label>
-                                            <select class="form-control mb-3" name="clockin">
+                                            <select class="form-control mb-3" name="clockin" required>
                                                 <option selected disabled>Select</option>
                                                 <option value="Clockin">Clockin</option>
                                                 <option value="clockout">Clock out</option>
@@ -61,11 +62,23 @@
                                         </div>
                                     </div>
                                 </div>
+                                @php
+                                    date_default_timezone_set('Africa/Lagos');
+                                @endphp
                                 <input type="hidden" name="Time" value=" {{ date('H:i A') }}">
                                 <input type="hidden" name="date" value="{{ date('d/m/y') }}">
                                 <input type="hidden" name="month" value="{{ date('F') }}">
                                 <input type="hidden" name="year" value="{{ date('Y') }}">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" id="">
+
+                                @if (strtotime(date('H:i')) > strtotime(Auth::user()->resumption_time))
+                                @if (!$check_tmer || $check_tmer->late_comment == null)
+                                    <label for="lateReason">Reason for Late coming</label>
+                                    <textarea name="late_comment" class="form-control" id="lateReason" cols="3" rows="3" required></textarea>
+                                @endif
+                            @endif
+                                <br>
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
                             </form>
                         </div>
                     </div>
@@ -89,20 +102,24 @@
                                     <table id="datatable" class="table data-table table-striped">
                                         <thead>
                                             <tr class="ligth">
-                                                <th>Id</th>
+                                                {{-- <th>Id</th> --}}
                                                 <th>Name</th>
                                                 <th>Clock In</th>
                                                 <th>Clock Out</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($attendance as $attendance)
                                                 <tr>
-                                                    <td>{{ $attendance->id }}</td>
+                                                    {{-- <td>{{ $attendance->id }}</td> --}}
                                                     <td>{{ $attendance->staff_name }}</td>
                                                     <td>{{ $attendance->Time }}</td>
                                                     <td>{{ $attendance->Timeout }}</td>
-
+                                                    @if ($attendance->late_status == 1)
+                                                        <td>Late</td>
+                                                    @else
+                                                    @endif
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -131,7 +148,6 @@
         </script>
 
         <script language="JavaScript">
-
             // Configure a few settings and attach camera 250x187
             Webcam.set({
                 width: 350,

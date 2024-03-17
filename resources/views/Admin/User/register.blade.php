@@ -2,7 +2,7 @@
     @section('content')
         <div class="row">
 
-            <div class="col-lg-3">
+            <div class="col-lg-4">
 
                 <form method="post" action="{{ route('Admin.User.register_store') }}" enctype="multipart/form-data">
                     @csrf
@@ -20,8 +20,19 @@
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
 
+                        <label class="form-label">Salary</label>
+                        <input type="number" name="salary" class="form-control" id="" required>
+
+                        <label class="form-label">Resumption time</label>
+                        <input type="time" name="time" name="resumption_time" class="form-control" id="" required>
+                        <div class="clearfix"></div>
+
+                        <label class="form-label">Late arrival charge </label>
+                        <input type="number" name="late_charge" class="form-control" id="" required>
+                        <div class="clearfix"></div>
+
                         <label class="form-label">Password</label>
-                        <input type="password" name="password" class="form-control" id="">
+                        <input type="password" name="password" class="form-control" id="" required>
                         @error('password')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -33,16 +44,14 @@
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
 
-
-                        <div class="clearfix"></div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
                 </form>
             </div>
 
 
-            <div>
+            <div class="col-lg-4">
                 <form action="{{ route('Admin.User.bank_store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <label for="">Bank Name</label>
@@ -98,9 +107,10 @@
                         <option value="Raven bank">Raven bank</option>
                     </select>
                     <label for="">Account Number</label>
-                    <input type="number" placeholder="Enter account number" name="accountNumber" class="form-control" required>
+                    <input type="number" placeholder="Enter account number" name="accountNumber" class="form-control"
+                        required>
                     <br>
-                    <button type="submit"  class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
                 </form>
             </div>
 
@@ -123,13 +133,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($banklist as$key=>$bank)
+                                @foreach ($banklist as $key => $bank)
                                     <tr>
-                                        <td>{{ $key + 1}}</td>
+                                        <td>{{ $key + 1 }}</td>
                                         <td>{{ $bank->name }}</td>
                                         <td>{{ $bank->accountNumber }}</td>
                                         <td>
-                                            <a href="{{ route("Admin.User.delete",$bank->id) }}"><button class="btn btn-danger">Delete</button></a>
+                                            <a href="{{ route('Admin.User.delete', $bank->id) }}"><button
+                                                    class="btn btn-danger btn-lg btn-block">Delete</button></a>
                                         </td>
 
                                     </tr>
@@ -137,13 +148,13 @@
 
                         </table>
 
-        </div>
-        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
 
-    </div>
+        </div>
 
         </div>
         </div>

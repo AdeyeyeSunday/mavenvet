@@ -6,11 +6,14 @@ use App\Models\Attendance;
 use App\Models\Product;
 use App\Models\Profit;
 use App\Models\Service_item;
+use App\Models\Service_order;
 use App\Models\Transferstore;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use mysqli;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 //use Datatables;
 //use DB;
@@ -93,6 +96,9 @@ return back();
 
 public function sync(Request $request){
 
+    ini_set('max_execution_time', 3600); // 3600 seconds = 60 minutes
+set_time_limit(3600);
+
     /*............... Offline database connection...........................*/
 $dbhost = "localhost";
 $dbuser = "root";
@@ -108,7 +114,7 @@ if ($mysqli->connect_error) {
 
 
  /*..............Online database connection...........................*/
-$con = mysqli_connect('131.153.147.34', 'mavenvet_interbau', 'mavenvet_interbau', 'mavenvet_interbau');
+$con = mysqli_connect('131.153.147.34', 'mavenvet_midwifery', 'mavenvet_midwifery', 'mavenvet_midwifery');
 if ($con === false) {
     die("Online database connection error: " . mysqli_connect_error());
 }
@@ -196,7 +202,7 @@ if ($con === false) {
                 die("Error checking for duplicate record: " . mysqli_error($con));
             }
             $offlineUpdateSyn = "UPDATE attendances SET syn_flag = '1' WHERE staff_name = '$s'";
-            var_dump("am here");
+
             $resOfflineUpdate = mysqli_query($mysqli, $offlineUpdateSyn);
             if ($resOfflineUpdate === false) {
              die("Error getting service_requests: " . $mysqli->error);
@@ -216,8 +222,6 @@ if ($con === false) {
             $syn_flag =1;
             $selectOnlineProduct = "SELECT 'name','accountNumber' FROM bank_lists WHERE name  = '".$s."' AND syn_flag = '1'";
              $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
-
-
              if($resOnlineUpdate !== false && $resOnlineUpdate->num_rows > 0){
                 /*...............Loop through online service types.................*/
               while ($resonlineServiceRow = mysqli_fetch_assoc($resOnlineUpdate)) {
@@ -255,9 +259,6 @@ if ($con === false) {
 
         }
     }
-
-
-
 
          /*..............brand start from here...........................*/
          $offline = "SELECT `brand` FROM `brands` WHERE syn_flag = '0'";
@@ -307,10 +308,6 @@ if ($con === false) {
 
             }
         }
-
-
-
-
             /*..............cashes start from here...........................*/
             $offline = "SELECT `customer_name`, `mode`, `amount`, `name`, `date`, `month`, `year`,`location` FROM `cashes` WHERE syn_flag = '0'";
             $resOffline = $mysqli->query($offline);
@@ -572,42 +569,52 @@ if ($con === false) {
               }
 
 
+              $offline = "SELECT `id`,`Name`, `Cost`, `Price`, `Quantity`, `new_supply`, `expiry_date`, `Quantity_level`, `description`, `month`, `year`, `new_date`, `location`, `syn_flag`, `user_id`, `Category`, `supplier` FROM newproducts WHERE syn_flag = '0'";
+              $resOffline = $mysqli->query($offline);
 
-               /*..............newproducts start from here...........................*/
-               $offline = "SELECT `id`,`Name`, `Cost`, `Price`, `Quantity`, `new_supply`, `expiry_date`, `Quantity_level`, `description`, `month`, `year`, `new_date`, `location`, `syn_flag`, `user_id`, `Category`, `supplier` FROM newproducts  WHERE syn_flag = '0'";
-               $resOffline = $mysqli->query($offline);
-               if($resOffline->num_rows > 0){
+              if ($resOffline === false) {
+                  die("Error executing offline query: " . $mysqli->error);
+              }
+
+              if ($resOffline->num_rows > 0) {
                   while ($detorRow = $resOffline->fetch_assoc()) {
-                    $id = $detorRow['id'];
-                    $name = $detorRow['Name'];
-                    $cost = $detorRow['Cost'];
-                    $price = $detorRow['Price'];
-                    $quantity = $detorRow['Quantity'];
-                    $new_supply = $detorRow['new_supply'];
-                    $expiry_date = $detorRow['expiry_date'];
-                    $quantity_level = $detorRow['Quantity_level'];
-                    $description = $detorRow['description'];
-                    $month = $detorRow['month'];
-                    $year = $detorRow['year'];
-                    $new_date = $detorRow['new_date'];
-                    $location = $detorRow['location'];
-                    $Category = $detorRow['Category'];
-                    $supplier = $detorRow['supplier'];
-                    $syn_flag = 1;
-                    $user_id = $detorRow['user_id'];
-                       $insertOnline = "INSERT INTO `newproducts`(`Name`, `Cost`, `Price`, `Quantity`, `new_supply`, `expiry_date`, `Quantity_level`, `description`, `month`, `year`, `new_date`, `location`, `syn_flag`, `user_id`, `Category`, `supplier`)
-                       VALUES ('$name','$cost','$price','$quantity','$new_supply','$expiry_date','$quantity_level','$description','$month','$year','$new_date','$location','$syn_flag','$user_id','$Category','$supplier')";
-                          $resOnlineUpdate = mysqli_query($con, $insertOnline);
-                          if ($resOnlineUpdate === false) {
-                              die("Error checking for duplicate record: " . mysqli_error($con));
-                          }
-                          $offlineUpdateSyn = "UPDATE newproducts SET syn_flag = '1' WHERE Name = '".$name."'";
-                          $resOfflineUpdate = mysqli_query($mysqli, $offlineUpdateSyn);
-                          if ($resOfflineUpdate === false) {
-                           die("Error getting service_requests: " . $mysqli->error);
+                      $id = $detorRow['id'];
+                      $name = $detorRow['Name'];
+                      $cost = $detorRow['Cost'];
+                      $price = $detorRow['Price'];
+                      $quantity = $detorRow['Quantity'];
+                      $new_supply = $detorRow['new_supply'];
+                      $expiry_date = $detorRow['expiry_date'];
+                      $quantity_level = $detorRow['Quantity_level'];
+                      $description = $detorRow['description'];
+                      $month = $detorRow['month'];
+                      $year = $detorRow['year'];
+                      $new_date = $detorRow['new_date'];
+                      $location = $detorRow['location'];
+                      $Category = $detorRow['Category'];
+                      $supplier = $detorRow['supplier'];
+                      $syn_flag = 1;
+                      $user_id = $detorRow['user_id'];
 
-                         }
+                      // Insert online record using prepared statement
+                      $insertOnline = "INSERT INTO `newproducts`(`Name`, `Cost`, `Price`, `Quantity`, `new_supply`, `expiry_date`, `Quantity_level`, `description`, `month`, `year`, `new_date`, `location`, `syn_flag`, `user_id`, `Category`, `supplier`)
+                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+                      $stmt = $mysqli->prepare($insertOnline);
+                      $stmt->bind_param("sssssssssssssssi", $name, $cost, $price, $quantity, $new_supply, $expiry_date, $quantity_level, $description, $month, $year, $new_date, $location, $syn_flag, $user_id, $Category, $supplier);
+
+                      if (!$stmt->execute()) {
+                          die("Error inserting online record: " . $stmt->error);
+                      }
+
+                      // Update offline record syn_flag to 1
+                      $offlineUpdateSyn = "UPDATE newproducts SET syn_flag = '1' WHERE id = ?";
+                      $stmt = $mysqli->prepare($offlineUpdateSyn);
+                      $stmt->bind_param("i", $id);
+
+                      if (!$stmt->execute()) {
+                          die("Error updating offline record: " . $stmt->error);
+                      }
                   }
               }
 
@@ -647,68 +654,76 @@ if ($con === false) {
                   }
 
 
-                      /*..............orders start from here...........................*/
-                      $offline = "SELECT `user_id`, `fname`, `phone`, `address`, `total_price`, `discount`, `trackking_id`, `order_status`, `Mode_of_payment`, `pay`, `due`, `Payment_type`, `cash_transfer`, `cash_pos`, `date`, `month`, `year`, `syn_flag`, `location`, `new_mode_of_payment`, `new_date`, `new_payment_user_id`, `Cost`, `new_due`, `bankName` FROM `orders` WHERE syn_flag = '0'";
-                      $resOffline = $mysqli->query($offline);
-                      if($resOffline->num_rows > 0){
-                         while ($detorRow = $resOffline->fetch_assoc()) {
-                            $user_id = $detorRow['user_id'];
-                            $fname = $detorRow['fname'];
-                            $phone = $detorRow['phone'];
-                            $address = $detorRow['address'];
-                            $total_price = $detorRow['total_price'];
-                            $discount = $detorRow['discount'];
-                            $trackking_id = $detorRow['trackking_id'];
-                            $order_status = $detorRow['order_status'];
-                            $Mode_of_payment = $detorRow['Mode_of_payment'];
-                            $pay = $detorRow['pay'];
-                            $due = $detorRow['due'];
-                            $Payment_type = $detorRow['Payment_type'];
-                            $cash_transfer = $detorRow['cash_transfer'];
-                            $cash_pos = $detorRow['cash_pos'];
-                            $date = $detorRow['date'];
-                            $month = $detorRow['month'];
-                            $year = $detorRow['year'];
-                            $syn_flag = 1;
-                            $location = $detorRow['location'];
-                            $new_mode_of_payment = $detorRow['new_mode_of_payment'];
-                            $new_date = $detorRow['new_date'];
-                            $new_payment_user_id = $detorRow['new_payment_user_id'];
-                            $new_due = $detorRow['new_due'];
-                            $bankName = $detorRow['bankName'];
-                            $Cost =$detorRow['Cost'];
-                            $syn_flag =1;
-                            $insertOnline = "INSERT INTO `orders`(
+                  $offline = "SELECT `user_id`, `fname`, `phone`, `address`, `total_price`, `discount`, `trackking_id`, `order_status`, `Mode_of_payment`, `pay`, `due`, `Payment_type`, `cash_transfer`, `cash_pos`, `date`, `month`, `year`, `syn_flag`, `location`, `new_mode_of_payment`, `new_date`, `new_payment_user_id`, `Cost`, `new_due`, `bankName` FROM `orders` WHERE syn_flag = '0'";
+                    $resOffline = $mysqli->query($offline);
+
+                    if ($resOffline === false) {
+                        die("Error executing offline query: " . $mysqli->error);
+                    }
+
+                  if ($resOffline->num_rows > 0) {
+                    while ($detorRow = $resOffline->fetch_assoc()) {
+                        $user_id = $detorRow['user_id'];
+                        $fname = $detorRow['fname'];
+                        $phone = $detorRow['phone'];
+                        $address = $detorRow['address'];
+                        $total_price = $detorRow['total_price'];
+                        $discount = $detorRow['discount'];
+                        $trackking_id = $detorRow['trackking_id'];
+                        $order_status = $detorRow['order_status'];
+                        $Mode_of_payment = $detorRow['Mode_of_payment'];
+                        $pay = $detorRow['pay'];
+                        $due = $detorRow['due'];
+                        $Payment_type = $detorRow['Payment_type'];
+                        $cash_transfer = $detorRow['cash_transfer'];
+                        $cash_pos = $detorRow['cash_pos'];
+                        $date = $detorRow['date'];
+                        $month = $detorRow['month'];
+                        $year = $detorRow['year'];
+                        $syn_flag = 1;
+                        $location = $detorRow['location'];
+                        $new_mode_of_payment = $detorRow['new_mode_of_payment'];
+                        $new_date = $detorRow['new_date'];
+                        $new_payment_user_id = $detorRow['new_payment_user_id'];
+                        $new_due = $detorRow['new_due'];
+                        $bankName = $detorRow['bankName'];
+                        $Cost = $detorRow['Cost'];
+
+                        $insertOnline = "INSERT INTO `orders` (
                             `user_id`, `fname`, `phone`, `address`, `total_price`, `discount`,
                             `trackking_id`, `order_status`, `Mode_of_payment`, `pay`, `due`,
                             `Payment_type`, `cash_transfer`, `cash_pos`, `date`, `month`, `year`,
                             `syn_flag`, `location`, `new_mode_of_payment`, `new_date`, `new_payment_user_id`,
-                            `Cost`, `new_due`, `bankName`, `syn_flag`
-                             ) VALUES (
-                            '$user_id', '$fname', '$phone', '$address', '$total_price', '$discount',
-                            '$trackking_id', '$order_status', '$Mode_of_payment', '$pay', '$due',
-                            '$Payment_type', '$cash_transfer', '$cash_pos', '$date', '$month', '$year',
-                            '$syn_flag', '$location', '$new_mode_of_payment', '$new_date', '$new_payment_user_id',
-                            '$Cost', '$new_due', '$bankName', `$syn_flag`)";
-                                 $resOnlineUpdate = mysqli_query($con, $insertOnline);
-                                 if ($resOnlineUpdate === false) {
-                                     die("Error checking for duplicate record: " . mysqli_error($con));
-                                 }
-                                 $offlineUpdateSyn = "UPDATE orders SET syn_flag = '1' WHERE fname = '".$fname."'";
-                                 $resOfflineUpdate = mysqli_query($mysqli, $offlineUpdateSyn);
-                                 if ($resOfflineUpdate === false) {
-                                  die("Error getting service_requests: " . $mysqli->error);
+                            `Cost`, `new_due`, `bankName`
+                        ) VALUES ('".$user_id."', '".$fname."', '".$phone."', '".$address."', '".$total_price."',
+                        '".$discount."', '".$trackking_id."', '".$order_status."', '".$Mode_of_payment."', '".$pay."'
+                        ,'".$due."', '".$Payment_type."', '".$cash_transfer."', '".$cash_pos."','".$date."'
+                        ,'".$month."', '".$year."', '".$syn_flag."', '".$location."','".$new_mode_of_payment."'
+                        ,'".$new_date."', '".$new_payment_user_id."', '".$Cost."', '".$new_due."','".$bankName."')";
 
-                                }
+                        $resOnlineUpdate = mysqli_query($con, $insertOnline);
 
-                         }
-                     }
+                        if ($resOnlineUpdate === false) {
+                            die("Error checking for duplicate record: " . mysqli_error($con));
+                        }
+                        $offlineUpdateSyn = "UPDATE orders SET syn_flag = '1' WHERE trackking_id = '".$trackking_id."'";
+                        $resOfflineUpdate = mysqli_query($mysqli, $offlineUpdateSyn);
+                        if ($resOfflineUpdate === false) {
+                        die("Error getting service_requests: " . $mysqli->error);
+                    }
+                      }
+                  }
 
                     //    /*..............order_iteams start from here...........................*/
-                       $offline = "SELECT `user_id`, `order_id`, `prod_id`, `qty`, `price`, `product_id`, `date`, `month`, `year`,`Cost` FROM `order_iteams` WHERE syn_flag = '0'";
-                       $resOffline = $mysqli->query($offline);
-                       if($resOffline->num_rows > 0){
-                          while ($detorRow = $resOffline->fetch_assoc()) {
+                    $offline = "SELECT `user_id`, `order_id`, `prod_id`, `qty`, `price`, `product_id`, `date`, `month`, `year`,`Cost` FROM `order_iteams` WHERE syn_flag = '0'";
+                    $resOffline = $mysqli->query($offline);
+
+                    if ($resOffline === false) {
+                        die("Error executing offline query: " . $mysqli->error);
+                    }
+
+                    if ($resOffline->num_rows > 0) {
+                        while ($detorRow = $resOffline->fetch_assoc()) {
                             $user_id = $detorRow['user_id'];
                             $prod_id = $detorRow['prod_id'];
                             $order_id = $detorRow['order_id'];
@@ -720,20 +735,28 @@ if ($con === false) {
                             $year = $detorRow['year'];
                             $Cost = $detorRow['Cost'];
                             $syn_flag = 1;
-                            $insertOnline = "INSERT INTO `order_iteams`(`user_id`, `order_id`, `prod_id`, `qty`, `price`, `product_id`, `date`, `month`, `year`,`Cost`)
-                            VALUES ('$user_id', '$order_id', '$prod_id', '$qty', '$price', '$product_id', '$date', '$month', '$year','$Cost')";
-                                  $resOnlineUpdate = mysqli_query($con, $insertOnline);
-                                  if ($resOnlineUpdate === false) {
-                                      die("Error checking for duplicate record: " . mysqli_error($con));
-                                  }
-                                  $offlineUpdateSyn = "UPDATE order_iteams SET syn_flag = '1' WHERE order_id = '".$order_id."'";
-                                  $resOfflineUpdate = mysqli_query($mysqli, $offlineUpdateSyn);
-                                  if ($resOfflineUpdate === false) {
-                                   die("Error getting service_requests: " . $mysqli->error);
 
-                                 }
-                          }
-                      }
+                            // Insert online record using prepared statement
+                            $insertOnline = "INSERT INTO `order_iteams`(`user_id`, `order_id`, `prod_id`, `qty`, `price`, `product_id`, `date`, `month`, `year`, `Cost`)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+                            $stmt = $mysqli->prepare($insertOnline);
+                            $stmt->bind_param("ssssssssss", $user_id, $order_id, $prod_id, $qty, $price, $product_id, $date, $month, $year, $Cost);
+
+                            if (!$stmt->execute()) {
+                                die("Error inserting online record: " . $stmt->error);
+                            }
+
+                            // Update offline record syn_flag to 1
+                            $offlineUpdateSyn = "UPDATE order_iteams SET syn_flag = '1' WHERE order_id = ?";
+                            $stmt = $mysqli->prepare($offlineUpdateSyn);
+                            $stmt->bind_param("s", $order_id);
+
+                            if (!$stmt->execute()) {
+                                die("Error updating offline record: " . $stmt->error);
+                            }
+                        }
+                    }
 
  /*..............payment_dues start from here...........................*/
  $offline = "SELECT `Owner_name`, `total_price`, `Mode_of_payment`, `pay`, `due`, `Payment_type`, `date`, `month`, `year` FROM `payment_dues` WHERE syn_flag = '0'";
@@ -797,101 +820,119 @@ if ($con === false) {
 }
 
 
- /*..............products start from here...........................*/
- $offline = "SELECT  `id`, `Name`, `Category`, `Cost`, `Price`, `Quantity`, `supplier`, `Quantity_level`, `Image`, `new_supply`, `Description`, `expiry_date`, `new_date`, `month`, `year`, `user_id` FROM `products`  WHERE syn_flag = '0'";
- $resOffline = $mysqli->query($offline);
- if($resOffline->num_rows > 0){
+ $offline = "SELECT  `id`, `Name`, `Category`, `Cost`, `Price`, `Quantity`, `supplier`, `Quantity_level`, `Image`, `new_supply`, `Description`, `expiry_date`, `new_date`, `month`, `year`, `user_id` FROM `products` WHERE syn_flag = '0'";
+$resOffline = $mysqli->query($offline);
+
+if ($resOffline === false) {
+    die("Error executing offline query: " . $mysqli->error);
+}
+
+if ($resOffline->num_rows > 0) {
     while ($detorRow = $resOffline->fetch_assoc()) {
-        $id   = $detorRow['id'];
-        $Name   = $detorRow['Name'];
-        $Category  = $detorRow['Category'];
-        $Cost  = $detorRow['Cost'];
+        $id = $detorRow['id'];
+        $Name = $detorRow['Name'];
+        $Category = $detorRow['Category'];
+        $Cost = $detorRow['Cost'];
         $Price = $detorRow['Price'];
-        $Quantity  = $detorRow['Quantity'];
-        $supplier  = $detorRow['supplier'];
-        $Quantity_level  = $detorRow['Quantity_level'];
+        $Quantity = $detorRow['Quantity'];
+        $supplier = $detorRow['supplier'];
+        $Quantity_level = $detorRow['Quantity_level'];
         $Image = $detorRow['Image'];
         $new_supply = $detorRow['new_supply'];
         $Description = $detorRow['Description'];
         $expiry_date = $detorRow['expiry_date'];
         $new_date = $detorRow['new_date'];
         $month = $detorRow['month'];
-        $year  = $detorRow['year'];
-        $user_id  = $detorRow['user_id'];
-        $syn_flag =1;
-        $selectOnlineProduct = "SELECT 'id' FROM products WHERE id  = '".$id."' AND syn_flag = '1'";
-         $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
+        $year = $detorRow['year'];
+        $user_id = $detorRow['user_id'];
+        $syn_flag = 1;
 
-         if($resOnlineUpdate !== false && $resOnlineUpdate->num_rows > 0){
-            /*...............Loop through online service types.................*/
-          while ($resonlineServiceRow = mysqli_fetch_assoc($resOnlineUpdate)) {
-            $Onlinepet_id= $resonlineServiceRow['id'];
+        // Check if the record exists online
+        $selectOnlineProduct = "SELECT `id` FROM products WHERE id = ?";
+        $stmt = $mysqli->prepare($selectOnlineProduct);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->store_result();
 
-                $onlineProductUpdate = "UPDATE products SET id = '$id' WHERE id = '$Onlinepet_id'";
-                $resUpdate = mysqli_query($con, $onlineProductUpdate);
+        if ($stmt->num_rows > 0) {
+            // Update online record
+            $onlineProductUpdate = "UPDATE products SET id = ? WHERE id = ?";
+            $stmtUpdate = $mysqli->prepare($onlineProductUpdate);
+            $stmtUpdate->bind_param("ii", $id, $id);
+            $stmtUpdate->execute();
 
-                if ($resUpdate === false) {
-                    die("Error updating record: " . mysqli_error($con));
-                }
-
-                $offlineUpdateSyn = "UPDATE products SET syn_flag = '1' WHERE id = '$id'";
-                $resOfflineUpdate = mysqli_query($mysqli, $offlineUpdateSyn);
-
-                if ($resOfflineUpdate === false) {
-                    die("Error updating syn_flag: " . mysqli_error($mysqli));
-                }
-          }
-        }
-        else
-        {
-            $insertOnline = "INSERT INTO products (`Name`, `Category`, `Cost`, `Price`, `Quantity`, `supplier`, `Quantity_level`, `Image`, `new_supply`, `Description`, `expiry_date`, `new_date`, `month`, `year`, `syn_flag`, `user_id`)
-            VALUES ('".$Name."', '".$Category."', '".$Cost."', '".$Price."', '".$Quantity."', '".$supplier."', '".$Quantity_level."', '".$Image."', '".$new_supply."', '".$Description."','".$expiry_date."','".$new_date."','".$month."','".$year."','".$syn_flag."','".$user_id."')";
-            $resOnlineUpdate = mysqli_query($con, $insertOnline);
-            if ($resOnlineUpdate === false) {
-                die("Error checking for duplicate record: " . mysqli_error($con));
+            if ($stmtUpdate === false) {
+                die("Error updating record: " . $mysqli->error);
             }
+        } else {
+            // Insert online record
+            $insertOnline = "INSERT INTO products (`Name`, `Category`, `Cost`, `Price`, `Quantity`, `supplier`, `Quantity_level`, `Image`, `new_supply`, `Description`, `expiry_date`, `new_date`, `month`, `year`, `syn_flag`, `user_id`)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmtInsert = $mysqli->prepare($insertOnline);
+            $stmtInsert->bind_param("ssssssssssssssi", $Name, $Category, $Cost, $Price, $Quantity, $supplier, $Quantity_level, $Image, $new_supply, $Description, $expiry_date, $new_date, $month, $year, $syn_flag, $user_id);
+            $stmtInsert->execute();
 
-            $offlineUpdateSyn = "UPDATE products SET syn_flag = '1' WHERE id = '".$id."'";
-            $resOfflineUpdate = mysqli_query($mysqli, $offlineUpdateSyn);
-            if ($resOfflineUpdate === false) {
-             die("Error getting service_requests: " . $mysqli->error);
-         }
-       }
+            if ($stmtInsert === false) {
+                die("Error inserting record: " . $mysqli->error);
+            }
+        }
 
+        // Update offline record syn_flag to 1
+        $offlineUpdateSyn = "UPDATE products SET syn_flag = '1' WHERE id = ?";
+        $stmtUpdateSyn = $mysqli->prepare($offlineUpdateSyn);
+        $stmtUpdateSyn->bind_param("i", $id);
+        $stmtUpdateSyn->execute();
+
+        if ($stmtUpdateSyn === false) {
+            die("Error updating syn_flag: " . $mysqli->error);
+        }
     }
 }
+$offline = "SELECT `user_id`, `order_id`, `prod_name`, `pro_id`, `qty`, `price`, `total_vaccine_amount`, `subtotal`, `service`, `service_id`, `Amount`, `date`, `month`, `year` FROM `service_items` WHERE syn_flag = '0'";
+$resOffline = $mysqli->query($offline);
 
- /*..............service_items start from here...........................*/
- $offline = "SELECT `user_id`, `order_id`, `prod_name`, `pro_id`, `qty`, `price`, `total_vaccine_amount`, `subtotal`, `service`, `service_id`, `Amount`, `date`, `month`, `year` FROM `service_items` WHERE syn_flag = '0'";
- $resOffline = $mysqli->query($offline);
- if($resOffline->num_rows > 0){
+if ($resOffline->num_rows > 0) {
+    $insertOnline = "INSERT INTO `service_items`(`user_id`, `order_id`, `prod_name`, `pro_id`, `qty`, `price`, `total_vaccine_amount`, `subtotal`, `service`, `service_id`, `Amount`, `date`, `month`, `year`, `syn_flag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmtInsert = $mysqli->prepare($insertOnline);
+
+    if ($stmtInsert === false) {
+        die("Error preparing statement: " . $mysqli->error);
+    }
+
+    $stmtInsert->bind_param("isssssssssssssi", $user_id, $order_id, $prod_name, $pro_id, $qty, $price, $total_vaccine_amount, $subtotal, $service, $service_id, $Amount, $date, $month, $year, $syn_flag);
+
     while ($detorRow = $resOffline->fetch_assoc()) {
-      $user_id = $detorRow['user_id'];
-      $order_id = $detorRow['order_id'];
-      $prod_name = $detorRow['prod_name'];
-      $pro_id = $detorRow['pro_id'];
-      $qty = $detorRow['qty'];
-      $price = $detorRow['price'];
-      $total_vaccine_amount = $detorRow['total_vaccine_amount'];
-      $subtotal = $detorRow['subtotal'];
-      $service = $detorRow['service'];
-      $service_id = $detorRow['service_id'];
-      $Amount = $detorRow['Amount'];
-      $date = $detorRow['date'];
-      $month = $detorRow['month'];
-      $year = $detorRow['year'];
-      $syn_flag =1;
-      $insertOnline = "INSERT INTO `service_items`(`user_id`, `order_id`, `prod_name`, `pro_id`, `qty`, `price`, `total_vaccine_amount`, `subtotal`, `service`, `service_id`, `Amount`, `date`, `month`, `year`, `syn_flag`)
-      VALUES ('$user_id', '$order_id', '$prod_name', '$pro_id', '$qty', '$price', '$total_vaccine_amount', '$subtotal', '$service', '$service_id', '$Amount', '$date', '$month', '$year', '$syn_flag')";
-            $resOnlineUpdate = mysqli_query($con, $insertOnline);
-            if ($resOnlineUpdate === false) {
-                die("Error checking for duplicate record: " . mysqli_error($con));
-            }
-            $offlineUpdateSyn = "UPDATE service_items SET syn_flag = '1' WHERE order_id = '".$order_id."'";
-            $resOfflineUpdate = mysqli_query($mysqli, $offlineUpdateSyn);
-            if ($resOfflineUpdate === false) {
-             die("Error getting service_requests: " . $mysqli->error);
-           }
+        $user_id = $detorRow['user_id'];
+        $order_id = $detorRow['order_id'];
+        $prod_name = $detorRow['prod_name'];
+        $pro_id = $detorRow['pro_id'];
+        $qty = $detorRow['qty'];
+        $price = $detorRow['price'];
+        $total_vaccine_amount = $detorRow['total_vaccine_amount'];
+        $subtotal = $detorRow['subtotal'];
+        $service = $detorRow['service'];
+        $service_id = $detorRow['service_id'];
+        $Amount = $detorRow['Amount'];
+        $date = $detorRow['date'];
+        $month = $detorRow['month'];
+        $year = $detorRow['year'];
+        $syn_flag = 1;
+
+        $stmtInsert->execute();
+
+        if ($stmtInsert === false) {
+            die("Error inserting into online service_items: " . $stmtInsert->error);
+        }
+
+        // Update syn_flag to 1 in offline service_items
+        $offlineUpdateSyn = "UPDATE service_items SET syn_flag = '1' WHERE order_id = ?";
+        $stmtUpdateSyn = $mysqli->prepare($offlineUpdateSyn);
+        $stmtUpdateSyn->bind_param("s", $order_id);
+        $stmtUpdateSyn->execute();
+
+        if ($stmtUpdateSyn === false) {
+            die("Error updating syn_flag in offline service_items: " . $mysqli->error);
+        }
     }
 }
 
@@ -901,7 +942,7 @@ if ($con === false) {
  $resOffline = $mysqli->query($offline);
  if($resOffline->num_rows > 0){
     while ($detorRow = $resOffline->fetch_assoc()) {
-        $id = $detorRow['id'];
+      $id = $detorRow['id'];
       $user_id = $detorRow['user_id'];
       $Pet_name = $detorRow['Pet_name'];
       $Unregister = $detorRow['Unregister'];
@@ -927,12 +968,14 @@ if ($con === false) {
       $new_due = $detorRow['new_due'];
       $bankName =$detorRow['bankName'];
       $syn_flag =1;
+
       $insertOnline = "INSERT INTO `service_orders`( `user_id`, `Pet_name`, `Unregister`, `Owner_name`, `Phone`, `Next_vaccination_appointment`, `Next_appointments`, `total_price`, `order_status`, `Mode_of_payment`, `pay`, `due`, `Payment_type`, `cash_transfer`, `cash_pos`, `date`, `month`, `year`, `syn_flag`, `new_mode_of_payment`, `new_date`, `new_payment_user_id`, `new_due`, `bankName`)
       VALUES ('$user_id', '$Pet_name', '$Unregister', '$Owner_name', '$Phone', '$Next_vaccination_appointment', '$Next_appointments', '$total_price', '$order_status', '$Mode_of_payment', '$pay', '$due', '$Payment_type', '$cash_transfer', '$cash_pos', '$date', '$month', '$year', '$syn_flag', '$new_mode_of_payment', '$new_date', '$new_payment_user_id', '$new_due', '$bankName')";
             $resOnlineUpdate = mysqli_query($con, $insertOnline);
             if ($resOnlineUpdate === false) {
                 die("Error checking for duplicate record: " . mysqli_error($con));
             }
+
             $offlineUpdateSyn = "UPDATE service_orders SET syn_flag = '1' WHERE id = '".$id."'";
             $resOfflineUpdate = mysqli_query($mysqli, $offlineUpdateSyn);
             if ($resOfflineUpdate === false) {
@@ -942,38 +985,50 @@ if ($con === false) {
 }
 
 
+
 /*..............shop_items start from here...........................*/
 $offline = "SELECT `id`,`user_id`, `prod_name`, `pro_id`, `qty`, `price`, `status`, `subtotal`, `date`, `month`, `year`, `moved`, `location_transfer` FROM `shop_items` WHERE syn_flag = '0'";
 $resOffline = $mysqli->query($offline);
-if($resOffline->num_rows > 0){
-   while ($detorRow = $resOffline->fetch_assoc()) {
-     $id = $detorRow['id'];
-     $user_id = $detorRow['user_id'];
-     $prod_name = $detorRow['prod_name'];
-     $pro_id = $detorRow['pro_id'];
-     $qty = $detorRow['qty'];
-     $price = $detorRow['price'];
-     $status = $detorRow['status'];
-     $subtotal = $detorRow['subtotal'];
-     $date = $detorRow['date'];
-     $month = $detorRow['month'];
-     $year = $detorRow['year'];
-     $moved = $detorRow['moved'];
-     $location_transfer = $detorRow['location_transfer'];
-     $syn_flag =1;
 
-     $insertOnline = "INSERT INTO `shop_items`(`user_id`,`prod_name`, `pro_id`, `qty`, `price`, `status`, `subtotal`, `date`, `month`, `year`, `moved`,`location_transfer`,`syn_flag`)
-     VALUES ('$user_id','$prod_name', '$pro_id', '$qty', '$price', '$status', '$subtotal', '$date', '$month', '$year', '$moved', '$location_transfer', '$syn_flag')";
-         $resOnlineUpdate = mysqli_query($con, $insertOnline);
-           if ($resOnlineUpdate === false) {
-               die("Error checking for duplicate record: " . mysqli_error($con));
-           }
-           $offlineUpdateSyn = "UPDATE shop_items SET syn_flag = '1' WHERE prod_name = '$prod_name'";
-           $resOfflineUpdate = mysqli_query($mysqli, $offlineUpdateSyn);
-           if ($resOfflineUpdate === false) {
-            die("Error getting service_requests: " . $mysqli->error);
-          }
-   }
+if ($resOffline->num_rows > 0) {
+    while ($detorRow = $resOffline->fetch_assoc()) {
+        $id = $detorRow['id'];
+        $user_id = $detorRow['user_id'];
+        $prod_name = $detorRow['prod_name'];
+        $pro_id = $detorRow['pro_id'];
+        $qty = $detorRow['qty'];
+        $price = $detorRow['price'];
+        $status = $detorRow['status'];
+        $subtotal = $detorRow['subtotal'];
+        $date = $detorRow['date'];
+        $month = $detorRow['month'];
+        $year = $detorRow['year'];
+        $moved = $detorRow['moved'];
+        $location_transfer = $detorRow['location_transfer'];
+        $syn_flag = 1;
+
+        // Use prepared statement
+        $insertOnline = "INSERT INTO `shop_items`(`user_id`,`prod_name`, `pro_id`, `qty`, `price`, `status`, `subtotal`, `date`, `month`, `year`, `moved`,`location_transfer`,`syn_flag`)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $stmtInsert = $mysqli->prepare($insertOnline);
+        $stmtInsert->bind_param("isssssssssisi", $user_id, $prod_name, $pro_id, $qty, $price, $status, $subtotal, $date, $month, $year, $moved, $location_transfer, $syn_flag);
+        $stmtInsert->execute();
+
+        if ($stmtInsert === false) {
+            die("Error checking for duplicate record: " . $mysqli->error);
+        }
+
+        // Update syn_flag to 1 in offline shop_items
+        $offlineUpdateSyn = "UPDATE shop_items SET syn_flag = '1' WHERE prod_name = ?";
+        $stmtOfflineUpdate = $mysqli->prepare($offlineUpdateSyn);
+        $stmtOfflineUpdate->bind_param("s", $prod_name);
+        $stmtOfflineUpdate->execute();
+
+        if ($stmtOfflineUpdate === false) {
+            die("Error updating syn_flag in offline shop_items: " . $mysqli->error);
+        }
+    }
 }
 
 
@@ -1028,6 +1083,7 @@ if($resOffline->num_rows > 0){
            if ($resOnlineUpdate === false) {
                die("Error checking for duplicate record: " . mysqli_error($con));
            }
+
            $offlineUpdateSyn = "UPDATE vaccineiteams SET syn_flag = '1' WHERE items_name = '$items_name'";
            $resOfflineUpdate = mysqli_query($mysqli, $offlineUpdateSyn);
            if ($resOfflineUpdate === false) {
@@ -1150,7 +1206,34 @@ return back();
 
 
 
+// this update software from backend .....
+// public function  update_software()  {
+//     $repositoryUrl = 'https://github.com/AdeyeyeSunday/mavenvet/archive/main.zip'; // Change to the repository URL
 
+//     // Fetch the ZIP file from the repository
+//     $zipFile = file_get_contents($repositoryUrl);
+
+//     // Specify the path where you want to save the downloaded ZIP file
+//     $localZipPath = 'C:\xampp\htdocs\test\repo.zip'; // Change this path
+
+//     // Save the downloaded ZIP file to a local directory
+//     file_put_contents($localZipPath, $zipFile);
+
+//     // Specify the path where you want to extract the repository contents
+//     $extractPath = 'C:\xampp\htdocs\test'; // Change this path
+
+//     // Extract the contents of the ZIP file to the desired directory
+//     $zip = new ZipArchive;
+//     if ($zip->open($localZipPath) === TRUE) {
+//         $zip->extractTo($extractPath);
+//         $zip->close();
+//         unlink($localZipPath); // Remove the downloaded ZIP file after extraction
+//         return response()->json(['success' => true, 'item' => 'Code updated successfully']);
+//     } else {
+//         return response()->json(['success' => false, 'item' => 'Failed to extract ZIP file'], 500);
+//     }
+//     return back();
+// }
 
 
 
@@ -1161,9 +1244,10 @@ function dashboard()
     $cat = request('category');
     if($cat == 'service'){
         $tittle = "Clinic Service Per Month :";
-        $serviceMonly =  Service_item::where('month', $monthclinic)
-        ->where('year', $yearclinic)
-        ->sum('total_vaccine_amount');
+        $serviceMonly =  Service_order::where('month', $monthclinic)->
+        where('year', $yearclinic)->where('order_status', 'success')->
+        sum('pay','cash_pos','cash_transfer');
+
     }
     elseif($cat == 'expense'){
             $tittle = "Clinic Expense Per Month : ";
@@ -1213,14 +1297,19 @@ function dashboard()
          $admission = DB::table('admissions')->where('staus','On admission')->count();
          $admission2 = DB::table('admissions')->where('staus','Discharge')->count();
          $clinics = DB::table('clinics')->count();
-         $service_amount =  Service_item::where('month', $month)->where('year',$year)->sum('total_vaccine_amount');
+        //  $service_amount =  Service_item::where('month', $month)->where('year',$year)->sum('total_vaccine_amount');
          $profit = DB::table('profits')->first();
          $monthclinic = request('month');
          $yearclinic = request('year');
+
          $tittle ="";
-         $serviceMonly =  Service_item::where('month', $monthclinic)
-         ->where('year', $yearclinic)
-         ->sum('total_vaccine_amount');
+
+        //  $serviceMonly =  Service_item::where('month', $monthclinic)
+        //  ->where('year', $yearclinic)
+        //  ->sum('total_vaccine_amount');
+        $service_amount =  Service_order::where('month', $month)->where('year',$year)->where('order_status', 'success')->sum('pay','cash_pos','cash_transfer');
+        $serviceMonly =  Service_order::where('month', $monthclinic)->where('year', $yearclinic)->where('order_status', 'success')->sum('pay','cash_pos','cash_transfer');
+
          $clinicExpenditure = Db::table('clinic_expenses')->where('month', $month)->where('year',$year)->sum('amount');
 
         return view('Admin.dashboard',['registrationcount'=>$registrationcount,'pro'=>$pro,'attendance'=>$attendance, 'expenses'=>$expenses, 'employee'=>$employee,
@@ -1232,8 +1321,6 @@ function dashboard()
     }
 
 
-
-
     public function admin_dashboard(){
         $January= 'January';
         $items = DB::table('products')->sum('Cost');
@@ -1243,11 +1330,7 @@ function dashboard()
          $pay = DB::table('orders')->where('month',$January)->sum('pay');
          $cash_pos = DB::table('orders')->where('month',$January)->sum('cash_pos');
          $cash_transfer = DB::table('orders')->where('month',$January)->sum('cash_transfer');
-
-
         return view('Admin.admin_dashboard',['items'=>$items,'pay'=>$pay,'cash_pos'=>$cash_pos,'cash_transfer'=>$cash_transfer,'price'=>$price,'qty'=>$qty]);
     }
-
-
 
 }

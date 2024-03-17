@@ -74,8 +74,9 @@
                                         @endif
                                     @endforeach
                                     <center>
-                                        <h6 style="color: red">Grand Total : {{ $total + $amount2 }}</h6>
+                                        <h6 style="color: red">Grand Total : {{  number_format($total + $amount2, 2)   }}</h6>
                                     </center>
+                                    <br>
                                 </tbody>
                             </table>
                         </div>
@@ -157,16 +158,15 @@
                                         enctype="multipart/form-data">
                                         @csrf
                                         <tr>
-                                            <label for="">Pet name</label>
-                                            <select name="Pet_name" id="" class="form-control">
+                                            <label for="" hidden>Pet name</label>
+                                            <select hidden name="Pet_name" id="" class="form-control">
                                                 <option value="" disabled selected>******</option>
                                                 @foreach ($clinics as $clinics)
                                                     <option value="{{ $clinics->id }}">{{ $clinics->Pet_name }}</option>
                                                 @endforeach
                                             </select>
-
-                                            <label for="">Unregister</label>
-                                            <input type="text" class="form-control" value="" placeholder="Unregister"
+                                            <label for=""hidden>Unregister</label>
+                                            <input type="hidden" class="form-control" value="" placeholder="Unregister"
                                                 name="Unregister" id="">
                                             <label for="">Owner name</label>
                                             <input type="text" class="form-control" value="*******" name="Owner_name"
@@ -174,11 +174,11 @@
                                             <label for="">Phone</label>
                                             <input type="text" class="form-control" value="*******" name="Phone" id=""
                                                 required>
-                                            <label for="">Next vaccination appointment</label>
-                                            <input type="date" class="form-control" name="Next_vaccination_appointment"
+                                            <label for="" hidden>Next vaccination appointment</label>
+                                            <input type="hidden" class="form-control" name="Next_vaccination_appointment"
                                                 id="">
-                                            <label for="">Next appointments</label>
-                                            <input type="date" class="form-control" name="Next_appointments" id=""><br>
+                                            <label for=""hidden>Next appointments</label>
+                                            <input type="hidden" class="form-control" name="Next_appointments" id=""><br>
                                             <input type="hidden" class="form-control" value="{{ date('d/m/y') }}"
                                                 name="date" id="">
                                             <input type="hidden" class="form-control" value="MVC midwifery" name="location"
@@ -212,7 +212,9 @@
                                                 <input type="hidden" name="treatment" value="{{ $get_cart->treatment }}"
                                                     id="">
                                             @endforeach
-                                            <center> <button class="btn btn-primary">Submit</button></center>
+                                            @if ($total  != "0.00")
+                                            <center> <button class="btn btn-primary btn-lg btn-block">Process</button></center>
+                                            @endif
                                         </tr>
                                     </form>
                                     </tbody>
@@ -274,7 +276,7 @@
                                                         <td>
                                                             @php
                                                                 if ($item->Quantity <= $item->minimum) {
-                                                                    echo '<button type="button" class="btn btn-danger btn-sm mr-2">Low stock restock it</button>';
+                                                                    echo '<button type="button" class="btn btn-danger btn-sm mr-2">Low stock</button>';
                                                                 } elseif ($item->Quantity > $item->minimum) {
                                                                     echo '<button type="button" class="btn btn-primary btn-sm mr-2">In Stock</button>';
                                                                 }
@@ -283,7 +285,7 @@
                                                         <td>
 
                                                             @if ($item->Quantity <= 0)
-                                                                <button disabled><i class="ri-moon-fill pr-0"></i></button>
+                                                                <button disabled><i class="ri-mark-fill pr-0"></i></button>
                                                             @else
                                                                 <button type="submit" class="btn btn-link"><i
                                                                         class="ri-moon-fill pr-0"></i></button>
@@ -298,24 +300,17 @@
                                     </table>
                                 </div>
                             </div>
-
-
-
-
-
-
-
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="card">
                                             <div class="card-header d-flex justify-content-between">
-                                                <div class="header-title">
+                                                {{-- <div class="header-title">
                                                     <h6 class="card-title">Other Services</h6>
-                                                </div>
-                                                <button type="button" class="btn btn-primary mt-2" data-toggle="modal"
-                                                    data-target="#exampleModalScrollable">
-                                                    Other Treatment
+                                                </div> --}}
+                                                <button type="button" class="btn btn-dark mt-2 btn-lg btn-block" data-toggle="modal"
+                                                    data-target="#exampleModalScrollable" >
+                                                  Add  other treatment
                                                 </button>
                                             </div>
                                             <div class="card-body">
@@ -413,7 +408,7 @@
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-dismiss="modal">Close</button>
-                                                                    <button class="btn btn-primary">Submit</button>
+                                                                    <button class="btn btn-primary">Process</button>
                                                                     </form>
                                                                 </div>
                                                             </div>

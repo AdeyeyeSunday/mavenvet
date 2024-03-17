@@ -96,10 +96,16 @@ class UserController extends Controller
                 'name' => ['required'],
                 'email' => ['required', 'email', 'unique:users'],
                 'password' => ['required', 'min:8', 'confirmed'],
+                'salary' => ['required'],
+                'late_charge' => ['required'],
+                'name' => ['required'],
             ]);
               User::create([
             'email' => $user['email'],
             'name' => $user['name'],
+            'salary'=>$user['salary'],
+            'resumption_time'=>$user['resumption_time'],
+            'late_charge'=>$user['late_charge'],
             'password' => Hash::make($user['password']),
               ]);
               session()->flash('user','User Created');

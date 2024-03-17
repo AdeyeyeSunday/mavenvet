@@ -35,7 +35,7 @@
                                 <td><button type="button" class="btn btn-danger btn-sm mr-2">{{$pos_view->order_status}}</button></td>
                                 <td>{{$pos_view->date}}</td>
                                 <td>
-                                   <a href="{{route('Admin.Payment.payment_invoice',$pos_view->id)}}"><button type="button" class="btn btn-primary btn-sm mr-2">Invoice</button></a>
+                                   <a href="{{route('Admin.Payment.payment_invoice',$pos_view->id)}}"><button type="button" class="btn btn-primary btn-sm mr-2">Make payment</button></a>
                                  </td>
 
                                 <td>

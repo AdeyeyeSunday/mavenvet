@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use App\Models\Employee;
 use App\Models\Leave;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Picqer;
 use App\Models\Salary;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -41,8 +43,8 @@ public function Employee_store(){
         'country'=>'required',
         'gender'=>'required',
         'position'=>'required',
-        'staff_no'=>'required'
-
+        'staff_no'=>'required',
+        'salary'=>'required'
     ]);
 
     if(request('image')){
@@ -151,13 +153,55 @@ public function Employee_store(){
 
 
 
-     public function salary_add(){
-        $emp= Employee::with('user')->get();
-        // dd($employee);
-        $month = date('F');
-        $salary=Salary::where('Month',$month)->get();
-     return view('Admin.Employee.salary_add',['emp'=>$emp,'salary'=>$salary]);
+     public function salary_add()
+     {
+         // Get all employees with their associated users
+         $employees = Employee::with('user')->get();
+         $daysInMonth = Carbon::now()->daysInMonth;
+         // Get the current month and year
+         $currentMonth = Carbon::now()->format('F');
+         $currentYear = Carbon::now()->year;
+
+         // Retrieve attendance records for the current month
+         $attendances = Attendance::where('year', $currentYear)
+             ->where('month', $currentMonth)
+             ->get();
+
+         // Count the number of times each user attended work
+         $attendanceCounts = [];
+         $lateCounts = [];
+
+         foreach ($attendances as $attendance) {
+             $userId = $attendance->user_id;
+
+             if (isset($attendanceCounts[$userId])) {
+                 $attendanceCounts[$userId]++;
+             } else {
+                 $attendanceCounts[$userId] = 1;
+             }
+
+             if ($attendance->late_status > 0) {
+                // Count late attendance
+                if (isset($lateCounts[$userId])) {
+                    $lateCounts[$userId]++;
+                } else {
+                    $lateCounts[$userId] = 1;
+                }
+            }
+         }
+
+         $salaries = User::get();
+
+
+         return view('Admin.Employee.salary_add', [
+             'employees' => $employees,
+             'attendanceCounts' => $attendanceCounts,
+             'lateCounts'=>$lateCounts,
+             'salaries' => $salaries,
+             'daysInMonth'=>$daysInMonth
+         ]);
      }
+
 
      public function salary_store(){
         $salary = request()->validate([

@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         {{-- <title>{{ config('app.name', 'Laravel') }}</title> --}}
-<title>MVC midwifery</title>
+          <title>MVC midwifery</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
 

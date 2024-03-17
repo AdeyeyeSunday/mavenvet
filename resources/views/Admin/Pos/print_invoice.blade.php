@@ -127,27 +127,7 @@
       </head>
 
       <body translate="no" >
-
-
         <div id="invoice-POS">
-
-          {{-- <center id="top">
-            <div class="">
-                <img width="120px" height="130px" src="{{asset('image/WILLIAMS LOGO (1).png')}}" alt="">
-            </div>
-            <!--End Info-->
-          </center><!--End InvoiceTop--> --}}
-
-
-
-          {{-- <center id="top">
-            <div class="">
-                <h4>Mavenvet Consult  Interbau</h4>
-            </div>
-            <!--End Info-->
-          </center><!--End InvoiceTop--> --}}
-
-
          <center> <h4>Maven Veterinary Consult And Pet Shop</h4></center>
 
           <div id="">
@@ -181,21 +161,14 @@
                                        <td class="tableitem"><p class="itemtext">{{$Pos_invoice->price * $Pos_invoice->qty}}</p></td>
                                   </tr>
                                   @endforeach
-
-
-                                
-                              
-
                               <center>
                                   <tr class="">
-                                 
+
                                     <td class="Rate"><h2>Balance</h2></td>
                                     <td class="payment"><h2>{{number_format($print->due,2, '.', ',')}}</h2></td>
                                 </tr>
-
-
                                   <tr class="">
-                                    
+
                                     <td class="Rate"><h2>Total</h2></td>
                                     <td class="payment"><h2>{{number_format($pay+$cash_transfer+$cash_pos,2, '.', ',')}}</h2></td>
                                 </tr>

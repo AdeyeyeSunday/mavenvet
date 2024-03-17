@@ -32,21 +32,23 @@ class PosController extends Controller
 
 
     public function Pos(){
-
         $product =  Product::with('category')->get();
-        // $category =  DB::table('categories')->get();
-// $prod = Product::get();
         $customer = Customer::get();
         $get_cart = Cart::get();
-
         $get_post=Cart::get();
         $get_customer= Customer::get();
-
-
+        $pending = DB::table('orders')->where('order_status','pending')->where('location','MVC midwifery')->get();
         $count= DB::table('carts')->sum('Quantity');
-        return view('Admin.Pos.Pos',['product'=>$product,'customer'=>$customer,'get_cart'=>$get_cart,'count'=>$count,'get_post'=>$get_post,'get_customer'=>$get_customer]);
+        return view('Admin.Pos.Pos',['product'=>$product,'customer'=>$customer,'get_cart'=>$get_cart,'count'=>$count,'get_post'=>$get_post,'get_customer'=>$get_customer,'pending'=>$pending]);
     }
 
+
+    public function direct_print(){
+        $lastOrder = Order::latest()->first();
+        $finalPrice = $lastOrder->pay;
+        $Pos_invoice = OrderIteams::where('order_id', $lastOrder->id)->get();
+        return view("Admin.Pos.direct_print",['Pos_invoice'=>$Pos_invoice,'finalPrice'=>$finalPrice]);
+    }
 
      public function Pos_store(Request $request){
         $order = new Order();
@@ -71,12 +73,9 @@ class PosController extends Controller
             $total+= $prod->Price * $prod->Quantity;
              $cost= $prod->Cost;
         }
-
        $order->total_price = $total;
        $order->Cost = $cost;
-
         $order->save();
-
          $cart = Cart::where('user_id',Auth::id())->get();
          foreach($cart as $cat){
             OrderIteams::create([
@@ -92,14 +91,13 @@ class PosController extends Controller
                 'location'=>'MVC midwifery',
 		'Cost'=>$cat->Cost
             ]);
-
             $curQty = Product::where("id",$cat->product_id)->first()->Quantity;
             Product::where("id",$cat->product_id)->update(['Quantity'=>$curQty-$cat->Quantity,'syn_flag'=>0]);
-
         }
             $cart = Cart::where('user_id',Auth::id())->get();
             Cart::destroy($cart);
 
+            // return back();
                return redirect()->route('Admin.Pos.Pos_pending');
          }
 
@@ -107,21 +105,68 @@ class PosController extends Controller
 
 
 
+         public function directPayment(Request $request){
+            $order = new Order();
+            $order->fname =$request->input('fname');
+            $order->phone =$request->input('phone');
+            $order->address =$request->input('address');
+            $order->discount =$request->input('discount');
+            $order->date =$request->input('date');
+            $order->month =$request->input('month');
+            $order->location =$request->input('location');
+            $order->year =$request->input('year');
+            $order->user_id =$request->input('user_id');
+            $order->order_status =$request->input('order_status');
+            $order->Mode_of_payment =$request->input('Mode_of_payment');
+            $order->pay =$request->input('pay');
+            $order->due =$request->input('due');
+            $order->Payment_type =$request->input('Payment_type');
+            $order->trackking_id = rand(1111,9999);
+            $order->cash_transfer =0;
+            $order->cash_pos =0;
+            $order->due =0;
+            $total = 0;
+            $cartitem_total = Cart::where('user_id',Auth::id())->get();
+            foreach($cartitem_total as $prod){
+                $total+= $prod->Price * $prod->Quantity;
+                 $cost= $prod->Cost;
+            }
+           $order->total_price = $total;
+           $order->Cost = $cost;
+            $order->save();
+             $cart = Cart::where('user_id',Auth::id())->get();
+
+             foreach($cart as $cat){
+                OrderIteams::create([
+                    'order_id'=>$order->id,
+                    'user_id'=>$cat->user_id,
+                    'prod_id'=>$cat->Name,
+                    'qty'=>$cat->Quantity,
+                    'price'=>$cat->Price,
+                    'product_id'=>$cat->product_id,
+                    'date'=>$cat->date,
+                    'month'=>$cat->month,
+                    'year'=>$cat->year,
+                    'location'=>'MVC midwifery',
+                     'Cost'=>$cat->Cost
+                ]);
+                $curQty = Product::where("id",$cat->product_id)->first()->Quantity;
+                Product::where("id",$cat->product_id)->update(['Quantity'=>$curQty-$cat->Quantity,'syn_flag'=>0]);
+            }
+                $cart = Cart::where('user_id',Auth::id())->get();
+                Cart::destroy($cart);
+                   return back();
+             }
+
 
      public function Pos_view(){
      $pos_view = Order::where('user_id',Auth::id())->get();
      return view('Admin.Pos.Pos_view',['pos_view'=>$pos_view]);
-
      }
 
-
-
-
      public function Pos_invoice($id){
-
        $Pos_invoice =Order::with('orderIteams')->where('id',$id)->first();
        $banklist =DB::table('bank_lists')->get();
-
          return view('Admin.Pos.Pos_invoice',['Pos_invoice'=>$Pos_invoice,'banklist'=>$banklist]);
      }
 
@@ -199,41 +244,10 @@ class PosController extends Controller
      }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
      public function Pos_pending(){
         $pending = DB::table('orders')->where('order_status','pending')->where('location','MVC midwifery')->get();
         return view('Admin.Pos.Pos_pending',['pending'=>$pending]);
      }
-
-
-
-
 
      public function Pos_pending_delete($id){
 

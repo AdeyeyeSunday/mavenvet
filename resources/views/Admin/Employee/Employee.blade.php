@@ -61,41 +61,41 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Phone Number *</label>
                                         <input type="text" class="form-control" name="number" placeholder="Enter Phone Number" required>
                                         <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>GST Number *</label>
                                         <input type="text" class="form-control" value="0" name="gst_number" placeholder="Enter GST Number" required>
                                         <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Address</label>
                                         <textarea class="form-control" name="address" rows="4"></textarea>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>City *</label>
                                         <input type="text" class="form-control" name="city" placeholder="Enter City" required>
                                         <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>State *</label>
                                         <input type="text" class="form-control" name="state" placeholder="Enter State" required>
                                         <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Country *</label>
                                         <input type="text" class="form-control" name="country" placeholder="Enter Country" required>
@@ -104,7 +104,7 @@
                                 </div>
 
 
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Position *</label>
                                         <input type="text" class="form-control" name="position" placeholder="Enter Position" required>
@@ -112,7 +112,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Gender *</label>
                                         <select  id="" class="form-control" name="gender" required>
@@ -123,11 +123,17 @@
                                         <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Salary *</label>
+                                        <input type="number" name="salary" class="form-control" id="">
+                                    </div>
+                                </div>
 
                                 <input type="hidden" name="user_id"  value="{{Auth()->user()->id}}" id="">
                                 <input type="hidden" name="staff_no" value="{{rand(1111,9999)}}" id="">
 
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Image *</label>
                                         <input type="file" class="form-control" name="image" placeholder="Enter State" required>

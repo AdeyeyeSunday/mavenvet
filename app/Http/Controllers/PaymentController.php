@@ -436,8 +436,6 @@ class PaymentController extends Controller
 
     }
 
-
-
   public function Payment_list_edit($id){
     $Payment_list_edit =Service_order::where('id',$id)->first();
     return view('Admin.Payment.Payment_list_edit',['Payment_list_edit'=>$Payment_list_edit]);
@@ -507,13 +505,7 @@ return redirect()->route('Admin.Payment.Payment_list');
   }
 
 
-
-
-
-
-
-
-        public function print_invoice($id){
+public function print_invoice($id){
 
             $Pos_invoice =Service_order::with('service_item')->where('id',$id)->where('user_id',Auth::id())->where('location','MVC midwifery')->first();
 
@@ -535,17 +527,14 @@ return redirect()->route('Admin.Payment.Payment_list');
             // dd($invoice);
             return view('Admin.Payment.fullpayment_view',['invoice'=>$invoice,'total'=>$total]);
 
-         }
+}
 
 
-         public function oustanding(){
+public function oustanding(){
 
               $date = (date('d/m/y'));
             $new_date = date('d/m/y');
-
-
             $daily= Vaccineorder::with('vaccineiteams')->where('date', $date)->where('order_status','success')->where('location','MVC midwifery')->orWhere('new_date',$new_date)->get();
-
         // $date = (date('d/m/y'));
         $cash = DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Cash')->where('location','MVC midwifery')->sum('pay');
         $tranfer = DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Transfer')->where('location','MVC midwifery')->sum('cash_transfer');
@@ -569,22 +558,11 @@ return redirect()->route('Admin.Payment.Payment_list');
            return view('Admin.Payment.oustanding',['daily'=>$daily,'amount'=>$amount,'cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos,'cash_transfer'=>$cash_transfer,'cash_cash'=>$cash_cash,'cash_pos'=>$cash_pos,'cash_cash_pos'=>$cash_cash_pos,'new_pos'=>$new_pos,'new_transfer'=>$new_transfer,'new_cash'=>$new_cash]);
          }
 
-
-
-
-
-
-
          public function vaccineoustanding(){
             $daily = Vaccineorder::with('vaccineiteams')->where('Payment_type', 'Half Payment')->where('order_status','success')->where('location','MVC midwifery')->get();
             $amount = DB::table('vaccineorders')->where('Payment_type', 'Half Payment')->where('order_status','success')->where('location','MVC midwifery')->sum('due');
             return view('Admin.Payment.vaccineoustanding',['daily'=>$daily,'amount'=>$amount,]);
          }
-
-
-
-
-
 
          public function oustanding_edit($id){
             $oustanding_edit = DB::table('vaccineorders')->where('id',$id)->where('location','MVC midwifery')->first();
@@ -711,17 +689,34 @@ $year = $request->input('year');
  $new=  DB::table('service_items')->where('month', $month)->where('year',$year)->where('user_id',$user)->get();
 $amount =  Service_item::where('prod_name','!=','0')->where('month', $month)->where('year',$year)->where('user_id',$user)->select(DB::raw('sum(qty) as total_quantity'), 'prod_name','price')->groupBy('prod_name','price')->sum('qty');
 
-$amount2 =  Service_item::where('prod_name','!=','0')->where('month', $month)->where('year',$year)->where('user_id',$user)->sum('total_vaccine_amount');
+//service_order
+// $grandTotalPay =   Service_order::where('month', $month)->where('year',$year)->where('user_id',$user)->where('order_status','success')->sum('pay');
+// $grandTotalCash =  Service_order::where('month', $month)->where('year',$year)->where('user_id',$user)->where('order_status','success')->sum('cash_transfer');
+// $grandTotalPOS =   Service_order::where('month', $month)->where('year',$year)->where('user_id',$user)->where('order_status','success')->sum('cash_pos');
+
+// $grandTotalVaccineorderPay =   Vaccineorder::where('month', $month)->where('year',$year)->where('user_id',$user)->where('order_status','success')->sum('pay');
+// $grandTotalVaccineorderCash =  Vaccineorder::where('month', $month)->where('year',$year)->where('user_id',$user)->where('order_status','success')->sum('cash_transfer');
+// $grandTotalVaccineorderPOS =   Vaccineorder::where('month', $month)->where('year',$year)->where('user_id',$user)->where('order_status','success')->sum('cash_pos');
 
 $service_items = Service_item::where('prod_name','!=','0')->where('month', $month)->where('year',$year)->where('user_id',$user)->select(DB::raw('sum(qty) as total_quantity'), 'prod_name','price')->groupBy('prod_name','price')->get();
 
-
 $service_item = Service_item::where('service','!=','0')->where('month', $month)->where('year',$year)->where('user_id',$user)->select(DB::raw('sum(Amount) as Amount'), 'service')->groupBy('service')->get();
 
+$service_items_grand_total = Service_item::where('prod_name', '!=', '0')
+    ->where('month', $month)
+    ->where('year', $year)
+    ->where('user_id', $user)
+    ->select(DB::raw('SUM(qty * price) as totalAmount'), 'prod_name', 'price')
+    ->groupBy('prod_name', 'price')
+    ->get();
+$grandTotal1 = $service_item->sum('Amount');
+$grandTotal = $service_items_grand_total->sum('totalAmount');
+
 $amt = Service_item::where('service','!=','0')->where('month', $month)->where('year',$year)->where('user_id',$user)->sum('Amount');
+$amount2 =  Service_item::where('prod_name','!=','0')->where('month', $month)->where('year',$year)->where('user_id',$user)->sum('total_vaccine_amount');
+$grandTotal = $grandTotal + $grandTotal1;
 
-
-    return view('Admin.Payment.search',['new'=>$new,'amount'=>$amount,'amount2'=>$amount2,'amt'=>$amt,'service_items'=>$service_items,'service_item'=>$service_item]);
+return view('Admin.Payment.search',['new'=>$new,'amount'=>$amount,'amount2'=>$amount2,'amt'=>$amt,'service_items'=>$service_items,'service_item'=>$service_item,'grandTotal'=>$grandTotal]);
  }
 
 
