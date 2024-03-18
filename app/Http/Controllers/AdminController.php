@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use mysqli;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use ZipArchive;
 
 //use Datatables;
 //use DB;
@@ -1207,33 +1208,45 @@ return back();
 
 
 // this update software from backend .....
-// public function  update_software()  {
-//     $repositoryUrl = 'https://github.com/AdeyeyeSunday/mavenvet/archive/main.zip'; // Change to the repository URL
 
-//     // Fetch the ZIP file from the repository
-//     $zipFile = file_get_contents($repositoryUrl);
 
-//     // Specify the path where you want to save the downloaded ZIP file
-//     $localZipPath = 'C:\xampp\htdocs\test\repo.zip'; // Change this path
+public function update_software() {
+    $repositoryUrl = 'https://github.com/AdeyeyeSunday/mavenvet/archive/main.zip';
 
-//     // Save the downloaded ZIP file to a local directory
-//     file_put_contents($localZipPath, $zipFile);
+    // Fetch the ZIP file from the repository
+    $zipFile = file_get_contents($repositoryUrl);
 
-//     // Specify the path where you want to extract the repository contents
-//     $extractPath = 'C:\xampp\htdocs\test'; // Change this path
+    // Specify the path where you want to save the downloaded ZIP file
+    $localZipPath = 'C:\xampp\htdocs\test\repo.zip';
 
-//     // Extract the contents of the ZIP file to the desired directory
-//     $zip = new ZipArchive;
-//     if ($zip->open($localZipPath) === TRUE) {
-//         $zip->extractTo($extractPath);
-//         $zip->close();
-//         unlink($localZipPath); // Remove the downloaded ZIP file after extraction
-//         return response()->json(['success' => true, 'item' => 'Code updated successfully']);
-//     } else {
-//         return response()->json(['success' => false, 'item' => 'Failed to extract ZIP file'], 500);
-//     }
-//     return back();
-// }
+    // Save the downloaded ZIP file to a local directory
+    file_put_contents($localZipPath, $zipFile);
+
+    // Specify the path where you want to extract the repository contents
+    $extractPath = 'C:\xampp\htdocs\test';
+
+    // Extract the contents of the ZIP file to the desired directory
+    $zip = new ZipArchive;
+    if ($zip->open($localZipPath) === TRUE) {
+        $zip->extractTo($extractPath);
+        $zip->close();
+        unlink($localZipPath); // Remove the downloaded ZIP file after extraction
+
+        // Rename the extracted folder if necessary
+        $oldExtractedPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet-main';
+        $newExtractedPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet'; // Change this to the desired new folder name
+        if (file_exists($oldExtractedPath)) {
+            rename($oldExtractedPath, $newExtractedPath);
+        }
+
+        return response()->json(['success' => true, 'item' => 'Code updated successfully']);
+    } else {
+        return response()->json(['success' => false, 'item' => 'Failed to extract ZIP file'], 500);
+    }
+}
+
+
+
 
 
 
@@ -1281,8 +1294,12 @@ function dashboard()
         //   dd($profitmonthly - $profitmonthly2);
          $items_amount = DB::table('orders')->where('date',$date)->sum('total_price');
          $items_pay = DB::table('orders')->where('order_status','success')->where('date', $date)->where('Mode_of_payment','Cash')->sum('pay');
+
          $items_pos = DB::table('orders')->where('order_status','success')->where('date', $date)->where('Mode_of_payment','Pos')->sum('cash_pos');
+
          $items_transfer = DB::table('orders')->where('order_status','success')->where('date', $date)->where('Mode_of_payment','Transfer')->sum('cash_transfer');
+
+
          $items_transfer_cash = DB::table('orders')->where('order_status','success')->where('date', $date)->where('Mode_of_payment','cash_transfer')->sum('cash_transfer');
          $items_items_transfer_pay = DB::table('orders')->where('order_status','success')->where('date', $date)->where('Mode_of_payment','cash_transfer')->sum('pay');
          $items_cash_pos = DB::table('orders')->where('order_status','success')->where('date', $date)->where('Mode_of_payment','cash_pos')->sum('cash_pos');

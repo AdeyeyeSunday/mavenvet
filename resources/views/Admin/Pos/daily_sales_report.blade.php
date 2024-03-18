@@ -179,18 +179,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
-                                                    {{-- <div class="d-flex align-items-center list-action">
-                                                        <a class="badge badge-info mr-2" data-toggle="tooltip"
-                                                            data-placement="top" title="" data-original-title="View"
-                                                            href="{{ route('Admin.Pos.daily_sales_view', $daily->id) }}"><i
-                                                                class="ri-eye-line mr-0"></i></a>
-                                                    </div> --}}
                                                 </td>
-
-
-
-
                                             @else
                                                 <td>{{ $daily->fname }}</td>
                                                 <td>{{ $daily->total_price }}</td>

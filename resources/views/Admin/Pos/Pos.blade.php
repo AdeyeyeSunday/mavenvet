@@ -6,10 +6,9 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <div class="header-title">
-                                <h6 class="card-title">MVC Pos (Point of Sale)</h6>
+                                <h6 class="card-title">MVC Pos (Point of sale)</h6>
                             </div>
                         </div>
-
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-sm-12 col-lg-6 col-md-6">
@@ -28,10 +27,10 @@
                                                             <table class="table">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>Name</th>
-                                                                        <th>Qty</th>
+                                                                        <th>Description</th>
+                                                                        <th>Quantity</th>
                                                                         <th>Price</th>
-                                                                        <th>Sub Total</th>
+                                                                        <th>Subtotal</th>
                                                                         <th>Action</th>
                                                                     </tr>
                                                                 </thead>
@@ -39,8 +38,6 @@
                                                                     @php
                                                                         $total = 0;
                                                                     @endphp
-
-
                                                                     @if (Session::has('message'))
                                                                         <div class="btn btn-danger">{{ session('message') }}
                                                                         </div>
@@ -81,13 +78,13 @@
                                                                             </th>
                                                                             <th>
 
-                                                                                <a class="badge bg-warning mr-2"
+                                                                                <a class="badge bg-danger mr-2"
                                                                                     data-toggle="tooltip"
                                                                                     data-placement="top" title=""
                                                                                     data-original-title="Delete"
                                                                                     href="{{ route('Admin.Cart.destory_cart', $get_cart->id) }}"><i
                                                                                         class="r4
-                                                                                            4i-delete-bin-line mr-0">Delete</i></a>
+                                                                                            4i-delete-bin-line mr-0">Remove</i></a>
                                                                                 {{-- </form> --}}
                                                                             </th>
                                                                         </tr>
@@ -105,7 +102,7 @@
                                                         </ul>
                                                         @if ($total != '0.00')
                                                             <button class="btn btn-dark btn-lg btn-block">Update
-                                                                Cart</button>
+                                                                cart</button>
                                                         @endif
                                                         </form>
                                                     </div>
@@ -119,7 +116,208 @@
                                                             <h6 class="card-title">Full direct payment section only </h6>
                                                         @endif
                                                     </div>
-                                                    <a href="{{ route("Admin.Pos.direct_print") }}"><button class="btn btn-secondary btn-lg ">Print invoice</button></a>
+                                                    <a href="{{ route("Admin.Pos.direct_print") }}"><button class="btn btn-dark btn-lg btn-block">Print invoice</button></a>
+                                                    <a href="#"><button class="btn btn-secondary btn-lg btn-block" data-toggle="modal" data-target=".bd-example-modal-xl">Today report</button></a>
+
+                                                        <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog"   aria-hidden="true">
+                                                           <div class="modal-dialog modal-xl">
+                                                              <div class="modal-content">
+                                                                 <div class="modal-header">
+                                                                    <h5 class="modal-title">Today's report</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                 </div>
+                                                                 <div class="modal-body">
+                                                                    <div class="card-header d-flex justify-content-between">
+
+                                                                        <div class="header-title">
+                                                                            <h6 style="color: green" class="card-title"> Cash:
+                                                                                ₦: {{ number_format($cash + $cash_cash + $cash_cash_pos + $new_cash , 2, '.', ',') }}
+
+                                                                                </h6>
+                                                                        </div>
+
+                                                                        <div class="header-title">
+                                                                            <h6 style="color: green" class="card-title"> Transfer:
+                                                                                ₦:
+                                                                                {{ number_format( $tranfer + $cash_transfer + $new_transfer, 2, '.', ',') }}
+
+                                                                                {{-- {{ }} --}}
+                                                                            </h6>
+                                                                        </div>
+
+
+                                                                        <div class="header-title">
+                                                                            <h6 style="color: green" class="card-title"> Pos: ₦:
+
+                                                                                {{ number_format( $pos + $cash_pos + $new_pos , 2, '.', ',') }}
+
+
+                                                                            </h6>
+                                                                        </div>
+
+                                                                        <div class="header-title">
+                                                                            <h6 style="color: red" class="card-title">Today Grand Total:
+                                                                                ₦:
+                                                                                {{ number_format( $cash +$tranfer +$pos +$cash_transfer +$cash_cash +$cash_pos +$cash_cash_pos +$new_transfer +$new_pos +$new_cash , 2, '.', ',') }}
+
+                                                                            </h6>
+                                                                        </div>
+
+                                                                    </div>
+                                                                 </div>
+
+
+                                                        <div class="card-body">
+                                                            <div class="table-responsive">
+                                                                <table id="datatable" class="table data-table table-striped">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Tracking no.</th>
+                                                                            <th>Total bill</th>
+                                                                            <th>Cash</th>
+                                                                            <th>Pos</th>
+                                                                            <th>Transfer</th>
+                                                                            <th>Due</th>
+                                                                            <th>Debt</th>
+                                                                            <th>Mode of payment</th>
+                                                                            <th>Action</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach ($daily as $daily)
+                                                                            @if ($daily->new_due > 0)
+                                                                                <tr>
+                                                                                    <td style="color: red">New due payment</td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td>
+                                                                                        <span class="badge badge-danger">{{ $daily->new_mode_of_payment }}</span>
+                                                                                        {{ $daily->new_due }}
+                                                                                    </td>
+                                                                                    <td></td>
+                                                                                    <td>
+                                                                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                                                            data-target="#exampleModal{{  $daily->id }}">
+                                                                                            View
+                                                                                        </button>
+                                                                                        <div class="modal fade" id="exampleModal{{  $daily->id }}" tabindex="-1"
+                                                                                            role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                            <div class="modal-dialog" role="document">
+                                                                                                <div class="modal-content">
+                                                                                                    <div class="modal-header">
+                                                                                                        <h5 class="modal-title" id="exampleModalLabel">Details</h5>
+                                                                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                                                            aria-label="Close">
+                                                                                                            <span aria-hidden="true">&times;</span>
+                                                                                                        </button>
+                                                                                                    </div>
+                                                                                                    @foreach($daily->orderIteams as $daily)
+                                                                                                        <div class="modal-body">
+                                                                                                            <h6>Item:{{$daily->prod_id}}</h6>
+                                                                                                            <h6>Item:{{$daily->qty}}</h6>
+                                                                                                        </div>
+                                                                                                    @endforeach
+                                                                                                    <div class="modal-footer">
+                                                                                                        <button type="button" class="btn btn-secondary"
+                                                                                                            data-dismiss="modal">Close</button>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            @else
+                                                                                <tr>
+                                                                                    <td>{{ $daily->trackking_id }}</td>
+                                                                                    <td>{{ $daily->total_price }}</td>
+                                                                                    <td>
+                                                                                        @if ($daily->pay != 0)
+                                                                                            {{ $daily->pay }}
+                                                                                        @endif
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        @if ($daily->cash_pos != 0 )
+                                                                                            {{ $daily->cash_pos }}
+                                                                                        @endif
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        @if ($daily->cash_transfer != 0)
+                                                                                            {{ $daily->cash_transfer }}
+                                                                                        @endif
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        @if ($daily->due !=  0)
+                                                                                            {{ $daily->due }}
+                                                                                        @endif
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        @if ($daily->new_due > 0)
+                                                                                            <span class="badge badge-danger">{{ $daily->new_mode_of_payment }}</span>{{ $daily->new_due }}
+                                                                                        @endif
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        @php
+                                                                                            if ($daily->Mode_of_payment == 'Cash') {
+                                                                                                echo '<button type="button" class="btn btn-dark btn-sm mr-2">Cash</button>';
+                                                                                            } elseif ($daily->Mode_of_payment == 'Transfer') {
+                                                                                                echo ' <button type="button" class="btn btn-primary btn-sm mr-2">Transfer</button>';
+                                                                                            } elseif ($daily->Mode_of_payment == 'Pos') {
+                                                                                                echo ' <button type="button" class="btn btn-success btn-sm mr-2">Pos</button>';
+                                                                                            } elseif ($daily->Mode_of_payment == 'cash_pos') {
+                                                                                                echo ' <button type="button" class="btn btn-info btn-sm mr-2">cash/pos</button>';
+                                                                                            } elseif ($daily->Mode_of_payment == 'cash_transfer') {
+                                                                                                echo ' <button type="button" class="btn btn-secondary btn-sm mr-2">cash/transfer</button>';
+                                                                                            }
+                                                                                        @endphp
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                                                            data-target="#exampleModal{{  $daily->id }}">
+                                                                                            View item
+                                                                                        </button>
+                                                                                        <div class="modal fade" id="exampleModal{{  $daily->id }}" tabindex="-1"
+                                                                                            role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                            <div class="modal-dialog" role="document">
+                                                                                                <div class="modal-content">
+                                                                                                    <div class="modal-header">
+                                                                                                        <h5 class="modal-title" id="exampleModalLabel">Details</h5>
+                                                                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                                                            aria-label="Close">
+                                                                                                            <span aria-hidden="true">&times;</span>
+                                                                                                        </button>
+                                                                                                    </div>
+                                                                                                    @foreach($daily->orderIteams as $daily)
+                                                                                                        <div class="modal-body">
+                                                                                                            <h6>Item:{{$daily->prod_id}}</h6>
+                                                                                                            <h6>Item:{{$daily->qty}}</h6>
+                                                                                                        </div>
+                                                                                                    @endforeach
+                                                                                                    <div class="modal-footer">
+                                                                                                        <button type="button" class="btn btn-secondary"
+                                                                                                            data-dismiss="modal">Close</button>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary btn-lg btn-block" data-dismiss="modal">Close</button>
+                                                            </div>
+ </div>
+                                                    </div>
+                                                 </div>
+                                              </div>
                                                     <div class="header-title">
                                                         <div class="header-title">
                                                             <a href="{{ route('Admin.Pos.Pos_pending') }}">
@@ -133,12 +331,12 @@
                                                     <form action="{{ route('Admin.Pos.directPayment') }}"
                                                         enctype="multipart/form-data" method="post">
                                                         @csrf
-                                                        <center>
-                                                            <p>This section doesn't accept double payments; you can only use
-                                                                a single payment method. For double payments, you can
-                                                                utilize the "Process double payment" button below.</p>
-                                                        </center>
                                                         <div class="row  col-md-12">
+                                                            <center>
+                                                                <p>This section doesn't accept double payments; you can only use
+                                                                    a single payment method. For double payments, you can
+                                                                    utilize the "Process double payment" button below.</p>
+                                                            </center>
                                                             <div class="col-md-4 off col-md-4">
                                                                 <br>
                                                                 <label for="">Amount</label>
@@ -190,8 +388,6 @@
                                                             <input type="hidden" name="user_id"
                                                                 value=" {{ auth()->user()->id }}">
                                                             {{-- </div> --}}
-
-
                                                         </div>
                                                     </form>
                                                 @endif
@@ -254,7 +450,7 @@
                                     <div class="card">
                                         <div class="card-header d-flex justify-content-between">
                                             <div class="header-title">
-                                                <h6 class="card-title">All Product</h6>
+                                                <h6 class="card-title">All product</h6>
                                             </div>
                                         </div>
 
@@ -266,7 +462,7 @@
                                                         <thead class="bg-white text-uppercase">
                                                             <tr class="ligth ligth-data">
                                                                 {{-- <th>Image</th> --}}
-                                                                <th>Name</th>
+                                                                <th>Description</th>
                                                                 <th>Category</th>
                                                                 <th>Quantity</th>
                                                                 <th>Status</th>

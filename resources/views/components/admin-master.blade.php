@@ -106,10 +106,14 @@
             @endif
             </nav>
             <div class="p-3"></div>
-            {{-- <div class="p-3">
+            <div class="p-3">
                 <center>   <p>You need Internet to update software</p>
-            <a href="{{ route("Admin.update_software") }}"> <button class="btn btn-danger">Update Software</button></a></center>
-              </div> --}}
+                    <p6>Version 1.0</p6>
+                    <br>
+                    <a href="{{ route("Admin.update_software") }}">
+                        <button class="btn btn-danger">Update Software</button>
+                    </a>
+              </div>
         </div>
     </div>
     <div class="iq-top-navbar">

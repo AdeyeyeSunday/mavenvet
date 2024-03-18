@@ -39,7 +39,37 @@ class PosController extends Controller
         $get_customer= Customer::get();
         $pending = DB::table('orders')->where('order_status','pending')->where('location','MVC midwifery')->get();
         $count= DB::table('carts')->sum('Quantity');
-        return view('Admin.Pos.Pos',['product'=>$product,'customer'=>$customer,'get_cart'=>$get_cart,'count'=>$count,'get_post'=>$get_post,'get_customer'=>$get_customer,'pending'=>$pending]);
+
+
+        $date = (date('Y-d-m'));
+        $new_date = date('d/m/y');
+
+        $daily = Order::with('orderIteams')->where('date', $date)->where('order_status','success')->where('location','MVC midwifery')->orWhere('new_date',$new_date)->get();
+
+
+
+        $cash = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Cash')->where('location','MVC midwifery')->sum('pay');
+
+
+        $new_pos = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Pos')->where('location','MVC midwifery')->sum('new_due');
+        $new_transfer= DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Transfer')->where('location','MVC midwifery')->sum('new_due');
+        $new_cash = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Cash')->where('location','MVC midwifery')->sum('new_due');
+        $tranfer = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Transfer')->where('location','MVC midwifery')->sum('cash_transfer');
+        $pos = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Pos')->where('location','MVC midwifery')->sum('cash_pos');
+        $cash_transfer  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC midwifery')->sum('cash_transfer');
+        $cash_cash  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC midwifery')->sum('pay');
+
+        $cash_pos =DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC midwifery')->sum('cash_pos');
+
+        $cash_cash_pos  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC midwifery')->sum('pay');
+
+        $amount = DB::table('orders')->where('date', $date)->where('order_status','success')->where('location','MVC midwifery')->sum('pay');
+
+        return view('Admin.Pos.Pos',['product'=>$product,'customer'=>$customer,'get_cart'=>$get_cart,
+        'count'=>$count,'get_post'=>$get_post,'get_customer'=>$get_customer,'pending'=>$pending,
+        'daily'=>$daily,'amount'=>$amount,'cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos,
+        'cash_transfer'=>$cash_transfer,'cash_cash'=>$cash_cash,'cash_pos'=>$cash_pos,'cash_cash_pos'=>$cash_cash_pos,
+        'new_pos'=>$new_pos,'new_transfer'=>$new_transfer,'new_cash'=>$new_cash]);
     }
 
 
@@ -118,13 +148,21 @@ class PosController extends Controller
             $order->user_id =$request->input('user_id');
             $order->order_status =$request->input('order_status');
             $order->Mode_of_payment =$request->input('Mode_of_payment');
-            $order->pay =$request->input('pay');
-            $order->due =$request->input('due');
             $order->Payment_type =$request->input('Payment_type');
             $order->trackking_id = rand(1111,9999);
-            $order->cash_transfer =0;
-            $order->cash_pos =0;
-            $order->due =0;
+            if($request->input('Mode_of_payment') == "Pos"){
+                $order->cash_pos = $request->input('pay');
+            }
+
+          if($request->input('Mode_of_payment') == "Transfer"){
+                $order->cash_transfer =$request->input('pay');
+            }
+
+            if($request->input('Mode_of_payment') == "Cash"){
+                $order->pay =$request->input('pay');
+            }
+
+
             $total = 0;
             $cartitem_total = Cart::where('user_id',Auth::id())->get();
             foreach($cartitem_total as $prod){
@@ -160,7 +198,7 @@ class PosController extends Controller
 
 
      public function Pos_view(){
-     $pos_view = Order::where('user_id',Auth::id())->get();
+     $pos_view = Order::get();
      return view('Admin.Pos.Pos_view',['pos_view'=>$pos_view]);
      }
 
@@ -484,6 +522,8 @@ return view('Admin.Pos.daily_sales_edit',['daily_sales_edit'=>$daily_sales_edit]
         $cash_cash_pos  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC midwifery')->sum('pay');
 
         $amount = DB::table('orders')->where('date', $date)->where('order_status','success')->where('location','MVC midwifery')->sum('pay');
+
+
         return view('Admin.Pos.daily_sales_report',['daily'=>$daily,'amount'=>$amount,'cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos,'cash_transfer'=>$cash_transfer,'cash_cash'=>$cash_cash,'cash_pos'=>$cash_pos,'cash_cash_pos'=>$cash_cash_pos,'new_pos'=>$new_pos,'new_transfer'=>$new_transfer,'new_cash'=>$new_cash]);
     }
 
