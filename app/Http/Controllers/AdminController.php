@@ -1225,6 +1225,12 @@ public function update_software() {
     // Specify the path where you want to extract the repository contents
     $extractPath = 'C:\xampp\htdocs\test';
 
+    // Remove the existing mavenvet folder if it exists
+    $existingFolderPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet';
+    if (is_dir($existingFolderPath)) {
+        $this->removeDirectory($existingFolderPath);
+    }
+
     // Extract the contents of the ZIP file to the desired directory
     $zip = new ZipArchive;
     if ($zip->open($localZipPath) === TRUE) {
@@ -1235,7 +1241,7 @@ public function update_software() {
         // Rename the extracted folder if necessary
         $oldExtractedPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet-main';
         $newExtractedPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet'; // Change this to the desired new folder name
-        if (file_exists($oldExtractedPath)) {
+        if (is_dir($oldExtractedPath)) {
             rename($oldExtractedPath, $newExtractedPath);
         }
 
@@ -1243,6 +1249,35 @@ public function update_software() {
     } else {
         return response()->json(['success' => false, 'item' => 'Failed to extract ZIP file'], 500);
     }
+}
+
+private function removeDirectory($path) {
+    // Check if the path exists and is a directory
+    if (!is_dir($path)) {
+        return;
+    }
+
+    // Open the directory
+    $dirHandle = opendir($path);
+
+    // Loop through each file/directory in the directory
+    while (($file = readdir($dirHandle)) !== false) {
+        if ($file != '.' && $file != '..') {
+            // If it's a directory, call removeDirectory() recursively
+            if (is_dir($path . DIRECTORY_SEPARATOR . $file)) {
+                $this->removeDirectory($path . DIRECTORY_SEPARATOR . $file);
+            } else {
+                // If it's a file, delete it
+                unlink($path . DIRECTORY_SEPARATOR . $file);
+            }
+        }
+    }
+
+    // Close the directory handle
+    closedir($dirHandle);
+
+    // Remove the directory itself
+    rmdir($path);
 }
 
 
