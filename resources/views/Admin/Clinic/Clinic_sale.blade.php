@@ -72,7 +72,7 @@
                        <input type="hidden" name="Mode_of_payment"  class="form-control" value="0">
                        <input type="hidden" name="pay"  class="form-control" value="0">
                        <input type="hidden" name="due"  class="form-control" value="0">
-                       <input type="hidden" name="location" value="MVC midwifery" id="">
+                       <input type="hidden" name="location" value="MVC" id="">
                        <input type="hidden" name="Payment_type"  class="form-control" value="0">
                        <input type="hidden" name="date" value="{{date('d/m/y')}}">
                        <input type="hidden" name="month" value="{{date('F')}}">

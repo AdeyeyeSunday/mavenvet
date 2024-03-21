@@ -118,7 +118,7 @@ class PosController extends Controller
                 'date'=>$cat->date,
                 'month'=>$cat->month,
                 'year'=>$cat->year,
-                'location'=>'MVC midwifery',
+                'location'=>'MVC',
 		'Cost'=>$cat->Cost
             ]);
             $curQty = Product::where("id",$cat->product_id)->first()->Quantity;
@@ -185,7 +185,7 @@ class PosController extends Controller
                     'date'=>$cat->date,
                     'month'=>$cat->month,
                     'year'=>$cat->year,
-                    'location'=>'MVC midwifery',
+                    'location'=>'MVC',
                      'Cost'=>$cat->Cost
                 ]);
                 $curQty = Product::where("id",$cat->product_id)->first()->Quantity;
@@ -756,7 +756,7 @@ $new_date = date('d/m/y');
 
   public function balance(){
 
-    $balance = Pos_deu::where('location','MVC midwifery')->get();
+    $balance = Pos_deu::where('location','MVC')->get();
     $amount =  Pos_deu::sum('due');
     $cash = DB::table('pos_deus')->where('Mode_of_payment','Cash')->sum('due');
     $tranfer = DB::table('pos_deus')->where('Mode_of_payment','Transfer')->sum('due');

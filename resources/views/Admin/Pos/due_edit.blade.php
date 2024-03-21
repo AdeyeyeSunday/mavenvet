@@ -47,7 +47,7 @@
                         </div>
 
 
-                        <input type="hidden" name="location" value="MVC midwifery" id="">
+                        <input type="hidden" name="location" value="MVC" id="">
 
                         <div class="col-md-6 mb-3">
                             <label for="validationDefault03">Outstanding Payment*</label>

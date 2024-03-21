@@ -22,7 +22,7 @@
                        {{-- <p>Write out your monthly expenses. Start with food, shelter (your mortgage or rent plus utilities), clothing, and transportation. ...</p> --}}
                        <form method="post" enctype="multipart/form-data" action="{{route('Admin.Clinic.expenditure_store')}}">
                            @csrf
-                           <input type="hidden" name="location" value="MVC midwifery" id="">
+                           <input type="hidden" name="location" value="MVC" id="">
                           <div class="form-group">
                              <label for="">Name:</label>
                              <input type="text"  class="form-control" readonly name="name" value="{{Auth()->user()->name}}">

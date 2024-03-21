@@ -98,7 +98,7 @@ return back();
 }
 
 public function sync(Request $request){
-
+    try {
     ini_set('max_execution_time', 3600); // 3600 seconds = 60 minutes
 set_time_limit(3600);
 
@@ -1106,102 +1106,102 @@ $offline = "SELECT `user_id`, `fname`, `phone`, `address`, `total_price`, `disco
 
 
  /*..............service_orders start from here...........................*/
-//  $offline = "SELECT  `id`, `user_id`, `Pet_name`, `Unregister`, `Owner_name`, `Phone`, `Next_vaccination_appointment`, `Next_appointments`, `total_price`, `order_status`, `Mode_of_payment`, `pay`, `due`, `Payment_type`, `cash_transfer`, `cash_pos`, `date`, `month`, `year`,`new_mode_of_payment`, `new_date`, `new_payment_user_id`, `new_due`, `bankName` FROM `service_orders` WHERE syn_flag = '0'";
+ $offline = "SELECT  `id`, `user_id`, `Pet_name`, `Unregister`, `Owner_name`, `Phone`, `Next_vaccination_appointment`, `Next_appointments`, `total_price`, `order_status`, `Mode_of_payment`, `pay`, `due`, `Payment_type`, `cash_transfer`, `cash_pos`, `date`, `month`, `year`,`new_mode_of_payment`, `new_date`, `new_payment_user_id`, `new_due`, `bankName` FROM `service_orders` WHERE syn_flag = '0'";
 
 
-//  $resOffline = $mysqli->query($offline);
-//   if($resOffline->num_rows > 0){
-//      while ($detorRow = $resOffline->fetch_assoc()) {
-//         $id = $detorRow['id'];
-//       $user_id = $detorRow['user_id'];
-//       $Pet_name = $detorRow['Pet_name'];
-//       $Unregister = $detorRow['Unregister'];
-//       $Owner_name = $detorRow['Owner_name'];
-//       $Phone = $detorRow['Phone'];
-//       $Next_vaccination_appointment = $detorRow['Next_vaccination_appointment'];
-//       $Next_appointments = $detorRow['Next_appointments'];
-//       $total_price = $detorRow['total_price'];
-//       $order_status = $detorRow['order_status'];
-//       $Mode_of_payment = $detorRow['Mode_of_payment'];
-//       $pay = $detorRow['pay'];
-//       $due = $detorRow['due'];
-//       $Payment_type = $detorRow['Payment_type'];
-//       $cash_transfer = $detorRow['cash_transfer'];
-//       $cash_pos = $detorRow['cash_pos'];
-//       $date = $detorRow['date'];
-//       $month = $detorRow['month'];
-//       $year = $detorRow['year'];
-//       $new_mode_of_payment = $detorRow['new_mode_of_payment'];
-//       $year = $detorRow['year'];
-//       $new_date = $detorRow['new_date'];
-//       $new_payment_user_id = $detorRow['new_payment_user_id'];
-//       $new_due = $detorRow['new_due'];
-//       $bankName =$detorRow['bankName'];
-//       $syn_flag =1;
+ $resOffline = $mysqli->query($offline);
+  if($resOffline->num_rows > 0){
+     while ($detorRow = $resOffline->fetch_assoc()) {
+        $id = $detorRow['id'];
+      $user_id = $detorRow['user_id'];
+      $Pet_name = $detorRow['Pet_name'];
+      $Unregister = $detorRow['Unregister'];
+      $Owner_name = $detorRow['Owner_name'];
+      $Phone = $detorRow['Phone'];
+      $Next_vaccination_appointment = $detorRow['Next_vaccination_appointment'];
+      $Next_appointments = $detorRow['Next_appointments'];
+      $total_price = $detorRow['total_price'];
+      $order_status = $detorRow['order_status'];
+      $Mode_of_payment = $detorRow['Mode_of_payment'];
+      $pay = $detorRow['pay'];
+      $due = $detorRow['due'];
+      $Payment_type = $detorRow['Payment_type'];
+      $cash_transfer = $detorRow['cash_transfer'];
+      $cash_pos = $detorRow['cash_pos'];
+      $date = $detorRow['date'];
+      $month = $detorRow['month'];
+      $year = $detorRow['year'];
+      $new_mode_of_payment = $detorRow['new_mode_of_payment'];
+      $year = $detorRow['year'];
+      $new_date = $detorRow['new_date'];
+      $new_payment_user_id = $detorRow['new_payment_user_id'];
+      $new_due = $detorRow['new_due'];
+      $bankName =$detorRow['bankName'];
+      $syn_flag =1;
 
-//          $selectOnlineProduct = "SELECT 'id' FROM service_orders WHERE id  = '".$id."' AND syn_flag = '1'";
+         $selectOnlineProduct = "SELECT 'id' FROM service_orders WHERE id  = '".$id."' AND syn_flag = '1'";
 
-//           $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
-//           if($resOnlineUpdate !== false && $resOnlineUpdate->num_rows > 0){
-//              /*...............Loop through online service types.................*/
-//            while ($resonlineServiceRow = mysqli_fetch_assoc($resOnlineUpdate)) {
+          $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
+          if($resOnlineUpdate !== false && $resOnlineUpdate->num_rows > 0){
+             /*...............Loop through online service types.................*/
+           while ($resonlineServiceRow = mysqli_fetch_assoc($resOnlineUpdate)) {
 
-//             $onlineProductUpdate = "UPDATE service_orders
-//                         SET
-//                         user_id = '$user_id',
-//                         Pet_name = '$Pet_name',
-//                         Unregister = '$Unregister',
-//                         Owner_name = '$Owner_name',
-//                         Phone = '$Phone',
-//                         Next_vaccination_appointment = '$Next_vaccination_appointment',
-//                         Next_appointments = '$Next_appointments',
-//                         total_price = '$total_price',
-//                         order_status = '$order_status',
-//                         Mode_of_payment = '$Mode_of_payment',
-//                         pay = '$pay',
-//                         due = '$due',
-//                         Payment_type = '$Payment_type',
-//                         cash_transfer = '$cash_transfer',
-//                         cash_pos = '$cash_pos',
-//                         date = '$date',
-//                         month = '$month',
-//                         year = '$year',
-//                         new_mode_of_payment = '$new_mode_of_payment',
-//                         new_date = '$new_date',
-//                         new_payment_user_id = '$new_payment_user_id',
-//                         new_due = '$new_due',
-//                         bankName = '$bankName',
-//                         syn_flag = '$syn_flag'
-//                         WHERE id = '$id'";
-//                  $resUpdate = mysqli_query($con, $onlineProductUpdate);
-//                  if ($resUpdate === false) {
-//                      die("Error updating record: " . mysqli_error($con));
-//                  }
-//                  $offlineUpdateSyn = "UPDATE service_orders SET syn_flag = '1' WHERE id = '$id'";
+            $onlineProductUpdate = "UPDATE service_orders
+                        SET
+                        user_id = '$user_id',
+                        Pet_name = '$Pet_name',
+                        Unregister = '$Unregister',
+                        Owner_name = '$Owner_name',
+                        Phone = '$Phone',
+                        Next_vaccination_appointment = '$Next_vaccination_appointment',
+                        Next_appointments = '$Next_appointments',
+                        total_price = '$total_price',
+                        order_status = '$order_status',
+                        Mode_of_payment = '$Mode_of_payment',
+                        pay = '$pay',
+                        due = '$due',
+                        Payment_type = '$Payment_type',
+                        cash_transfer = '$cash_transfer',
+                        cash_pos = '$cash_pos',
+                        date = '$date',
+                        month = '$month',
+                        year = '$year',
+                        new_mode_of_payment = '$new_mode_of_payment',
+                        new_date = '$new_date',
+                        new_payment_user_id = '$new_payment_user_id',
+                        new_due = '$new_due',
+                        bankName = '$bankName',
+                        syn_flag = '$syn_flag'
+                        WHERE id = '$id'";
+                 $resUpdate = mysqli_query($con, $onlineProductUpdate);
+                 if ($resUpdate === false) {
+                     die("Error updating record: " . mysqli_error($con));
+                 }
+                 $offlineUpdateSyn = "UPDATE service_orders SET syn_flag = '1' WHERE id = '$id'";
 
-//                  $resOfflineUpdate = mysqli_query($mysqli, $offlineUpdateSyn);
-//                  if ($resOfflineUpdate === false) {
-//                      die("Error updating syn_flag: " . mysqli_error($mysqli));
-//                  }
-//            }
-//          }
-//          else
-//          {
-//             $insertOnline = "INSERT INTO service_orders (user_id, Pet_name, Unregister, Owner_name, Phone, Next_vaccination_appointment, Next_appointments, total_price, order_status, Mode_of_payment, pay, due, Payment_type, cash_transfer, cash_pos, date, month, year, new_mode_of_payment, new_date, new_payment_user_id, new_due, bankName, syn_flag)
-//             VALUES ('$user_id', '$Pet_name', '$Unregister', '$Owner_name', '$Phone', '$Next_vaccination_appointment', '$Next_appointments', '$total_price', '$order_status', '$Mode_of_payment', '$pay', '$due', '$Payment_type', '$cash_transfer', '$cash_pos', '$date', '$month', '$year', '$new_mode_of_payment', '$new_date', '$new_payment_user_id', '$new_due', '$bankName', '$syn_flag')";
+                 $resOfflineUpdate = mysqli_query($mysqli, $offlineUpdateSyn);
+                 if ($resOfflineUpdate === false) {
+                     die("Error updating syn_flag: " . mysqli_error($mysqli));
+                 }
+           }
+         }
+         else
+         {
+            $insertOnline = "INSERT INTO service_orders (user_id, Pet_name, Unregister, Owner_name, Phone, Next_vaccination_appointment, Next_appointments, total_price, order_status, Mode_of_payment, pay, due, Payment_type, cash_transfer, cash_pos, date, month, year, new_mode_of_payment, new_date, new_payment_user_id, new_due, bankName, syn_flag)
+            VALUES ('$user_id', '$Pet_name', '$Unregister', '$Owner_name', '$Phone', '$Next_vaccination_appointment', '$Next_appointments', '$total_price', '$order_status', '$Mode_of_payment', '$pay', '$due', '$Payment_type', '$cash_transfer', '$cash_pos', '$date', '$month', '$year', '$new_mode_of_payment', '$new_date', '$new_payment_user_id', '$new_due', '$bankName', '$syn_flag')";
 
-//              $resOnlineUpdate = mysqli_query($con, $insertOnline);
-//              if ($resOnlineUpdate === false) {
-//                  die("Error checking for duplicate record: " . mysqli_error($con));
-//              }
-//              $offlineUpdateSyn = "UPDATE service_orders SET syn_flag = '1' WHERE  id = '$id'";
-//              $resOfflineUpdate = mysqli_query($mysqli, $offlineUpdateSyn);
-//              if ($resOfflineUpdate === false) {
-//               die("Error getting service_requests: " . $mysqli->error);
-//           }
-//         }
-//      }
-//  }
+             $resOnlineUpdate = mysqli_query($con, $insertOnline);
+             if ($resOnlineUpdate === false) {
+                 die("Error checking for duplicate record: " . mysqli_error($con));
+             }
+             $offlineUpdateSyn = "UPDATE service_orders SET syn_flag = '1' WHERE  id = '$id'";
+             $resOfflineUpdate = mysqli_query($mysqli, $offlineUpdateSyn);
+             if ($resOfflineUpdate === false) {
+              die("Error getting service_requests: " . $mysqli->error);
+          }
+        }
+     }
+ }
 
 
 
@@ -1567,8 +1567,7 @@ $resOffline = $mysqli->query($offline);
 
 }
 
-session()->flash('item', 'Synchronization was successful.');
-return back();
+
 /*..............User start from here...........................*/
 
 $offline = "SELECT `id`,`name`, `email`, `email_verified_at`, `password`, `two_factor_secret`, `two_factor_recovery_codes`, `remember_token`, `current_team_id`, `profile_photo_path`, `late_charge`, `salary`, `resumption_time`,`syn_flag` FROM `users` WHERE syn_flag = '0'";
@@ -1590,15 +1589,15 @@ $resOffline = $mysqli->query($offline);
         $resumption_time = $detorRow['resumption_time'];
         $syn_flag = 1;
 
-        $selectOnlineProduct = "SELECT 'id' FROM users WHERE id = '$id' AND syn_flag = '1'";
+        $selectOnlineProduct = "SELECT 'id' FROM users WHERE id = '$id' AND email = '$email'  AND syn_flag = '1'";
          $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
          if($resOnlineUpdate !== false && $resOnlineUpdate->num_rows > 0){
             /*...............Loop through online service types.................*/
           while ($resonlineServiceRow = mysqli_fetch_assoc($resOnlineUpdate)) {
             $onlineProductUpdate = "UPDATE users
             SET name = '$name',
-                email = '$email',
-                email_verified_at = '$email_verified_at',
+                -- email = '$email',
+                -- email_verified_at = '$email_verified_at',
                 password = '$password',
                 two_factor_secret = '$two_factor_secret',
                 two_factor_recovery_codes = '$two_factor_recovery_codes',
@@ -1630,7 +1629,7 @@ $resOffline = $mysqli->query($offline);
             if ($resOnlineUpdate === false) {
                 die("Error checking for duplicate record: " . mysqli_error($con));
             }
-            $offlineUpdateSyn = "UPDATE user SET syn_flag = '1' WHERE  id = '$id'";
+            $offlineUpdateSyn = "UPDATE users SET syn_flag = '1' WHERE  id = '$id'";
             $resOfflineUpdate = mysqli_query($mysqli, $offlineUpdateSyn);
             if ($resOfflineUpdate === false) {
              die("Error getting users: " . $mysqli->error);
@@ -1639,7 +1638,13 @@ $resOffline = $mysqli->query($offline);
     }
 }
 
-
+session()->flash('item', 'Synchronization successful. Your data is now up-to-date.');
+return back();
+} catch (\Throwable $th) {
+    //throw $th;s
+    session()->flash('item_not', 'Synchronization was not successful due to a weak network. Please try again later. Error: ' . $th->getMessage());
+    return back();
+}
 
 
 }

@@ -18,7 +18,7 @@
                             @csrf
                             <div class="row">
 
-                                <input type="hidden" name="location" value="MVC midwifery" id="">
+                                <input type="hidden" name="location" value="MVC" id="">
 
                                 <input type="hidden" name="user_id" value="{{Auth()->user()->id}}" id="">
 

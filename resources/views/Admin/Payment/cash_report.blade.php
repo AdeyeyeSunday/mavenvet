@@ -10,7 +10,7 @@
                      <form action="{{route('Admin.Payment.cash_report_store')}}" method="post" enctype="multipart/form-data">
                         @csrf
 
-                        <input type="hidden" name="location" value="MVC midwifery" id="">
+                        <input type="hidden" name="location" value="MVC" id="">
                         <div class="form-row">
                             <div class="col">
                                 <label for="">Customer Name / Transaction Details</label>

@@ -61,7 +61,7 @@ class ProductController extends Controller
             'expiry_date'=>'required',
             'month'=>'required',
             'year'=>'required',
-            'location'=>'MVC midwifery'
+            'location'=>'MVC'
         ]);
 
         $Pro  = DB::table('products')->where('Name',$Product['Name'])
@@ -163,7 +163,7 @@ class ProductController extends Controller
     }
 
     public function new_supply(){
-        $new = Newproduct::where('location','MVC midwifery')->latest()->get();
+        $new = Newproduct::where('location','MVC')->latest()->get();
       return view('Admin.Product.new_supply',['new'=>$new]);
     }
 

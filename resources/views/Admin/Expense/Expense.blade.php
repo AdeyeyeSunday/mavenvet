@@ -8,14 +8,14 @@
                 <div class="card-header d-flex justify-content-between">
                    <div class="header-title">
 
-                      <h4 class="card-title">MVC midwifery Expense</h4>
+                      <h4 class="card-title">MVC Expense</h4>
                    </div>
                 </div>
                 <div class="card-body">
                    <p>Write out your monthly expenses. Start with food, shelter (your mortgage or rent plus utilities), clothing, and transportation. ...</p>
                    <form method="post" enctype="multipart/form-data" action="{{route('Admin.Expense.Expense_store')}}">
                        @csrf
-                       <input type="hidden" name="location"  value="MVC midwifery" id="">
+                       <input type="hidden" name="location"  value="MVC" id="">
                       <div class="form-group">
                          <label for="">Name:</label>
                          <input type="text"  class="form-control" readonly name="name" value="{{Auth()->user()->name}}">

@@ -120,8 +120,8 @@ class StoreController extends Controller
              'date'=>$shop_cart->date,
              'month'=>$shop_cart->month,
              'year'=>$shop_cart->year,
-	          'location'=>'MVC midwifery',
-              'location_transfer'=>'MVC midwifery ',
+	          'location'=>'MVC',
+              'location_transfer'=>'MVC ',
               'moved'=>'moved'
             ]);
             $curQty = Product::where("id",$shop_cart->prod_id)->first()->Quantity;
@@ -165,18 +165,18 @@ class StoreController extends Controller
 
 
   public function service_due(){
-    $daily = Service_order::with('service_item')->where('order_status','success')->where('Payment_type','Half Payment')->where('location','MVC midwifery')->get();
-    $amount = DB::table('service_orders')->where('order_status','success')->where('Payment_type','Half Payment')->where('location','MVC midwifery')->sum('due');
+    $daily = Service_order::with('service_item')->where('order_status','success')->where('Payment_type','Half Payment')->where('location','MVC')->get();
+    $amount = DB::table('service_orders')->where('order_status','success')->where('Payment_type','Half Payment')->where('location','MVC')->sum('due');
     return view('Admin.Store.service_due',['daily'=>$daily,'amount'=>$amount]);
   }
 
 
   public function service_balance(){
-    $balance = Payment_due::where('location','MVC midwifery')->get();
-    $amount =  Payment_due::where('location','MVC midwifery')->sum('due');
-    $cash = DB::table('payment_dues')->where('Mode_of_payment','Cash')->where('location','MVC midwifery')->sum('due');
-    $tranfer = DB::table('payment_dues')->where('Mode_of_payment','Transfer')->where('location','MVC midwifery')->sum('due');
-    $pos = DB::table('payment_dues')->where('Mode_of_payment','Pos')->where('location','MVC midwifery')->sum('due');
+    $balance = Payment_due::where('location','MVC')->get();
+    $amount =  Payment_due::where('location','MVC')->sum('due');
+    $cash = DB::table('payment_dues')->where('Mode_of_payment','Cash')->where('location','MVC')->sum('due');
+    $tranfer = DB::table('payment_dues')->where('Mode_of_payment','Transfer')->where('location','MVC')->sum('due');
+    $pos = DB::table('payment_dues')->where('Mode_of_payment','Pos')->where('location','MVC')->sum('due');
     return view('Admin.Store.service_balance',['balance'=>$balance,'amount'=>$amount,'cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos]);
   }
 
@@ -185,14 +185,14 @@ class StoreController extends Controller
 
     $date= $request->input('from');
     $search=  DB::table('service_dues')
-    ->whereDate('created_at', $date)->where('location','MVC midwifery')
+    ->whereDate('created_at', $date)->where('location','MVC')
     ->get();
 
-    $cash = DB::table('payment_dues')->where('Mode_of_payment','Cash') ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('due');
-    $tranfer = DB::table('payment_dues')->where('Mode_of_payment','Transfer') ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('due');
-    $pos = DB::table('payment_dues')->where('Mode_of_payment','Pos') ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('due');
-    $amount = DB::table('servicpayment_duese_dues')->where('location','MVC midwifery')->sum('due');
-    $balance = Service_due::whereDate('created_at', $date)->where('location','MVC midwifery')->get();
+    $cash = DB::table('payment_dues')->where('Mode_of_payment','Cash') ->whereDate('created_at', $date)->where('location','MVC')->sum('due');
+    $tranfer = DB::table('payment_dues')->where('Mode_of_payment','Transfer') ->whereDate('created_at', $date)->where('location','MVC')->sum('due');
+    $pos = DB::table('payment_dues')->where('Mode_of_payment','Pos') ->whereDate('created_at', $date)->where('location','MVC')->sum('due');
+    $amount = DB::table('servicpayment_duese_dues')->where('location','MVC')->sum('due');
+    $balance = Service_due::whereDate('created_at', $date)->where('location','MVC')->get();
 
     return view('Admin.Store.service_search',['cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos,'amount'=>$amount,'balance'=>$balance]);
   }
@@ -206,21 +206,21 @@ class StoreController extends Controller
 
 
   public function vaccine_due(){
-    $daily= Vaccineorder::with('vaccineiteams')->where('order_status','success')->where('Payment_type','Half Payment')->where('location','MVC midwifery')->get();
-    $amount = DB::table('vaccineorders')->where('order_status','success')->where('Payment_type','Half Payment')->where('location','MVC midwifery')->sum('due');
+    $daily= Vaccineorder::with('vaccineiteams')->where('order_status','success')->where('Payment_type','Half Payment')->where('location','MVC')->get();
+    $amount = DB::table('vaccineorders')->where('order_status','success')->where('Payment_type','Half Payment')->where('location','MVC')->sum('due');
   return view('Admin.Store.vaccine_due',['daily'=>$daily,'amount'=>$amount]);
   }
 
 
 
   public function vaccine_balance(){
-    $balance = Vaccine_due::where('location','MVC midwifery')->get();
+    $balance = Vaccine_due::where('location','MVC')->get();
 
-    $amount =  Vaccine_due::where('location','MVC midwifery')->sum('due');
+    $amount =  Vaccine_due::where('location','MVC')->sum('due');
 
-    $cash = DB::table('vaccine_dues')->where('Mode_of_payment','Cash')->where('location','MVC midwifery')->sum('due');
-    $tranfer = DB::table('vaccine_dues')->where('Mode_of_payment','Transfer')->where('location','MVC midwifery')->sum('due');
-    $pos = DB::table('vaccine_dues')->where('Mode_of_payment','Pos')->where('location','MVC midwifery')->sum('due');
+    $cash = DB::table('vaccine_dues')->where('Mode_of_payment','Cash')->where('location','MVC')->sum('due');
+    $tranfer = DB::table('vaccine_dues')->where('Mode_of_payment','Transfer')->where('location','MVC')->sum('due');
+    $pos = DB::table('vaccine_dues')->where('Mode_of_payment','Pos')->where('location','MVC')->sum('due');
 
    return view('Admin.Store.vaccine_balance',['balance'=>$balance,'amount'=>$amount,'cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos]);
   }
@@ -231,14 +231,14 @@ class StoreController extends Controller
 
     $date= $request->input('from');
     $search=  DB::table('vaccine_dues')
-    ->whereDate('created_at', $date)->where('location','MVC midwifery')
+    ->whereDate('created_at', $date)->where('location','MVC')
     ->get();
 
-    $cash = DB::table('vaccine_dues')->where('Mode_of_payment','Cash') ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('due');
-    $tranfer = DB::table('vaccine_dues')->where('Mode_of_payment','Transfer') ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('due');
-    $pos = DB::table('vaccine_dues')->where('Mode_of_payment','Pos') ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('due');
-    $amount = DB::table('vaccine_dues')->where('location','MVC midwifery')->sum('due');
-    $balance =  Vaccine_due::whereDate('created_at', $date)->where('location','MVC midwifery')->get();
+    $cash = DB::table('vaccine_dues')->where('Mode_of_payment','Cash') ->whereDate('created_at', $date)->where('location','MVC')->sum('due');
+    $tranfer = DB::table('vaccine_dues')->where('Mode_of_payment','Transfer') ->whereDate('created_at', $date)->where('location','MVC')->sum('due');
+    $pos = DB::table('vaccine_dues')->where('Mode_of_payment','Pos') ->whereDate('created_at', $date)->where('location','MVC')->sum('due');
+    $amount = DB::table('vaccine_dues')->where('location','MVC')->sum('due');
+    $balance =  Vaccine_due::whereDate('created_at', $date)->where('location','MVC')->get();
     return view('Admin.Store.vaccine_search',['cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos,'amount'=>$amount,'balance'=>$balance]);
   }
 
@@ -476,7 +476,7 @@ class StoreController extends Controller
                       'date'=>date('d/m/y'),
                       'month'=>date('F'),
                       'year'=>date('Y'),
-                      'location'=>'MVC midwifery'
+                      'location'=>'MVC'
                   ]);
                   if(isset(Vaccinestore::where("id",$cat->vaccine_id)->first()->Quantity)){
                   $cur = Vaccinestore::where("id",$cat->vaccine_id)->first()->Quantity;
@@ -521,17 +521,17 @@ class StoreController extends Controller
 
 
        public function Retail(){
-        $Retail = DB::table('shop_items')->where('status','Retails')->where('location', 'MVC midwifery')->get();
+        $Retail = DB::table('shop_items')->where('status','Retails')->where('location', 'MVC')->get();
         return view('Admin.Store.Retail',['Retail'=>$Retail]);
        }
 
 
        public function clinicuse(){
-        $clinicuse=Shop_item::where('status','Clinic_use')->where('location', 'MVC midwifery')->get();
+        $clinicuse=Shop_item::where('status','Clinic_use')->where('location', 'MVC')->get();
          return view('Admin.Store.clinicuse',['clinicuse'=>$clinicuse]);
        }
        public function transfer_details(){
-        $get = Transferstore::where('location_transfer','MVC midwifery')->where('moved', "moved")->whereDate('created_at', date('Y-m-d'))->where('status', 'Head_Office_Breach_Office')->get();
+        $get = Transferstore::where('location_transfer','MVC')->where('moved', "moved")->whereDate('created_at', date('Y-m-d'))->where('status', 'Head_Office_Breach_Office')->get();
           return view('Admin.Store.transfer_details', ['get'=>$get]);
        }
         public function fatchonlineGood($id){

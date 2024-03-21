@@ -6,14 +6,14 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h6 class="card-title">MVC midwifery Admission Room</h6>
+                            <h6 class="card-title">MVC Admission Room</h6>
                         </div>
                     </div>
                     <div class="card-body">
                         <form action="{{route('Admin.admission.admission_store')}}" method="post" enctype="multipart/form-data" data-toggle="validator">
                             @csrf
 
-                            <input type="hidden" name="location" value="MVC midwifery" id="">
+                            <input type="hidden" name="location" value="MVC" id="">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">

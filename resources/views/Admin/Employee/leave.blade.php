@@ -7,7 +7,7 @@
               <div class="card">
                  <div class="card-header d-flex justify-content-between">
                     <div class="header-title">
-                       <h6 class="card-title"> MVC midwifery Leave Application</h6>
+                       <h6 class="card-title"> MVC Leave Application</h6>
                     </div>
                  </div>
 

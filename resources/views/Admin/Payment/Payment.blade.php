@@ -181,7 +181,7 @@
                                             <input type="hidden" class="form-control" name="Next_appointments" id=""><br>
                                             <input type="hidden" class="form-control" value="{{ date('d/m/y') }}"
                                                 name="date" id="">
-                                            <input type="hidden" class="form-control" value="MVC midwifery" name="location"
+                                            <input type="hidden" class="form-control" value="MVC" name="location"
                                                 id="">
                                             <input type="hidden" class="form-control" value="{{ date('Y') }}"
                                                 name="year" id="">

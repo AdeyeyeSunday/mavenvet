@@ -406,8 +406,8 @@
                                                 @if ($total == '0.00')
                                                 <div class="col-md-12">
                                                     <div class="warning">
-                                                        <p><strong style="color: red">Warning:</strong> You are responsible for any actions taken using your account.
-                                                            Keep your login details secure and do not share them with anyone.cause you will be charge for any wrong or mistake done wth your login details.Thank you</p>
+                                                        <p><strong style="color: red">Important Notice:</strong> Your account security is paramount. You are accountable for all actions performed using your login credentials.
+                                                            Please safeguard your account information and refrain from sharing it with others. Any misuse or unauthorized access may result in penalties. Your cooperation is appreciated. Thank you.</p>
                                                     </div>
                                                 </div>
                                                 @endif
@@ -474,7 +474,7 @@
                                                                 class="form-control" value="Full Payment">
                                                             <input type="hidden" name="date"
                                                                 value="{{ date('Y-d-m') }}">
-                                                            <input type="hidden" name="location" value="MVC midwifery">
+                                                            <input type="hidden" name="location" value="MVC">
                                                             <input type="hidden" name="month"
                                                                 value="{{ date('F') }}">
                                                             <input type="hidden" name="year"
@@ -511,7 +511,7 @@
                                                             value="0">
                                                         <input type="hidden" name="date"
                                                             value="{{ date('Y-d-m') }}">
-                                                        <input type="hidden" name="location" value="MVC midwifery">
+                                                        <input type="hidden" name="location" value="MVC">
                                                         <input type="hidden" name="month"
                                                             value="{{ date('F') }}">
                                                         <input type="hidden" name="year"

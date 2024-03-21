@@ -13,7 +13,7 @@
                          <form action="{{route('Admin.Product.store_product')}}" method="post" enctype="multipart/form-data" data-toggle="validator">
                             @csrf
                             <div class="row">
-                                {{-- <input type="hidden" name="location" value="MVC midwifery" id=""> --}}
+                                {{-- <input type="hidden" name="location" value="MVC" id=""> --}}
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Name *</label>

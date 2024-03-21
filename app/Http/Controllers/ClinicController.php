@@ -345,7 +345,7 @@ $inventory->total = $total;
             'qty'=>$items->qty,
             'price'=>$items->selling_price,
             'vaccine_id'=>$items->vaccine_id,
-            'location'=>'MVC midwifery'
+            'location'=>'MVC'
         ]);
 
         $curQty = Vaccinestore::where("id",$items->vaccine_id)->first()->Quantity;
@@ -609,7 +609,7 @@ public function vaccin_update2(Request $request,$id){
 
      public function expenditure(){
 
-    $clinic_expense=Clinic_expense::where('location','MVC midwifery')->get();
+    $clinic_expense=Clinic_expense::where('location','MVC')->get();
 
          return view('Admin.Clinic.expenditure',['clinic_expense'=>$clinic_expense]);
      }
@@ -636,7 +636,7 @@ public function vaccin_update2(Request $request,$id){
 
 
          public function Monthly_edit($id){
-             $Expense = DB::table('clinic_expenses')->where('location','MVC midwifery')->where('id', $id)->first();
+             $Expense = DB::table('clinic_expenses')->where('location','MVC')->where('id', $id)->first();
              return view('Admin.Clinic.Monthly_edit',['Expense'=>$Expense]);
          }
 
@@ -655,11 +655,11 @@ public function vaccin_update2(Request $request,$id){
              $from= $request->input('from');
              $to = $request->input('to');
              $jan=  DB::table('clinic_expenses')
-             ->whereBetween('created_at', [$from, $to])->where('location','MVC midwifery')
+             ->whereBetween('created_at', [$from, $to])->where('location','MVC')
              ->get();
 
              $amount= DB::table('clinic_expenses')
-             ->whereBetween('created_at', [$from, $to])->where('location','MVC midwifery')
+             ->whereBetween('created_at', [$from, $to])->where('location','MVC')
              ->sum('amount');
 
              return view('Admin.Clinic.clinic_monthly_expense',['jan'=>$jan, 'amount'=>$amount]);
@@ -728,26 +728,26 @@ public function vaccin_update2(Request $request,$id){
    public function search(Request $request){
     $date= $request->input('from');
     $search=  DB::table('vaccineorders')
-    ->whereDate('created_at', $date)->where('location','MVC midwifery')
+    ->whereDate('created_at', $date)->where('location','MVC')
     ->get();
-    $daily = DB::table('vaccineorders')->where('order_status','success')->whereDate('created_at', $date)->where('location','MVC midwifery')->get();
+    $daily = DB::table('vaccineorders')->where('order_status','success')->whereDate('created_at', $date)->where('location','MVC')->get();
     // $date = (date('d/m/y'));
     // $daily = DB::table('orders')->where('date', $date)->where('order_status','success')->get();
-    $cash = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Cash')->where('location','MVC midwifery')->whereDate('created_at', $date)->sum('pay');
+    $cash = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Cash')->where('location','MVC')->whereDate('created_at', $date)->sum('pay');
 
-    $tranfer = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Transfer')->where('location','MVC midwifery')->whereDate('created_at', $date)->sum('cash_transfer');
-    $pos = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Pos')->where('location','MVC midwifery')->whereDate('created_at', $date)->sum('cash_pos');
+    $tranfer = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Transfer')->where('location','MVC')->whereDate('created_at', $date)->sum('cash_transfer');
+    $pos = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Pos')->where('location','MVC')->whereDate('created_at', $date)->sum('cash_pos');
     //transfer
-    $cash_transfer  = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC midwifery')->whereDate('created_at', $date)->sum('cash_transfer');
-    $cash_cash  = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Transfer')->where('location','MVC midwifery')->whereDate('created_at', $date)->sum('pay');
+    $cash_transfer  = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC')->whereDate('created_at', $date)->sum('cash_transfer');
+    $cash_cash  = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Transfer')->where('location','MVC')->whereDate('created_at', $date)->sum('pay');
 
       //posfv
-    $cash_pos =DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC midwifery')->whereDate('created_at', $date)->sum('cash_pos');
-    $cash_cash_pos  = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','pos')->where('location','MVC midwifery')->whereDate('created_at', $date)->sum('cash_pos');
+    $cash_pos =DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC')->whereDate('created_at', $date)->sum('cash_pos');
+    $cash_cash_pos  = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','pos')->where('location','MVC')->whereDate('created_at', $date)->sum('cash_pos');
 
 
-    $amount = DB::table('vaccineorders')->where('order_status','success')->where('location','MVC midwifery')->whereDate('created_at', $date)->sum('pay');
-    $cash_transfer = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Cash/Transfer')->where('location','MVC midwifery')->whereDate('created_at', $date)->sum('cash_transfer');
+    $amount = DB::table('vaccineorders')->where('order_status','success')->where('location','MVC')->whereDate('created_at', $date)->sum('pay');
+    $cash_transfer = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Cash/Transfer')->where('location','MVC')->whereDate('created_at', $date)->sum('cash_transfer');
  return view('Admin.Clinic.search',['daily'=>$daily,'amount'=>$amount,'cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos,'cash_transfer'=>$cash_transfer,'cash_cash'=>$cash_cash,'cash_pos'=>$cash_pos,'cash_cash_pos'=>$cash_cash_pos]);
 
 
