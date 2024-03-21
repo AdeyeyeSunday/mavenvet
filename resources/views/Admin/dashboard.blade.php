@@ -7,8 +7,6 @@
                         <div class="card-body p-0 mt-lg-2 mt-0">
                             <h3 class="mb-3">Hi {{ auth()->user()->name }}</h3>
                             <p class="mb-0 mr-4">Your dashboard gives you views of key performance .</p>
-
-
                             <div class="card card-block card-stretch card-height">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center mb-4 card-total-sale">
@@ -17,8 +15,6 @@
                                                 alt="image">
                                         </div>
                                         <div>
-
-
                                             <p class="mb-2">
                                                 @if (auth()->user()->userHasRole('Admin'))
                                                     <h6 style="color: green">Daily Sales Profit :
@@ -28,10 +24,6 @@
                                                 @endif
                                         </div>
                                     </div>
-
-                            
-
-                                    {{-- {{  }} --}}
                                     <div class="iq-progress-bar mt-2">
                                         <span class="bg-info iq-progress progress-1" data-percent="85">
                                         </span>
@@ -73,12 +65,8 @@
                                                 alt="image">
                                         </div>
                                         <div>
-
                                             <p class="mb-2">Total daily Cash</p>
                                             ₦ {{ number_format($items_pay + $new_cash, 2) }}
-
-
-
                                         </div>
                                     </div>
                                     <div class="iq-progress-bar mt-2">
@@ -99,7 +87,6 @@
                                         <div>
                                             <p class="mb-2">Total daily Pos</p>
                                             ₦ {{ number_format($items_pos + $new_pos, 2) }}
-
                                         </div>
                                     </div>
                                     <div class="iq-progress-bar mt-2">
@@ -149,7 +136,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="d-flex align-items-center progress-order-left">
                             <div class="progress progress-round m-0 orange conversation-bar" data-percent="46">
                                 <span class="progress-left">
@@ -165,8 +151,6 @@
                                 ₦ {{ number_format($items_transfer + $new_transfer + $items_pos + $new_pos + $items_pay + $new_cash, 2) }}
                             </div>
                         </div>
-
-
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -174,7 +158,7 @@
                     <div class="card card-block card-stretch card-height-helf">
                         <div class="header-title">
                             <br>
-                        <center>    <h5 class="card-title mb-0">Today Attendance</h5></center>
+                        <center><h5 class="card-title mb-0">Today Attendance</h5></center>
                         </div>
                         <div class="card-body card-item-right">
                             <div class="d-flex align-items-top">
@@ -200,16 +184,10 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-
-
-
                 @if (auth()->user()->userHasRole('Admin'))
                     <div class="col-lg-4">
-
                         <p>You can get summary of all profit from here</p>
-
                         <form action="{{ route('Admin.store_profit') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <label>Enter Year</label>
@@ -231,11 +209,8 @@
                                 <option value="November">November </option>
                                 <option value="December">December</option>
                             </select>
-
                             <label for="">Select Profit Type</label>
-                            <input type="text" readonly class="form-control" name="type" value="Sales"
-                                id="">
-
+                            <input type="text" readonly class="form-control" name="type" value="Sales" id="">
                             <label for="">Optional Type</label>
                             <select class="form-control" name="optional">
                                 <option value="" disabled selected></option>

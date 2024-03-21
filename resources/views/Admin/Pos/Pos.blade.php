@@ -441,7 +441,10 @@
                                                                     <option value="Transfer">Transfer</option>
                                                                 </select>
                                                                 <br>
-
+                                                                 <div class="custom-control custom-checkbox custom-checkbox-color-check custom-control-inline">
+                                                                    <input type="checkbox" class="custom-control-input bg-dark" name="checkbox_print" value="1" id="customCheck-5" checked="">
+                                                                    <label class="custom-control-label" for="customCheck-5">Print invoice after payment </label>
+                                                                 </div>
                                                             </div>
                                                             {{-- <div class="col-md-4 off col-md-4">
                                                                 <h6 for="checkbox">Amount collected</h6>

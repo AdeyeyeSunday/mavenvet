@@ -190,10 +190,14 @@ class PosController extends Controller
                 ]);
                 $curQty = Product::where("id",$cat->product_id)->first()->Quantity;
                 Product::where("id",$cat->product_id)->update(['Quantity'=>$curQty-$cat->Quantity,'syn_flag'=>0]);
-            }
+             }
                 $cart = Cart::where('user_id',Auth::id())->get();
                 Cart::destroy($cart);
-                   return back();
+                if ($request->checkbox_print == 1){
+                    return redirect()->route("Admin.Pos.direct_print");
+                }else{
+                    return back();
+                }
              }
 
 
@@ -207,11 +211,6 @@ class PosController extends Controller
        $banklist =DB::table('bank_lists')->get();
          return view('Admin.Pos.Pos_invoice',['Pos_invoice'=>$Pos_invoice,'banklist'=>$banklist]);
      }
-
-
-
-
-
 
      public function daily_sales_view($id){
 
