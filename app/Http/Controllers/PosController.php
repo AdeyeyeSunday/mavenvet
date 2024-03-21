@@ -37,33 +37,33 @@ class PosController extends Controller
         $get_cart = Cart::get();
         $get_post=Cart::get();
         $get_customer= Customer::get();
-        $pending = DB::table('orders')->where('order_status','pending')->where('location','MVC midwifery')->get();
+        $pending = DB::table('orders')->where('order_status','pending')->get();
         $count= DB::table('carts')->sum('Quantity');
 
 
         $date = (date('Y-d-m'));
         $new_date = date('d/m/y');
 
-        $daily = Order::with('orderIteams')->where('date', $date)->where('order_status','success')->where('location','MVC midwifery')->orWhere('new_date',$new_date)->get();
+        $daily = Order::with('orderIteams')->where('date', $date)->where('order_status','success')->orWhere('new_date',$new_date)->get();
 
 
 
-        $cash = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Cash')->where('location','MVC midwifery')->sum('pay');
+        $cash = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Cash')->sum('pay');
 
 
-        $new_pos = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Pos')->where('location','MVC midwifery')->sum('new_due');
-        $new_transfer= DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Transfer')->where('location','MVC midwifery')->sum('new_due');
-        $new_cash = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Cash')->where('location','MVC midwifery')->sum('new_due');
-        $tranfer = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Transfer')->where('location','MVC midwifery')->sum('cash_transfer');
-        $pos = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Pos')->where('location','MVC midwifery')->sum('cash_pos');
-        $cash_transfer  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC midwifery')->sum('cash_transfer');
-        $cash_cash  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC midwifery')->sum('pay');
+        $new_pos = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Pos')->sum('new_due');
+        $new_transfer= DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Transfer')->sum('new_due');
+        $new_cash = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Cash')->sum('new_due');
+        $tranfer = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Transfer')->sum('cash_transfer');
+        $pos = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Pos')->sum('cash_pos');
+        $cash_transfer  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->sum('cash_transfer');
+        $cash_cash  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->sum('pay');
 
-        $cash_pos =DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC midwifery')->sum('cash_pos');
+        $cash_pos =DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->sum('cash_pos');
 
-        $cash_cash_pos  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC midwifery')->sum('pay');
+        $cash_cash_pos  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->sum('pay');
 
-        $amount = DB::table('orders')->where('date', $date)->where('order_status','success')->where('location','MVC midwifery')->sum('pay');
+        $amount = DB::table('orders')->where('date', $date)->where('order_status','success')->sum('pay');
 
         return view('Admin.Pos.Pos',['product'=>$product,'customer'=>$customer,'get_cart'=>$get_cart,
         'count'=>$count,'get_post'=>$get_post,'get_customer'=>$get_customer,'pending'=>$pending,
@@ -283,7 +283,7 @@ class PosController extends Controller
 
 
      public function Pos_pending(){
-        $pending = DB::table('orders')->where('order_status','pending')->where('location','MVC midwifery')->get();
+        $pending = DB::table('orders')->where('order_status','pending')->get();
         return view('Admin.Pos.Pos_pending',['pending'=>$pending]);
      }
 
@@ -502,26 +502,26 @@ return view('Admin.Pos.daily_sales_edit',['daily_sales_edit'=>$daily_sales_edit]
         $date = (date('Y-d-m'));
         $new_date = date('d/m/y');
 
-        $daily = Order::with('orderIteams')->where('date', $date)->where('order_status','success')->where('location','MVC midwifery')->orWhere('new_date',$new_date)->get();
+        $daily = Order::with('orderIteams')->where('date', $date)->where('order_status','success')->orWhere('new_date',$new_date)->get();
 
 
 
-        $cash = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Cash')->where('location','MVC midwifery')->sum('pay');
+        $cash = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Cash')->sum('pay');
 
 
-        $new_pos = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Pos')->where('location','MVC midwifery')->sum('new_due');
-        $new_transfer= DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Transfer')->where('location','MVC midwifery')->sum('new_due');
-        $new_cash = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Cash')->where('location','MVC midwifery')->sum('new_due');
-        $tranfer = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Transfer')->where('location','MVC midwifery')->sum('cash_transfer');
-        $pos = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Pos')->where('location','MVC midwifery')->sum('cash_pos');
-        $cash_transfer  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC midwifery')->sum('cash_transfer');
-        $cash_cash  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC midwifery')->sum('pay');
+        $new_pos = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Pos')->sum('new_due');
+        $new_transfer= DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Transfer')->sum('new_due');
+        $new_cash = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Cash')->sum('new_due');
+        $tranfer = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Transfer')->sum('cash_transfer');
+        $pos = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Pos')->sum('cash_pos');
+        $cash_transfer  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->sum('cash_transfer');
+        $cash_cash  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->sum('pay');
 
-        $cash_pos =DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC midwifery')->sum('cash_pos');
+        $cash_pos =DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->sum('cash_pos');
 
-        $cash_cash_pos  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC midwifery')->sum('pay');
+        $cash_cash_pos  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->sum('pay');
 
-        $amount = DB::table('orders')->where('date', $date)->where('order_status','success')->where('location','MVC midwifery')->sum('pay');
+        $amount = DB::table('orders')->where('date', $date)->where('order_status','success')->sum('pay');
 
 
         return view('Admin.Pos.daily_sales_report',['daily'=>$daily,'amount'=>$amount,'cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos,'cash_transfer'=>$cash_transfer,'cash_cash'=>$cash_cash,'cash_pos'=>$cash_pos,'cash_cash_pos'=>$cash_cash_pos,'new_pos'=>$new_pos,'new_transfer'=>$new_transfer,'new_cash'=>$new_cash]);
@@ -531,9 +531,9 @@ return view('Admin.Pos.daily_sales_edit',['daily_sales_edit'=>$daily_sales_edit]
 
 
     public function due(){
-        $daily =  Order::with('orderIteams')->where('order_status','success')->where('Payment_type','Half Payment')->where('location','MVC midwifery')->get();
+        $daily =  Order::with('orderIteams')->where('order_status','success')->where('Payment_type','Half Payment')->get();
 
-        $amount = DB::table('orders')->where('order_status','success')->where('Payment_type','Half Payment')->where('location','MVC midwifery')->sum('due');
+        $amount = DB::table('orders')->where('order_status','success')->where('Payment_type','Half Payment')->sum('due');
 
          return view('Admin.Pos.due',['daily'=>$daily,'amount'=>$amount]);
 
@@ -542,9 +542,9 @@ return view('Admin.Pos.daily_sales_edit',['daily_sales_edit'=>$daily_sales_edit]
 
     public function store_full_payment(){
         // $date = (date('d/m/y'));
-        $daily = DB::table('orders')->where('order_status','success')->where('Payment_type','Full Payment')->where('location','MVC midwifery')->get();
-        $amount = DB::table('orders')->where('order_status','success')->where('location','MVC midwifery')->sum('pay');
-        $amount_due = DB::table('orders')->where('order_status','success')->where('Payment_type','Half Payment')->where('location','MVC midwifery')->sum('due');
+        $daily = DB::table('orders')->where('order_status','success')->where('Payment_type','Full Payment')->get();
+        $amount = DB::table('orders')->where('order_status','success')->sum('pay');
+        $amount_due = DB::table('orders')->where('order_status','success')->where('Payment_type','Half Payment')->sum('due');
      return view('Admin.Pos.store_full_payment',['daily'=>$daily,'amount'=>$amount,'amount_due'=>$amount_due]);
     }
 
@@ -554,13 +554,8 @@ return view('Admin.Pos.daily_sales_edit',['daily_sales_edit'=>$daily_sales_edit]
 
 
     public function store_due(){
-        $daily = Order::with('orderIteams')->where('order_status','success')->where('Payment_type','Half Payment')->where('location','MVC midwifery')->get();
-
-
-
-        // dd($daily);
-        // $daily = DB::table('orders')->where('order_status','success')->where('Payment_type','Half Payment')->where('location','MVC midwifery')->get();
-        $amount = DB::table('orders')->where('order_status','success')->where('Payment_type','Half Payment')->where('location','MVC midwifery')->sum('due');
+        $daily = Order::with('orderIteams')->where('order_status','success')->where('Payment_type','Half Payment')->get();
+        $amount = DB::table('orders')->where('order_status','success')->where('Payment_type','Half Payment')->sum('due');
          return view('Admin.Pos.store_due',['daily'=>$daily,'amount'=>$amount]);
 
     }
@@ -568,9 +563,8 @@ return view('Admin.Pos.daily_sales_edit',['daily_sales_edit'=>$daily_sales_edit]
 
     public function store_transfer(){
         // $date = (date('d/m/y'));
-        $daily = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','Transfer')->where('location','MVC midwifery')->get();
-        $amount = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','Transfer')->where('location','MVC midwifery')->sum('cash_transfer');
-        // $amount_due = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Payment_type','Half Payment')->sum('due');
+        $daily = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','Transfer')->get();
+        $amount = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','Transfer')->sum('cash_transfer');
         return view('Admin.Pos.store_transfer',['daily'=>$daily,'amount'=>$amount]);
     }
 
@@ -578,22 +572,22 @@ return view('Admin.Pos.daily_sales_edit',['daily_sales_edit'=>$daily_sales_edit]
 
     public function store_pos(){
         // $date = (date('d/m/y'));
-        $daily = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','Pos')->where('location','MVC midwifery')->get();
-        $amount = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','Pos')->where('location','MVC midwifery')->sum('cash_pos');
+        $daily = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','Pos')->get();
+        $amount = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','Pos')->sum('cash_pos');
       return view('Admin.Pos.store_pos',['daily'=>$daily,'amount'=>$amount]);
     }
 
 
     public function store_cash(){
 
-        $daily = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','Cash')->where('location','MVC midwifery')->get();
-        $amount = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','Cash')->where('location','MVC midwifery')->sum('pay');
+        $daily = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','Cash')->get();
+        $amount = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','Cash')->sum('pay');
        return view('Admin.Pos.store_cash',['daily'=>$daily,'amount'=>$amount]);
     }
 
 
     public function due_edit($id){
-     $due_edit = DB::table('orders')->where('id',$id)->where('location','MVC midwifery')->first();
+     $due_edit = DB::table('orders')->where('id',$id)->first();
       return view('Admin.Pos.due_edit',['due_edit'=>$due_edit]);
     }
 
@@ -631,10 +625,10 @@ return view('Admin.Pos.daily_sales_edit',['daily_sales_edit'=>$daily_sales_edit]
     public function transfer_cash(){
 
         $month = date('F');
-        $transfer_cash = Order::where('Mode_of_payment','cash_transfer')->where('month',$month)->where('location','MVC midwifery')->get();
-        $amount = Order::where('Mode_of_payment','cash_transfer')->where('month',$month)->where('location','MVC midwifery')->sum('cash_transfer');
-        $cash = Order::where('Mode_of_payment','cash_transfer')->where('month',$month)->where('location','MVC midwifery')->sum('pay');
-        $cash_transfer = Order::where('Mode_of_payment','cash_transfer')->where('month',$month)->where('location','MVC midwifery')->sum('cash_transfer');
+        $transfer_cash = Order::where('Mode_of_payment','cash_transfer')->where('month',$month)->get();
+        $amount = Order::where('Mode_of_payment','cash_transfer')->where('month',$month)->sum('cash_transfer');
+        $cash = Order::where('Mode_of_payment','cash_transfer')->where('month',$month)->sum('pay');
+        $cash_transfer = Order::where('Mode_of_payment','cash_transfer')->where('month',$month)->sum('cash_transfer');
         return view('Admin.Pos.transfer_cash',['transfer_cash'=>$transfer_cash,'amount'=>$amount,'cash'=>$cash]);
 
     }
@@ -642,41 +636,37 @@ return view('Admin.Pos.daily_sales_edit',['daily_sales_edit'=>$daily_sales_edit]
 
     public function pos_cash(){
         $month = date('F');
-        $pos_cash = Order::where('Mode_of_payment','cash_pos')->where('month',$month)->where('location','MVC midwifery')->get();
-        $amount = Order::where('Mode_of_payment','cash_pos')->where('month',$month)->where('location','MVC midwifery')->sum('cash_pos');
-        $cash = Order::where('Mode_of_payment','cash_pos')->where('month',$month)->where('location','MVC midwifery')->sum('pay');
+        $pos_cash = Order::where('Mode_of_payment','cash_pos')->where('month',$month)->get();
+        $amount = Order::where('Mode_of_payment','cash_pos')->where('month',$month)->sum('cash_pos');
+        $cash = Order::where('Mode_of_payment','cash_pos')->where('month',$month)->sum('pay');
         return view('Admin.Pos.pos_cash',['pos_cash'=>$pos_cash,'amount'=>$amount,'cash'=>$cash]);
 
     }
-
-
-
-
 
 
       public function sales_history(){
         $month =date('F');
         $date = (date('Y-d-m'));
         $new_date = date('d/m/y');
-        $daily = Order::with('orderIteams')->where('month',$month)->where('order_status','success')->where('location','MVC midwifery')->orWhere('new_date',$new_date)->get();
+        $daily = Order::with('orderIteams')->where('month',$month)->where('order_status','success')->orWhere('new_date',$new_date)->get();
 
 
-        $cash = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Cash')->where('location','MVC midwifery')->sum('pay');
+        $cash = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Cash')->sum('pay');
 
 
-        $new_pos = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Pos')->where('location','MVC midwifery')->sum('new_due');
-        $new_transfer= DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Transfer')->where('location','MVC midwifery')->sum('new_due');
-        $new_cash = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Cash')->where('location','MVC midwifery')->sum('new_due');
-        $tranfer = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Transfer')->where('location','MVC midwifery')->sum('cash_transfer');
-        $pos = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Pos')->where('location','MVC midwifery')->sum('cash_pos');
-        $cash_transfer  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC midwifery')->sum('cash_transfer');
-        $cash_cash  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC midwifery')->sum('pay');
+        $new_pos = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Pos')->sum('new_due');
+        $new_transfer= DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Transfer')->sum('new_due');
+        $new_cash = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Cash')->sum('new_due');
+        $tranfer = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Transfer')->sum('cash_transfer');
+        $pos = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Pos')->sum('cash_pos');
+        $cash_transfer  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->sum('cash_transfer');
+        $cash_cash  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->sum('pay');
 
-        $cash_pos =DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC midwifery')->sum('cash_pos');
+        $cash_pos =DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->sum('cash_pos');
 
-        $cash_cash_pos  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC midwifery')->sum('pay');
+        $cash_cash_pos  = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->sum('pay');
 
-        $amount = DB::table('orders')->where('date', $date)->where('order_status','success')->where('location','MVC midwifery')->sum('pay');
+        $amount = DB::table('orders')->where('date', $date)->where('order_status','success')->sum('pay');
 
      return view('Admin.Pos.sales_history',['daily'=>$daily,'amount'=>$amount,'cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos,'cash_transfer'=>$cash_transfer,'cash_cash'=>$cash_cash,'cash_pos'=>$cash_pos,'cash_cash_pos'=>$cash_cash_pos,'new_pos'=>$new_pos,'new_transfer'=>$new_transfer,'new_cash'=>$new_cash ]);
 
@@ -704,23 +694,23 @@ $new_date = date('d/m/y');
     $date= $request->input('from');
 
 
-  $search = Order::with('orderIteams')->whereDate('created_at', $date)->where('location','MVC midwifery')
+  $search = Order::with('orderIteams')->whereDate('created_at', $date)
     ->orWhere('new_date',$new_date)->get();
 
 
 
-    $cash = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','Cash')->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('pay');
-    $tranfer = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','Transfer')  ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('cash_transfer');
-    $pos = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','Pos')  ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('cash_pos');
-    $cash_transfer  = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','cash_transfer')  ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('cash_transfer');
-    $cash_cash  = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','cash_transfer')  ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('pay');
-    $cash_pos =DB::table('orders')->where('order_status','success')->where('Mode_of_payment','cash_pos')  ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('cash_pos');
-    $cash_cash_pos  = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','cash_pos')  ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('pay');
-    $amount = DB::table('orders')->where('order_status','success')  ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('pay');
+    $cash = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','Cash')->whereDate('created_at', $date)->sum('pay');
+    $tranfer = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','Transfer')  ->whereDate('created_at', $date)->sum('cash_transfer');
+    $pos = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','Pos')  ->whereDate('created_at', $date)->sum('cash_pos');
+    $cash_transfer  = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','cash_transfer')  ->whereDate('created_at', $date)->sum('cash_transfer');
+    $cash_cash  = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','cash_transfer')  ->whereDate('created_at', $date)->sum('pay');
+    $cash_pos =DB::table('orders')->where('order_status','success')->where('Mode_of_payment','cash_pos')  ->whereDate('created_at', $date)->sum('cash_pos');
+    $cash_cash_pos  = DB::table('orders')->where('order_status','success')->where('Mode_of_payment','cash_pos')  ->whereDate('created_at', $date)->sum('pay');
+    $amount = DB::table('orders')->where('order_status','success')  ->whereDate('created_at', $date)->sum('pay');
 
-    $new_pos = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Pos')->where('location','MVC midwifery')->sum('new_due');
-    $new_transfer= DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Transfer')->where('location','MVC midwifery')->sum('new_due');
-    $new_cash = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Cash')->where('location','MVC midwifery')->sum('new_due');
+    $new_pos = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Pos')->sum('new_due');
+    $new_transfer= DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Transfer')->sum('new_due');
+    $new_cash = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Cash')->sum('new_due');
 
 
     return view('Admin.Pos.search',['search'=>$search,'amount'=>$amount,'cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos,'cash_transfer'=>$cash_transfer,'cash_cash'=>$cash_cash,'cash_pos'=>$cash_pos,'cash_cash_pos'=>$cash_cash_pos,'new_pos'=>$new_pos,'new_transfer'=>$new_transfer,'new_cash'=>$new_cash]);
@@ -743,50 +733,21 @@ $new_date = date('d/m/y');
     $date= $request->input('from');
 
     $search=  DB::table('service_orders')
-    ->whereDate('created_at', $date)->where('location','MVC midwifery')
+    ->whereDate('created_at', $date)
     ->get();
-
-
     $new_date = date('d/m/y');
-
-    // $daily = Order::with('service_orders')->where('date', $date)->where('order_status','success')->where('location','MVC midwifery')->orWhere('new_date',$new_date)->get();
-
-    $pay=Service_order::with('user')->with('service_item')->whereDate('created_at', $date)->orWhere('new_date',$new_date)->where('order_status','success')->where('location','MVC midwifery')->get();
-
-    $cash = DB::table('service_orders')->whereDate('created_at', $date)->where('order_status','success')->where('Mode_of_payment','Cash')->where('location','MVC midwifery')->sum('pay');
-
-
-    $new_pos = DB::table('service_orders')->whereDate('created_at', $date)->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Pos')->where('location','MVC midwifery')->sum('new_due');
-    $new_transfer= DB::table('service_orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Transfer')->where('location','MVC midwifery')->sum('new_due');
-    $new_cash = DB::table('service_orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Cash')->where('location','MVC midwifery')->sum('new_due');
-
-
-    $tranfer = DB::table('service_orders')->whereDate('created_at', $date)->where('order_status','success')->where('Mode_of_payment','Transfer')->where('location','MVC midwifery')->sum('cash_transfer');
-    $pos = DB::table('service_orders')->whereDate('created_at', $date)->where('order_status','success')->where('Mode_of_payment','Pos')->where('location','MVC midwifery')->sum('cash_pos');
-    $cash_transfer  = DB::table('service_orders')->whereDate('created_at', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC midwifery')->sum('cash_transfer');
-    $cash_cash  = DB::table('service_orders')->whereDate('created_at', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC midwifery')->sum('pay');
-
-    $cash_pos =DB::table('service_orders')->whereDate('created_at', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC midwifery')->sum('cash_pos');
-
-    $cash_cash_pos  = DB::table('service_orders')->whereDate('created_at', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC midwifery')->sum('pay');
-
-    $amount = DB::table('service_orders')->whereDate('created_at', $date)->where('order_status','success')->where('location','MVC midwifery')->sum('pay');
-
-
-
-
-    // $cash = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','Cash') ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('pay');
-    // $tranfer = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','Transfer') ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('cash_transfer');
-    // $pos = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','Pos') ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('cash_pos');
-    // // dd($pos);
-    // $cash_transfer  = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','cash_transfer') ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('cash_transfer');
-    // $cash_cash  = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','cash_transfer') ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('pay');
-    // $cash_pos =DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','cash_pos') ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('cash_pos');
-    // $cash_cash_pos  = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','cash_pos') ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('pay');
-    // $amount = DB::table('service_orders')->where('order_status','success')->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('pay');
-    // $cash_transfer = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','Cash/Transfer') ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('cash_transfer');
-    // $pay=Service_order::with('user')->where('order_status','success') ->whereDate('created_at', $date)->where('location','MVC midwifery')->get();
-
+    $pay=Service_order::with('user')->with('service_item')->whereDate('created_at', $date)->orWhere('new_date',$new_date)->where('order_status','success')->get();
+    $cash = DB::table('service_orders')->whereDate('created_at', $date)->where('order_status','success')->where('Mode_of_payment','Cash')->sum('pay');
+    $new_pos = DB::table('service_orders')->whereDate('created_at', $date)->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Pos')->sum('new_due');
+    $new_transfer= DB::table('service_orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Transfer')->sum('new_due');
+    $new_cash = DB::table('service_orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Cash')->sum('new_due');
+    $tranfer = DB::table('service_orders')->whereDate('created_at', $date)->where('order_status','success')->where('Mode_of_payment','Transfer')->sum('cash_transfer');
+    $pos = DB::table('service_orders')->whereDate('created_at', $date)->where('order_status','success')->where('Mode_of_payment','Pos')->sum('cash_pos');
+    $cash_transfer  = DB::table('service_orders')->whereDate('created_at', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->sum('cash_transfer');
+    $cash_cash  = DB::table('service_orders')->whereDate('created_at', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->sum('pay');
+    $cash_pos =DB::table('service_orders')->whereDate('created_at', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->sum('cash_pos');
+    $cash_cash_pos  = DB::table('service_orders')->whereDate('created_at', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->sum('pay');
+    $amount = DB::table('service_orders')->whereDate('created_at', $date)->where('order_status','success')->sum('pay');
     return view('Admin.Pos.payment_search',['search'=>$search,'pay'=>$pay,'amount'=>$amount,'cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos,'cash_transfer'=>$cash_transfer,'cash_cash'=>$cash_cash,'cash_pos'=>$cash_pos,'cash_cash_pos'=>$cash_cash_pos,'new_pos'=>$new_pos,'new_transfer'=>$new_transfer,'new_cash'=>$new_cash]);
   }
 
@@ -796,50 +757,31 @@ $new_date = date('d/m/y');
   public function balance(){
 
     $balance = Pos_deu::where('location','MVC midwifery')->get();
-
     $amount =  Pos_deu::sum('due');
-
-    $cash = DB::table('pos_deus')->where('Mode_of_payment','Cash')->where('location','MVC midwifery')->sum('due');
-    $tranfer = DB::table('pos_deus')->where('Mode_of_payment','Transfer')->where('location','MVC midwifery')->sum('due');
-    $pos = DB::table('pos_deus')->where('Mode_of_payment','Pos')->where('location','MVC midwifery')->sum('due');
-
-
+    $cash = DB::table('pos_deus')->where('Mode_of_payment','Cash')->sum('due');
+    $tranfer = DB::table('pos_deus')->where('Mode_of_payment','Transfer')->sum('due');
+    $pos = DB::table('pos_deus')->where('Mode_of_payment','Pos')->sum('due');
 return view('Admin.Pos.balance',['balance'=>$balance,'amount'=>$amount,'cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos]);
-
-
   }
 
-
-
-
-
-
   public function search_dubts(Request $request){
-
-
     $date= $request->input('from');
-
     $search=  DB::table('pos_deus')
-    ->whereDate('created_at', $date)->where('location','MVC midwifery')
+    ->whereDate('created_at', $date)
     ->get();
-
-    $cash = DB::table('pos_deus')->where('Mode_of_payment','Cash') ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('due');
-    $tranfer = DB::table('pos_deus')->where('Mode_of_payment','Transfer') ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('due');
-    $pos = DB::table('pos_deus')->where('Mode_of_payment','Pos') ->whereDate('created_at', $date)->where('location','MVC midwifery')->sum('due');
-    $amount = DB::table('pos_deus')->where('location','MVC midwifery')->sum('due');
-    $balance = Pos_deu::whereDate('created_at', $date)->where('location','MVC midwifery')->get();
+    $cash = DB::table('pos_deus')->where('Mode_of_payment','Cash') ->whereDate('created_at', $date)->sum('due');
+    $tranfer = DB::table('pos_deus')->where('Mode_of_payment','Transfer') ->whereDate('created_at', $date)->sum('due');
+    $pos = DB::table('pos_deus')->where('Mode_of_payment','Pos') ->whereDate('created_at', $date)->sum('due');
+    $amount = DB::table('pos_deus')->sum('due');
+    $balance = Pos_deu::whereDate('created_at', $date)->get();
   return view('Admin.Pos.search_dubts',['cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos,'amount'=>$amount,'balance'=>$balance]);
   }
 
-
-
   public function search_payment(Request $request){
     $date= $request->input('from');
-
     $search=  DB::table('payment_dues')
     ->whereDate('created_at', $date)
     ->get();
-
     $cash = DB::table('payment_dues')->where('Mode_of_payment','Cash') ->whereDate('created_at', $date)->sum('due');
     $tranfer = DB::table('payment_dues')->where('Mode_of_payment','Transfer') ->whereDate('created_at', $date)->sum('due');
     $pos = DB::table('payment_dues')->where('Mode_of_payment','Pos') ->whereDate('created_at', $date)->sum('due');
@@ -853,7 +795,7 @@ return view('Admin.Pos.balance',['balance'=>$balance,'amount'=>$amount,'cash'=>$
     $date= $request->input('from');
 
     $new=  DB::table('newproducts')
-    ->whereDate('created_at', $date)->where('location','MVC midwifery')
+    ->whereDate('created_at', $date)
     ->get();
 
     return view('Admin.Pos.newproduct_supply',['new'=>$new]);
@@ -865,11 +807,11 @@ return view('Admin.Pos.balance',['balance'=>$balance,'amount'=>$amount,'cash'=>$
     $date= $request->input('from');
 
     $new=  DB::table('cashes')
-    ->whereDate('created_at', $date)->where('location','MVC midwifery')
+    ->whereDate('created_at', $date)
     ->get();
 
 $amount= DB::table('cashes')
-->whereDate('created_at', $date)->where('location','MVC midwifery')
+->whereDate('created_at', $date)
 ->sum('amount');
 
     return view('Admin.Pos.cashbackseach',['new'=>$new, 'amount'=>$amount]);

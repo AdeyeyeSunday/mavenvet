@@ -269,6 +269,7 @@ Route::patch('/Admin/Pos/{id}/daily_sales_update', 'PosController@daily_sales_up
 Route::get('/Admin/Pos/{id}/daily_sales_edit', 'PosController@daily_sales_edit')->name('Admin.Pos.daily_sales_edit');
 Route::get('/Admin/Pos/balance', 'PosController@balance')->name('Admin.Pos.balance');
 Route::get('/Admin/Pos/direct_print', 'PosController@direct_print')->name('Admin.Pos.direct_print');
+
 //search start from here
 
 Route::post('/Admin/Pos/search', 'PosController@search')->name('Admin.search.search');
@@ -282,11 +283,15 @@ Route::post('/Admin/Pos/storekseach', 'PosController@storekseach')->name('Admin.
 //cart controller start from here
 Route::post('/Admin/Cart/add_cart', 'CartController@add_cart')->name('Admin.Cart.add_cart');
 Route::post('/Admin/Cart/get_cart', 'CartController@get_cart')->name('Admin.Cart.get_cart');
+Route::post('/Admin/Cart/barcode_scanner', 'CartController@barcode_scanner')->name('Admin.Cart.barcode_scanner');
+Route::get('/Admin/Cart/fetch_cart', 'CartController@fetch_cart')->name('Admin.Cart.fetch_cart');
+
 Route::patch('/Admin/Cart/{id}/update_cart', 'CartController@update_cart')->name('Admin.Cart.update_cart');
 Route::patch('/Admin/Cart/update_cart_all', 'CartController@update_cart_all')->name('Admin.Cart.update_cart_all');
 Route::get('/Admin/Cart/{id}/destory_cart', 'CartController@destory_cart')->name('Admin.Cart.destory_cart');
 Route::get('/Admin/Payment/doctor_report', 'PaymentController@doctor_report')->name('Admin.Payment.doctor_report');
 Route::get('/Admin/Payment/{id}', 'PaymentController@doctor')->name('Admin.Payment.doctor');
+
 //syn pending
 Route::get('/Admin/syn/syn', 'Syn_flatController@syn')->name('Admin.syn.syn');
 

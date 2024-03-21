@@ -17,6 +17,8 @@
                                                 alt="image">
                                         </div>
                                         <div>
+
+
                                             <p class="mb-2">
                                                 @if (auth()->user()->userHasRole('Admin'))
                                                     <h6 style="color: green">Daily Sales Profit :
@@ -26,6 +28,8 @@
                                                 @endif
                                         </div>
                                     </div>
+
+                                    
 
                                     {{-- {{  }} --}}
                                     <div class="iq-progress-bar mt-2">
@@ -145,6 +149,24 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="d-flex align-items-center progress-order-left">
+                            <div class="progress progress-round m-0 orange conversation-bar" data-percent="46">
+                                <span class="progress-left">
+                                    <span class="progress-bar"></span>
+                                </span>
+                                <span class="progress-right">
+                                    <span class="progress-bar"></span>
+                                </span>
+                                <div class="progress-value text-secondary">46%</div>
+                            </div>
+                            <div class="progress-value ml-3 pr-5 border-right">
+                                <p class="mb-2">Total Grand Total</p>
+                                ₦ {{ number_format($items_transfer + $new_transfer + $items_pos + $new_pos + $items_pay + $new_cash, 2) }}
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
                 <div class="col-lg-4">

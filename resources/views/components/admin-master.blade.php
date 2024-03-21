@@ -1,8 +1,5 @@
 <!doctype html>
 <html lang="en">
-
-<!-- Mirrored from iqonic.design/themes/posdash/html/backend/pages-blank-page.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 06 Jul 2021 10:22:28 GMT -->
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -17,11 +14,10 @@
     <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
     <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/print/bootstrap-table-print.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.24/webcam.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
 </head>
-
-
 <body class=" color-light ">
     <!-- loader Start -->
     <div id="loading">
@@ -107,11 +103,14 @@
             </nav>
             <div class="p-3"></div>
             <div class="p-3">
-                <center>   <p>You need Internet to update software</p>
-                    <p6>Version 1.0</p6>
-                    <br>
+                @php
+                    $verstion = App\Models\Systemupdate::first();
+                @endphp
+                <center><p>You need Internet to update software to version {{ $verstion->version }}</p>
+                    <p>Last update: {{ $verstion->updated_at->format('d-m-Y') }}</p>
+
                     <a href="{{ route("Admin.update_software") }}">
-                        <button class="btn btn-danger">Update Software</button>
+                        <button class="btn btn-danger btn-lg">Update software</button>
                     </a>
               </div>
         </div>
@@ -119,15 +118,7 @@
     <div class="iq-top-navbar">
         <div class="iq-navbar-custom">
             <nav class="navbar navbar-expand-lg navbar-light p-0">
-                <div class="iq-navbar-logo d-flex align-items-center justify-content-between">
-                    <i class="ri-menu-line wrapper-menu"></i>
-                    <a href="index.html" class="header-logo">
-                        <img src="{{ asset('assets/images/logo.png') }}" class="img-fluid rounded-normal"
-                            alt="logo">
-                        <h5 class="logo-title ml-3">POSDash</h5>
 
-                    </a>
-                </div>
                 <div class="iq-search-bar device-search">
 
 
@@ -190,9 +181,18 @@
 
                 @if (Session::has('item'))
                     <center>
-                        <div class="alert alert-info" role="alert">
-                            <div class="iq-alert-text">{{ Session::get('item') }}</div>
-                        </div>
+                        <div class="toast fade show bg-success text-white border-0 rounded p-2 mt-3" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="toast-header bg-success text-white">
+                             <center> <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                                  <rect width="100%" height="100%" fill="#fff"></rect>
+                               </svg>
+                               <small>Good job!</small>
+                            </center>
+                            </div>
+                            <div class="toast-body">
+                                {{ Session::get('item') }}
+                            </div>
+                         </div>
                     </center>
                 @endif
                 <div class="d-flex align-items-center">

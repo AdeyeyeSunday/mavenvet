@@ -9,6 +9,8 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use function Ramsey\Uuid\v1;
+
 class CartController extends Controller
 {
     //
@@ -17,6 +19,47 @@ class CartController extends Controller
     {
         $this->middleware('auth');
     }
+
+
+    public function barcode_scanner(Request $request){
+        $data = $request->only(['user_id', 'Name', 'Quantity', 'Price', 'product_id', 'date', 'month', 'year', 'Qty', 'Cost']);
+        $check = Cart::where('Name', $data['Name'])
+                     ->where('Quantity', $data['Quantity'])
+                     ->where('Price', $data['Price'])
+                     ->where('product_id', $data['product_id'])
+                     ->where('date', $data['date'])
+                     ->where('month', $data['month'])
+                     ->where('year', $data['year'])
+                     ->where('Qty', $data['Qty'])
+                     ->where('Cost', $data['Cost'])
+                     ->get();
+
+        if(count($check) > 0){
+            return response()->json(['message' => 'Already in cart']);
+        } else {
+            $pro = Product::where('barcode', $request->barcode_scanner)->first();
+
+            if($pro) {
+                $data['Name'] = $pro->Name;
+                $data['Quantity'] = 1;
+                $data['Price'] = $pro->Price;
+                $data['product_id'] = $pro->id;
+                $data['Qty'] = $pro->Quantity;
+                $data['Cost'] = $pro->Cost;
+                $data['date'] = date('d/m/y');
+                $data['month'] = date('F');
+                $data['year'] = date('Y');
+                Cart::create($data);
+                return response()->json([
+                    'message' => 'Product added to cart successfully',
+                    'status'=>200
+                ]);
+            } else {
+                return response()->json(['message' => 'Product not found for the scanned barcode'], 404);
+            }
+        }
+    }
+
 
     public function add_cart(Request $request){
         $data=array();
@@ -37,15 +80,17 @@ class CartController extends Controller
         if(count($check) > 0){
             session()->flash('message','Already in cart');
         }else{
-            $add = Cart::create($data);
+            Cart::create($data);
         }
-
-
         return back();
     }
 
 
-
+    // public function fetch_cart(){
+    //     $get_cart = Cart::all();
+    //     $total = 0;
+    //     return view('Admin.Pos.Pos', compact('get_cart', 'total'));
+    // }
 
     // public function update_cart(Request $request,$id){
 

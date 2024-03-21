@@ -34,7 +34,7 @@
                                             <th>Tracking No</th>
                                             <th>Order Status</th>
                                             <th>Date</th>
-                                            <th>Make payment</th>
+                                            <th>Pay</th>
                                             <th>View</th>
                                             {{-- <th>Actions</th> --}}
                                             @if (auth()->user()->userHasRole('Admin'))
@@ -56,14 +56,14 @@
                                             <td>{{ $pos_view->date }}</td>
                                             <td>
                                                 <a href="{{ route('Admin.Pos.Pos_invoice', $pos_view->id) }}"><button
-                                                        type="button" class="btn btn-dark btn-sm mr-2">make
+                                                        type="button" class="btn btn-dark btn-sm mr-2">Process
                                                         payment</button></a>
                                             </td>
                                             <td>
                                                 <div class="d-flex align-items-center list-action">
-                                                    <a class="badge badge-info mr-2" data-toggle="modal"
+                                                    <a class="badge badge-link mr-2" data-toggle="modal"
                                                         data-target="#exampleModal{{ $pos_view->id }}"><i
-                                                            class="ri-eye-line mr-0"></i></a>
+                                                            class="ri-eye-line mr-0 ri-lg fw-bold"></i></a>
                                                 </div>
                                                 <!-- Modal -->
                                                 <div class="modal fade" id="exampleModal{{ $pos_view->id }}" tabindex="-1"
@@ -72,7 +72,7 @@
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title" id="exampleModalLabel">
-                                                                    Item list</h5>
+                                                                    Purchase</h5>
                                                                 <button type="button" class="close" data-dismiss="modal"
                                                                     aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
@@ -88,6 +88,7 @@
                                                                 @foreach ($items as $item)
                                                                     <ul>
                                                                         <li>Item : {{ $item->prod_id }}
+                                                                            <br>
                                                                             Qty:{{ $item->qty }}</li>
 
                                                                     </ul>
@@ -114,7 +115,7 @@
                                                         <div class="d-flex align-items-center list-action">
                                                             <a
                                                                 href="{{ route('Admin.Pos.Pos_pending_delete', $pos_view->id) }}">
-                                                                <button class="btn btn-danger">Delete</button></a>
+                                                                <button class="btn btn-danger btn-sm">Delete</button></a>
                                                         </div>
                                                     </form>
                                                 @elseif (auth()->user()->userHasRole('Manager'))
@@ -126,14 +127,14 @@
                                                         <div class="d-flex align-items-center list-action">
                                                             <a
                                                                 href="{{ route('Admin.Pos.Pos_pending_delete', $pos_view->id) }}">
-                                                                <button class="btn btn-danger">Delete</button></a>
+                                                                <button class="btn btn-danger btn-sm">Delete</button></a>
                                                         </div>
                                                     </form>
                                                 @else
                                                 @endif
                                                 @if (auth()->user()->userHasRole('Cashier'))
                                                     <button type="button" class="btn btn-danger mt-2" data-toggle="modal"
-                                                        data-target="#exampleModalScrollable">Delete
+                                                        data-target="#exampleModalScrollable btn-sm">Delete
                                                     </button>
                                                     </form>
                                                 @else
