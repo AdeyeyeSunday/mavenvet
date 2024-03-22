@@ -1712,6 +1712,7 @@ if ($online_con === false) {
 
 
 public function update_software() {
+try {
 
     $checkCount = Systemupdate::count();
     $verstion = "2.0";
@@ -1765,10 +1766,20 @@ public function update_software() {
         }
 
 
-        return response()->json(['success' => true, 'item' => 'Code updated successfully']);
-    } else {
-        return response()->json(['success' => false, 'item' => 'Failed to extract ZIP file'], 500);
+        // return response()->json(['success' => true, 'item' => 'Software updated successfully']);
     }
+
+
+    session()->flash('item', 'Software updated successfully');
+
+    return back();
+    //  else {
+    //     return response()->json(['success' => false, 'item' => ''], 500);
+    // }
+} catch (\Throwable $th) {
+    session()->flash('item', 'Software Failed to update');
+    return back();
+}
 }
 
 private function removeDirectory($path) {
