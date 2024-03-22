@@ -145,7 +145,7 @@ class CartController extends Controller
             }
         }
 
-        Session()->flash('message', 'Successfully updated. Please fill in the information belo.');
+        Session()->flash('message', 'Successfully updated. Please fill in the information below.');
         return back();
 
     }

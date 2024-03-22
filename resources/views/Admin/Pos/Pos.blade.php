@@ -6,7 +6,7 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <div class="header-title">
-                                <h6 class="card-title">MVC Pos (Point of sale)</h6>
+                                <h6 class="card-title">MVC (Point of sale)</h6>
                             </div>
                         </div>
                         <div class="container-fluid">
@@ -25,7 +25,6 @@
                                                 <span style="color: black;margin-right: 10px;"> Date:
                                                     {{ date('d-F-Y') }}</span>
                                             </div>
-
                                         </div>
                                         <div class="card-body">
                                             <div class="input-group mb-4">
@@ -49,8 +48,9 @@
                                                                         @php
                                                                             $total = 0;
                                                                         @endphp
+
                                                                         @if (Session::has('message'))
-                                                                            <div class="btn btn-danger">
+                                                                            <div class="btn btn-success">
                                                                                 {{ session('message') }}
                                                                             </div>
                                                                         @endif
@@ -117,7 +117,7 @@
                                                             </div>
                                                         </ul>
                                                         @if ($total != '0.00')
-                                                            <button class="btn btn-dark btn-lg btn-block">Update
+                                                            <button class="btn sidebar-bottom-btn mt-4 btn-lg btn-block">Update
                                                                 cart</button>
                                                         @endif
                                                         </form>
@@ -135,9 +135,9 @@
                                                     <a href="{{ route('Admin.Pos.direct_print') }}"><button
                                                             class="btn btn-dark btn-lg btn-block">Print invoice</button></a>
 
-                                                    <a href="#"><button class="btn btn-secondary btn-lg btn-block"
+                                                    <button class="btn btn-secondary btn-lg "
                                                             data-toggle="modal" data-target=".bd-example-modal-xl">Today
-                                                            report</button></a>
+                                                            report</button>
                                                     <div class="modal fade bd-example-modal-xl" tabindex="-1"
                                                         role="dialog" aria-hidden="true">
                                                         <div class="modal-dialog modal-xl">
@@ -202,7 +202,7 @@
                                                                             <thead>
                                                                                 <tr>
                                                                                     <th>Tracking no.</th>
-                                                                                    <th>Total bill</th>
+                                                                                    {{-- <th>Total bill</th> --}}
                                                                                     <th>Cash</th>
                                                                                     <th>Pos</th>
                                                                                     <th>Transfer</th>
@@ -218,7 +218,7 @@
                                                                                         <tr>
                                                                                             <td style="color: red">New due
                                                                                                 payment</td>
-                                                                                            <td></td>
+                                                                                            {{-- <td></td> --}}
                                                                                             <td></td>
                                                                                             <td></td>
                                                                                             <td></td>
@@ -286,8 +286,8 @@
                                                                                         <tr>
                                                                                             <td>Mavenvet{{ $daily->trackking_id }}
                                                                                             </td>
-                                                                                            <td>{{ number_format($daily->total_price), 2 }}
-                                                                                            </td>
+                                                                                            {{-- <td>{{ number_format($daily->total_price), 2 }}
+                                                                                            </td> --}}
                                                                                             <td>
                                                                                                 @if ($daily->pay != 0)
                                                                                                     {{ number_format($daily->pay), 2 }}
@@ -446,16 +446,10 @@
                                                                     <label class="custom-control-label" for="customCheck-5">Print invoice after payment </label>
                                                                  </div>
                                                             </div>
-                                                            {{-- <div class="col-md-4 off col-md-4">
-                                                                <h6 for="checkbox">Amount collected</h6>
-                                                                <input type="number" class="form-control" name=""
-                                                                    id="">
-                                                                <br>
-                                                            </div> --}}
-                                                            {{-- <br> --}}
+
                                                             <div class="col-md-12">
                                                                 <center> <button
-                                                                        class="btn btn-dark btn-lg btn-block">Process
+                                                                        class="btn sidebar-bottom-btn mt-4 btn-lg btn-block">Process
                                                                         direct
                                                                         payment</button></center>
                                                             </div>
@@ -534,7 +528,7 @@
                                             @if ($total != '0.00')
                                                 <div class="col-md-12 off col-md-1">
                                                     <center> <button type="submit"
-                                                            class="btn btn-success btn-lg btn-block">Process double
+                                                            class="btn btn-dark btn-lg btn-block">Process double
                                                             payment section</button>
                                                     </center>
                                                 </div>

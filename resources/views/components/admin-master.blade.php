@@ -35,9 +35,6 @@
                         alt="logo">
                     <h5 class="logo-title light-logo ml-3">MVC</h5>
                 </a>
-                <div class="iq-menu-bt-sidebar ml-0">
-                    <i class="las la-bars wrapper-menu"></i>
-                </div>
             </div>
 
             @if (auth()->user()->userHasRole('Admin'))
@@ -110,7 +107,8 @@
                     <p>Last update: {{ $verstion->updated_at->format('d-m-Y') }}</p>
 
                     <a href="{{ route("Admin.update_software") }}">
-                        <button class="btn btn-danger btn-lg">Update software</button>
+                        <button class="btn sidebar-bottom-btn mt-4 btn-lg">Update software</button>
+                        {{-- <button type="button" >Go Premium</button> --}}
                     </a>
               </div>
         </div>
@@ -122,7 +120,7 @@
                 <div class="iq-search-bar device-search">
 
                     <div class="dropdown show">
-                        <a href="{{ route('update2') }}" class="btn btn-primary btn-lg">Update Product</a>
+                        <a href="{{ route('update2') }}" class="btn sidebar-bottom-btn mt-4 btn-lg">Update product</a>
 
                     </div>
                 </div>
@@ -196,7 +194,7 @@
 
                             <div>
                                 <a href="{{ route('sync') }}" class="btn btn-secondary btn-lg">
-                                    Push Button
+                                    Push button
                                 </a>
                             </div>
                             <li class="nav-item nav-icon dropdown caption-content">

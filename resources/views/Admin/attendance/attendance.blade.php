@@ -33,21 +33,21 @@
                                         ->latest()
                                         ->first();
                                 @endphp
-                                @if (strtotime(date('H:i')) > strtotime('01:00'))
+                                @if (strtotime(date('H:i')) > strtotime(Auth::user()->resumption_time))
                                     <center>
-                                        @if ($check_tmer->late_comment == null)
+                                        @if ($check_tmer->late_comment ?? '' == null)
                                             <p style="color: red">
                                                 You are already late, and your charge is
-                                                {{ number_format(Auth::user()->late_charge, 2) }}. Please start below.
+                                                {{ number_format(Auth::user()->late_charge, 2) }}.
                                                 Please
-                                                note that this will be deducted from your salary.Thank you
+                                                note.This will be deducted from your salary.
                                             </p>
                                         @endif
                                     </center>
                                 @endif
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label>Staff Name</label>
+                                        <label>Staff name</label>
                                         <input type="text" class="form-control" readonly name="staff_name"
                                             value="{{ auth()->user()->name }}" id="">
                                     </div>
@@ -70,15 +70,14 @@
                                 <input type="hidden" name="month" value="{{ date('F') }}">
                                 <input type="hidden" name="year" value="{{ date('Y') }}">
                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" id="">
-
                                 @if (strtotime(date('H:i')) > strtotime(Auth::user()->resumption_time))
                                 @if (!$check_tmer || $check_tmer->late_comment == null)
-                                    <label for="lateReason">Reason for Late coming</label>
+                                    <label for="lateReason">Reason for late coming</label>
                                     <textarea name="late_comment" class="form-control" id="lateReason" cols="3" rows="3" required></textarea>
                                 @endif
                             @endif
                                 <br>
-                                <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+                                <button type="submit" class="btn sidebar-bottom-btn  btn-lg btn-block">Process</button>
                             </form>
                         </div>
                     </div>
@@ -117,7 +116,7 @@
                                                     <td>{{ $attendance->Time }}</td>
                                                     <td>{{ $attendance->Timeout }}</td>
                                                     @if ($attendance->late_status == 1)
-                                                        <td>Late</td>
+                                                        <td><span class="mt-2 badge badge-pill badge-danger">Late</span> </td>
                                                     @else
                                                     @endif
                                                 </tr>
@@ -135,7 +134,7 @@
         </div>
         </div>
 
-        <script>
+        {{-- <script>
             document.getElementById('attendanceForm').addEventListener('submit', function(event) {
                 // Check if the image is captured or not
                 var imageSrc = document.querySelector('.after_capture_frame').src;
@@ -145,9 +144,9 @@
                     alert('Please capture your picture before submitting.');
                 }
             });
-        </script>
+        </script> --}}
 
-        <script language="JavaScript">
+        {{-- <script language="JavaScript">
             // Configure a few settings and attach camera 250x187
             Webcam.set({
                 width: 350,
@@ -183,6 +182,6 @@
                     }
                 });
             }
-        </script>
+        </script> --}}
     @endsection
 </x-admin-master>

@@ -15,12 +15,17 @@
                                                 alt="image">
                                         </div>
                                         <div>
-                                            <p class="mb-2">
+
                                                 @if (auth()->user()->userHasRole('Admin'))
-                                                    <h6 style="color: green">Daily Sales Profit :
+                                                <p class="mb-0">Daily sales profit
                                                         {{ number_format($profitmonthly - $profitmonthly2, 2) }}
                                                         {{-- {{ number_format( $profitmonthly - $profitmonthly2, 2, '.', ',') }} --}}
-                                                    </h6>
+                                                    </p>
+                                                    @else
+                                                    <p>
+                                                        This section serves as a comprehensive summary of all activities undertaken. Consequently,
+                                                        you are held responsible for any actions taken within the software, without exceptions
+                                                    </p>
                                                 @endif
                                         </div>
                                     </div>
@@ -44,9 +49,14 @@
                                                 alt="image">
                                         </div>
                                         <div>
-                                            <p class="mb-2">
-                                                Clinic Service Monthly </p>
+
+                                                @if (auth()->user()->userHasRole('Admin'))
+                                                <p class="mb-2"> Clinic service monthly </p>
                                             <h6>₦ {{ number_format($service_amount, 2) }}</h6>
+                                            @elseif (auth()->user()->userHasRole('Doctor'))
+                                            <p class="mb-2"> {{ Auth::user()->name }}  Monthly Service </p>
+                                                      <h6>₦ {{ number_format($userservice, 2) }}</h6>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="iq-progress-bar mt-2">
@@ -65,7 +75,7 @@
                                                 alt="image">
                                         </div>
                                         <div>
-                                            <p class="mb-2">Total daily Cash</p>
+                                            <p class="mb-2">Total daily cash</p>
                                             ₦ {{ number_format($items_pay + $new_cash, 2) }}
                                         </div>
                                     </div>
@@ -85,7 +95,7 @@
                                                 alt="image">
                                         </div>
                                         <div>
-                                            <p class="mb-2">Total daily Pos</p>
+                                            <p class="mb-2">Total daily pos</p>
                                             ₦ {{ number_format($items_pos + $new_pos, 2) }}
                                         </div>
                                     </div>
@@ -105,7 +115,7 @@
                                                 alt="image">
                                         </div>
                                         <div>
-                                            <p class="mb-2">Monthly Clinic Expenditure</p>
+                                            <p class="mb-2">Monthly clinic expenditure</p>
                                             ₦ {{ number_format($clinicExpenditure, 2) }}
                                         </div>
                                     </div>
@@ -125,7 +135,7 @@
                                                 alt="image">
                                         </div>
                                         <div>
-                                            <p class="mb-2">Total daily Transfer</p>
+                                            <p class="mb-2">Total daily transfer</p>
                                             ₦ {{ number_format($items_transfer + $new_transfer, 2) }}
                                         </div>
                                     </div>
@@ -144,7 +154,7 @@
                                 <span class="progress-right">
                                     <span class="progress-bar"></span>
                                 </span>
-                                <div class="progress-value text-secondary">46%</div>
+                                <div class="progress-value text-secondary"></div>
                             </div>
                             <div class="progress-value ml-3 pr-5 border-right">
                                 <p class="mb-2">Total Grand Total</p>
@@ -217,7 +227,7 @@
                                 <option>Expense</option>
                             </select>
                             <br>
-                          <center>  <button class="btn btn-dark btn-block btn-lg" type="submit">Process</button></center>
+                          <center>  <button class="btn sidebar-bottom-btn  btn-lg btn-block" type="submit">Process</button></center>
                         </form>
                     </div>
                     <div class="col-lg-4">
@@ -274,7 +284,7 @@
                             <br>
                             <center> <h5>{{ $tittle }}  {{  number_format($serviceMonly, 2)  }}</h5></center>
                             <br>
-                           <center> <button class="btn btn-dark btn-block btn-lg" type="submit">Process</button></center>
+                           <center> <button class="btn sidebar-bottom-btn  btn-lg btn-block" type="submit">Process</button></center>
 
                         </form>
                         <br>

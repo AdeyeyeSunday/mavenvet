@@ -27,7 +27,6 @@
 
                         @foreach ($attendance1 as $key=>$attendance)
                         <tr>
-                            {{-- <td>{{$key+1}}</td> --}}
                             <td>{{$attendance->staff_name}}</td>
                             <td>{{$attendance->Time}}</td>
                             <td>{{$attendance->Timeout}}</td>

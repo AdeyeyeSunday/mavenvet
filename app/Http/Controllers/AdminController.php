@@ -348,10 +348,6 @@ if ($con === false) {
 
                }
            }
-
-
-
-
               /*..............categories start from here...........................*/
               $offline = "SELECT `Category` FROM `categories` WHERE syn_flag = '0'";
               $resOffline = $mysqli->query($offline);
@@ -1651,6 +1647,66 @@ return back();
 
 
 
+function update2(){
+try {
+        ini_set('max_execution_time', 3600); // 3600 seconds = 60 minutes
+        set_time_limit(3600);
+    // Offline database connection
+$dbhost = "localhost";
+$dbuser = "root";
+$dbpass = "";
+$db = "mavenvet";
+
+// Offline SQL connection
+$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $db);
+if ($mysqli->connect_error) {
+    die("Connection failed: " . $mysqli->connect_error);
+}
+
+// Online database connection
+$online_host = '131.153.147.34';
+$online_user = 'mavenvet_midwifery';
+$online_password = 'mavenvet_midwifery';
+$online_db = 'mavenvet_midwifery';
+
+$online_con = mysqli_connect($online_host, $online_user, $online_password, $online_db);
+if ($online_con === false) {
+    die("Online database connection error: " . mysqli_connect_error());
+}
+
+// Truncate table in offline database
+         $truncateQuery = "TRUNCATE TABLE transferstores";
+        if ($mysqli->query($truncateQuery) === false) {
+            die("Error truncating table: " . $mysqli->error);
+        }
+
+            // Copy data from online table to offline table
+        $selectQuery = "SELECT * FROM shop_items WHERE moved = 'moved'";
+        $result = mysqli_query($online_con, $selectQuery);
+        if ($result === false) {
+            die("Error selecting data from online table: " . mysqli_error($online_con));
+        }
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            // Insert data into offline table
+            $fields = implode(",", array_keys($row));
+            $values = "'" . implode("','", array_values($row)) . "'";
+            $insertQuery = "INSERT INTO transferstores ($fields) VALUES ($values)";
+            if ($mysqli->query($insertQuery) === false) {
+                die("Error inserting data into offline table: " . $mysqli->error);
+            }
+        }
+        session()->flash('item', 'Product successful');
+        return back();
+
+        }  catch (\Throwable $th) {
+            //throw $th;s
+            session()->flash('item_not', 'Product was not successful due to a weak network. Please try again later. Error: ');
+            return back();
+        }
+
+}
+
 
 // this update software from backend .....
 
@@ -1824,6 +1880,8 @@ function dashboard()
         //  $serviceMonly =  Service_item::where('month', $monthclinic)
         //  ->where('year', $yearclinic)
         //  ->sum('total_vaccine_amount');
+
+       $userservice =Service_order::where('month', $month)->where('year',$year)->where('user_id', Auth::user()->id)->where('order_status', 'success')->sum('pay','cash_pos','cash_transfer');
         $service_amount =  Service_order::where('month', $month)->where('year',$year)->where('order_status', 'success')->sum('pay','cash_pos','cash_transfer');
         $serviceMonly =  Service_order::where('month', $monthclinic)->where('year', $yearclinic)->where('order_status', 'success')->sum('pay','cash_pos','cash_transfer');
 
@@ -1834,7 +1892,7 @@ function dashboard()
         'items_transfer_cash'=>$items_transfer_cash,'items_items_transfer_pay'=>$items_items_transfer_pay,'items_cash_pos'=>$items_cash_pos,'items_cash_pos2'=>$items_cash_pos2,
         'admission'=>$admission,'admission2'=>$admission2,'profitmonthly'=>$profitmonthly,'profitmonthly2'=>$profitmonthly2,
          'new_pos'=>$new_pos,'new_transfer'=>$new_transfer,'new_cash'=>$new_cash,'profit'=>$profit,'service_amount'=>$service_amount,
-         'clinicExpenditure'=>$clinicExpenditure,'serviceMonly'=>$serviceMonly,'tittle'=>$tittle]);
+         'clinicExpenditure'=>$clinicExpenditure,'serviceMonly'=>$serviceMonly,'tittle'=>$tittle,'userservice'=>$userservice]);
     }
 
 
