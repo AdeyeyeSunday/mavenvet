@@ -30,7 +30,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary mr-2">Update category</button>
+                            <button type="submit" class="btn sidebar-bottom-btn mt-4 btn-lg ">Update category</button>
                             <button type="reset" class="btn btn-danger">Reset</button>
                         </form>
                     </div>

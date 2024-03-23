@@ -1704,13 +1704,9 @@ if ($online_con === false) {
             session()->flash('item_not', 'Product was not successful due to a weak network. Please try again later. Error: ');
             return back();
         }
-
 }
 
-
 // this update software from backend .....
-
-
 public function update_software() {
 try {
 
@@ -1777,7 +1773,7 @@ try {
     //     return response()->json(['success' => false, 'item' => ''], 500);
     // }
 } catch (\Throwable $th) {
-    session()->flash('item', 'Software Failed to update');
+    session()->flash('item', 'Software Failed to update.');
     return back();
 }
 }

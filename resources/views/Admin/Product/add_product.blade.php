@@ -36,14 +36,14 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Cost *</label>
-                                        <input type="text" class="form-control" name="Cost" placeholder="Enter Cost" data-errors="Please Enter Cost." required>
+                                        <input type="number" class="form-control" name="Cost" placeholder="Enter Cost" data-errors="Please Enter Cost." required>
                                         <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Selling price *</label>
-                                        <input type="text" class="form-control" name="Price" placeholder="Enter Price" data-errors="Please Enter Price." required>
+                                        <input type="number" class="form-control" name="Price" placeholder="Enter Price" data-errors="Please Enter Price." required>
                                         <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
@@ -51,14 +51,14 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Quantity *</label>
-                                        <input type="text" class="form-control" name="Quantity" placeholder="Enter Quantity" required>
+                                        <input type="number" class="form-control" name="Quantity" placeholder="Enter Quantity" required>
                                         <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Minimum  quantity *</label>
-                                        <input type="text" class="form-control" name="Quantity_level" placeholder="Enter Quantity" required>
+                                        <input type="number" class="form-control" name="Quantity_level" placeholder="Enter Quantity" required>
                                         <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
@@ -99,8 +99,8 @@
 
                                 <input type="hidden" name="new_date" value="0" id="">
                             </div>
-                            <button type="submit" class="btn btn-primary mr-2">Add Product</button>
-                            <button type="reset" class="btn btn-danger">Reset</button>
+                            <button type="submit" class="btn sidebar-bottom-btn mt-4 btn-lg btn-block">Add Product</button>
+                            {{-- <button type="reset" class="btn btn-danger">Reset</button> --}}
                         </form>
                     </div>
                 </div>

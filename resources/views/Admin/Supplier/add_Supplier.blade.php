@@ -96,8 +96,8 @@
                                        </div>
                                    </div>
                                </div>
-                               <button type="submit" class="btn btn-primary mr-2">Add Supplier</button>
-                               <button type="reset" class="btn btn-danger">Reset</button>
+                               <button type="submit" class="btn sidebar-bottom-btn mt-4 btn-lg btn-block">Add Supplier</button>
+
                            </form>
                        </div>
                    </div>

@@ -613,17 +613,17 @@
                                                                         <td>
 
                                                                             @php
-                                                                                if (
-                                                                                    $product->Quantity <=
-                                                                                    $product->Quantity_level
-                                                                                ) {
-                                                                                    echo '<button type="button" class="btn btn-danger btn-sm mr-2">out of stock</button>';
-                                                                                } elseif (
-                                                                                    $product->Quantity >
-                                                                                    $product->Quantity_level
-                                                                                ) {
-                                                                                    echo ' <button type="button" class="btn btn-primary btn-sm mr-2">In Stock</button>';
+                                                                                if ( $product->Quantity == 0 ) {
+                                                                                    echo '<button type="button" class="btn btn-dark btn-sm mr-2">out of stock</button>';
                                                                                 }
+                                                                                 elseif ($product->Quantity >= $product->Quantity_level)
+                                                                                 {
+                                                                                    echo ' <button type="button" class="btn btn-primary btn-sm mr-2">In Stock</button>';
+                                                                                 }
+                                                                                 elseif ($product->Quantity <= $product->Quantity_level)
+                                                                                 {
+                                                                                    echo ' <button type="button" class="btn btn-danger btn-sm mr-2">low Stock</button>';
+                                                                                 }
 
                                                                             @endphp
                                                                         </td>

@@ -75,7 +75,7 @@ class PosController extends Controller
 
     public function direct_print(){
         $lastOrder = Order::latest()->first();
-        $finalPrice = $lastOrder->pay;
+        $finalPrice = $lastOrder->pay + $lastOrder->cash_transfer+ $lastOrder->cash_pos;
         $Pos_invoice = OrderIteams::where('order_id', $lastOrder->id)->get();
         return view("Admin.Pos.direct_print",['Pos_invoice'=>$Pos_invoice,'finalPrice'=>$finalPrice]);
     }

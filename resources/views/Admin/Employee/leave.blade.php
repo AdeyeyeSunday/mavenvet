@@ -61,7 +61,7 @@
                      <input type="hidden" name="user_id" id="" value="{{auth()->user()->id}}">
                      <input type="hidden" name="status" id="" value="Pending">
                        <div class="form-group">
-                         <center> <button class="btn btn-primary" type="submit">Apply</button></center>
+                         <center> <button class="btn sidebar-bottom-btn mt-4 btn-lg " type="submit">Apply</button></center>
                        </div>
                     </form>
                  </div>

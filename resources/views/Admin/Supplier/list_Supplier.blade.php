@@ -13,10 +13,8 @@
                       </center>
                         @endif
                         <h6 class="mb-3">Suppliers List</h6>
-                        {{-- <p class="mb-0">Create and manage your vendor list, send and receive purchase orders – your online<br>
-                         Dashboard is your new back of house.</p> --}}
                     </div>
-                    <a href="{{route('Admin.Supplier.add_Supplier')}}" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Add Supplier</a>
+                    <a href="{{route('Admin.Supplier.add_Supplier')}}" class="btn sidebar-bottom-btn mt-4 btn-lg "><i class="las la-plus mr-3"></i>Add Supplier</a>
                 </div>
             </div>
             <div class="col-lg-12">
@@ -29,9 +27,6 @@
                                     <input type="checkbox" class="checkbox-input" id="checkbox1">
                                     <label for="checkbox1" class="mb-0"></label>
                                 </div>
-
-
-
                             </th>
                             <th>Company Name</th>
                             <th>Name</th>
