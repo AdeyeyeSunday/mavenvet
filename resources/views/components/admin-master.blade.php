@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="http://iqonic.design/themes/posdash/html/assets/images/favicon.ico" />
     <link rel="stylesheet" href="{{ asset('assets/css/backend-plugin.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/backende209.css?v=1.0.0') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/%40fortawesome/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/remixicon/fonts/remixicon.css') }}">
     <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
@@ -87,7 +87,7 @@
                 @php
                     $verstion = App\Models\Systemupdate::first();
                 @endphp
-                <center><p>You need Internet to update software to version {{ $verstion->version }}</p>
+                <center><p>You need Internet to update <br> version {{ $verstion->version }}</p>
                     <p>Last update: {{ $verstion->updated_at->format('d-m-Y') }}</p>
 
                     <a href="{{ route("Admin.update_software") }}">

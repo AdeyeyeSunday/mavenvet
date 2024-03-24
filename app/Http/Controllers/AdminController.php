@@ -1564,7 +1564,6 @@ $resOffline = $mysqli->query($offline);
 
 
 /*..............User start from here...........................*/
-
 $offline = "SELECT `id`,`name`, `email`, `email_verified_at`, `password`, `two_factor_secret`, `two_factor_recovery_codes`, `remember_token`, `current_team_id`, `profile_photo_path`, `late_charge`, `salary`, `resumption_time`,`syn_flag` FROM `users` WHERE syn_flag = '0'";
 $resOffline = $mysqli->query($offline);
  if($resOffline->num_rows > 0){
@@ -1732,24 +1731,6 @@ function update2(){
 // this update software from backend .....
 public function update_software() {
 try {
-
-    $checkCount = Systemupdate::count();
-    $verstion = "2.0";
-    if ($checkCount > 0) {
-        $systemUpdate = Systemupdate::first();
-        $systemUpdate->update([
-            'version' => $verstion,
-            'updated_at' => date("Y-m-d"),
-            'updated_by' => Auth::user()->id,
-        ]);
-    } else {
-        // Create new record
-        $inp = new Systemupdate();
-        $inp->version = $verstion;
-        $inp->updated_at = date("Y-m-d");
-        $inp->updated_by = Auth::user()->id;
-        $inp->save();
-    }
     $repositoryUrl = 'https://github.com/AdeyeyeSunday/mavenvet/archive/main.zip';
 
     // Fetch the ZIP file from the repository
@@ -1784,7 +1765,23 @@ try {
             rename($oldExtractedPath, $newExtractedPath);
         }
 
-
+        $checkCount = Systemupdate::count();
+        $verstion = "2.0";
+        if ($checkCount > 0) {
+            $systemUpdate = Systemupdate::first();
+            $systemUpdate->update([
+                'version' => $verstion,
+                'updated_at' => date("Y-m-d"),
+                'updated_by' => Auth::user()->id,
+            ]);
+        } else {
+            // Create new record
+            $inp = new Systemupdate();
+            $inp->version = $verstion;
+            $inp->updated_at = date("Y-m-d");
+            $inp->updated_by = Auth::user()->id;
+            $inp->save();
+        }
         // return response()->json(['success' => true, 'item' => 'Software updated successfully']);
     }
 

@@ -45,13 +45,13 @@
                                 <div class="card-body">
                                     <div class="d-flex align-items-center mb-4 card-total-sale">
                                         <div class="icon iq-icon-box-2 bg-info-light">
-                                            <img src="{{ asset('assets/images/product/1.png') }}" class="img-fluid"
+                                            <img src="{{ asset('assets/images/product/15.png') }}" class="img-fluid"
                                                 alt="image">
                                         </div>
                                         <div>
 
                                                 @if (auth()->user()->userHasRole('Admin'))
-                                                <p class="mb-2"> Clinic service monthly </p>
+                                                <p class="mb-2">Monthly clinic service  </p>
                                             <h6>₦ {{ number_format($service_amount, 2) }}</h6>
                                             @elseif (auth()->user()->userHasRole('Doctor'))
                                             <p class="mb-2"> {{ Auth::user()->name }}  Monthly Service </p>
@@ -71,7 +71,7 @@
                                 <div class="card-body">
                                     <div class="d-flex align-items-center mb-4 card-total-sale">
                                         <div class="icon iq-icon-box-2 bg-danger-light">
-                                            <img src="{{ asset('assets/images/product/2.png') }}" class="img-fluid"
+                                            <img src="{{ asset('assets/images/product/12.png') }}" class="img-fluid"
                                                 alt="image">
                                         </div>
                                         <div>
@@ -91,12 +91,33 @@
                                 <div class="card-body">
                                     <div class="d-flex align-items-center mb-4 card-total-sale">
                                         <div class="icon iq-icon-box-2 bg-success-light">
-                                            <img src="{{ asset('assets/images/product/3.png') }}" class="img-fluid"
+                                            <img src="{{ asset('assets/images/product/13.png') }}" class="img-fluid"
                                                 alt="image">
                                         </div>
                                         <div>
                                             <p class="mb-2">Total daily pos</p>
                                             ₦ {{ number_format($items_pos + $new_pos, 2) }}
+                                        </div>
+                                    </div>
+                                    <div class="iq-progress-bar mt-2">
+                                        <span class="bg-success iq-progress progress-1" data-percent="75">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4">
+                            <div class="card card-block card-stretch card-height">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-4 card-total-sale">
+                                        <div class="icon iq-icon-box-2 bg-success-light">
+                                            <img src="{{ asset('assets/images/product/14.png') }}" class="img-fluid"
+                                                alt="image">
+                                        </div>
+                                        <div>
+                                            <p class="mb-2">Total daily transfer</p>
+                                            ₦ {{ number_format($items_transfer + $new_transfer, 2) }}
                                         </div>
                                     </div>
                                     <div class="iq-progress-bar mt-2">
@@ -126,41 +147,28 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-4">
-                            <div class="card card-block card-stretch card-height">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center mb-4 card-total-sale">
-                                        <div class="icon iq-icon-box-2 bg-success-light">
-                                            <img src="{{ asset('assets/images/product/3.png') }}" class="img-fluid"
-                                                alt="image">
-                                        </div>
-                                        <div>
-                                            <p class="mb-2">Total daily transfer</p>
-                                            ₦ {{ number_format($items_transfer + $new_transfer, 2) }}
-                                        </div>
-                                    </div>
-                                    <div class="iq-progress-bar mt-2">
-                                        <span class="bg-success iq-progress progress-1" data-percent="75">
+                        <div class="card card-block card-stretch card-height">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-4 card-total-sale">
+                                    <div class="progress progress-round m-0 orange conversation-bar" data-percent="46">
+                                        <span class="progress-left">
+                                            <span class="progress-bar"></span>
                                         </span>
+                                        <span class="progress-right">
+                                            <span class="progress-bar"></span>
+                                        </span>
+                                        <div class="progress-value text-secondary"></div>
+                                    </div>
+
+                                    <div class="progress-value ml-3 pr-5 border-right">
+                                        <p class="mb-2">Grand Total</p>
+                                        ₦ {{ number_format($items_transfer + $new_transfer + $items_pos + $new_pos + $items_pay + $new_cash, 2) }}
                                     </div>
                                 </div>
+
                             </div>
                         </div>
-                        <div class="d-flex align-items-center progress-order-left">
-                            <div class="progress progress-round m-0 orange conversation-bar" data-percent="46">
-                                <span class="progress-left">
-                                    <span class="progress-bar"></span>
-                                </span>
-                                <span class="progress-right">
-                                    <span class="progress-bar"></span>
-                                </span>
-                                <div class="progress-value text-secondary"></div>
-                            </div>
-                            <div class="progress-value ml-3 pr-5 border-right">
-                                <p class="mb-2">Total Grand Total</p>
-                                ₦ {{ number_format($items_transfer + $new_transfer + $items_pos + $new_pos + $items_pay + $new_cash, 2) }}
-                            </div>
-                        </div>
+
                     </div>
                 </div>
                 <div class="col-lg-4">

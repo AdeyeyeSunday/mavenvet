@@ -3,7 +3,6 @@
         <div class="row">
 
             <div class="col-lg-4">
-
                 <form method="post" action="{{ route('Admin.User.register_store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
@@ -12,8 +11,6 @@
                         @error('name')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
-
-
                         <label class="form-label">Email</label>
                         <input type="email" name="email" class="form-control" id="">
                         @error('email')
@@ -46,12 +43,12 @@
 
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+                    <button type="submit" class="btn sidebar-bottom-btn  btn-lg btn-block">Submit</button>
                 </form>
             </div>
 
 
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 <form action="{{ route('Admin.User.bank_store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <label for="">Bank Name</label>
@@ -110,7 +107,7 @@
                     <input type="number" placeholder="Enter account number" name="accountNumber" class="form-control"
                         required>
                     <br>
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+                    <button type="submit" class="btn sidebar-bottom-btn  btn-lg btn-block">Submit</button>
                 </form>
             </div>
 
@@ -140,7 +137,7 @@
                                         <td>{{ $bank->accountNumber }}</td>
                                         <td>
                                             <a href="{{ route('Admin.User.delete', $bank->id) }}"><button
-                                                    class="btn btn-danger btn-lg btn-block">Delete</button></a>
+                                                    class="btn btn-danger btn-sm btn-block">Delete</button></a>
                                         </td>
 
                                     </tr>
@@ -195,16 +192,16 @@
                                                 <td>Last {{ $user_list->updated_at->diffForHumans() }}</td>
                                                 <th>
                                                     <a href="{{ route('Admin.User.role_edit', $user_list->id) }}"><button
-                                                            class="btn btn-primary">Role</button></a>
+                                                            class="btn btn-primary btn-sm">Role</button></a>
                                                 </th>
 
                                                 <td>
                                                     <a href="{{ route('Admin.User.register_edit', $user_list->id) }}"><button
-                                                            class="btn btn-primary">Edit</button></a>
+                                                            class="btn btn-warning btn-sm">Edit</button></a>
                                                 </td>
                                                 <td>
 
-                                                    <button class="btn btn-danger">Delete</button>
+                                                    <button class="btn btn-danger btn-sm">Delete</button>
                                                 </td>
 
                                             </tr>
