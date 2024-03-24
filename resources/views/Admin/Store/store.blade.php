@@ -22,7 +22,7 @@
                     @endif
                     <div class="container-fluid">
                         <div class="row">
-                           <div class="col-sm-12 col-lg-8 col-md-8">
+                           <div class="col-sm-12 col-lg-6 col-md-8">
                               <div class="card">
                                  <div class="card-header d-flex justify-content-between">
                                     <div class="header-title">
@@ -43,10 +43,7 @@
                                                               <th>Qty</th>
                                                               <th>Price</th>
                                                               <th>Status</th>
-                                                              {{-- <th>Head Office->Branch</th>
-                                                              <th>Clinic use</th>
-                                                              <th>Retails</th>
-                                                              <th>Damage</th> --}}
+
                                                               <th>Action</th>
                                                           </tr>
                                                       </thead>
@@ -96,7 +93,7 @@
                                                               <th>
 
                                                                   <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
-                                                                href="{{route('Admin.Store.destory2',$get_cart->id)}}"><i class="ri-delete-bin-line mr-0"></i></a>
+                                                                href="{{route('Admin.Store.destory2',$get_cart->id)}}">Remove</a>
 
                                                         </th>
                                                           </tr>
@@ -105,11 +102,14 @@
                                                       @endphp
                                                           @endforeach
 
-                                                          <h6>Grand Total : {{$total}}</h6>
+                                                          <h6>Grand Total : {{ number_format($total, 2) }}</h6>
                                                       </tbody>
                                                   </table>
                                                </ul>
-                                                  <button class="btn btn-dark" style="margin-left: 90%;">Update Cart</button>
+                                               @if ($total != '0.00')
+                                               <button class="btn btn-dark btn-lg btn-block">Update Cart</button>
+                                               @endif
+
                                             </form>
                                             </div>
                                          </div>
@@ -129,14 +129,16 @@
                  <input type="hidden" name="user_id" value="{{$get_cart->user_id}}">
                  <input type="hidden" name="subtotal" value="{{$get_cart->Price * $get_cart->Quantity}}">
                  @endforeach
-                   <center>  <button type="submit" class="btn btn-primary">Move</button></center>
+                 @if ($total != '0.00')
+                   <center>  <button type="submit" class="btn sidebar-bottom-btn mt-4 btn-lg btn-block">Transfer</button></center>
+                   @endif
                 </form>
 
 
                  </div>
                         </div>
                            </div>
-                           <div class="col-sm-12 col-lg-4 col-md-4">
+                           <div class="col-sm-12 col-lg-6 col-md-4">
                               <div class="card">
                                  <div class="card-header d-flex justify-content-between">
                                     <div class="header-title">
@@ -167,7 +169,6 @@
                                                         @csrf
                                                         <input type="hidden" name="user_id" value="{{auth()->user()->id}}" >
                                                         <input type="hidden" value="{{$pro->Name}}" name="Name">
-
                                                         <input type="hidden" value="1" name="Quantity">
                                                         <input type="hidden" value="{{$pro->Price}}" name="Price">
                                                         <input type="hidden" name="prod_id" value="{{$pro->id}}">
@@ -183,9 +184,10 @@
                                                     <td>{{$pro->Quantity}}</td>
                                                     <td>
                                                          @php
-                                                        if ( $pro->Quantity <= $pro->Quantity_level)
-
-
+                                                         if ( $pro->Quantity <= $pro->Quantity_level){
+                                                            echo   '<button type="button" class="btn btn-dark btn-sm mr-2">Out of stock</button>';
+                                                         }
+                                                        elseif ( $pro->Quantity <= $pro->Quantity_level)
                                                             echo   '<button type="button" class="btn btn-danger btn-sm mr-2">Low stock restock it</button>';
                                                            elseif ($pro->Quantity > $pro->Quantity_level)
                                                             echo   ' <button type="button" class="btn btn-primary btn-sm mr-2">In Stock</button>';
@@ -196,9 +198,10 @@
                                                     {{-- <button type="submit" class="btn btn-link"><i class="ri-moon-fill pr-0"></i></button> --}}
 
                                                     @if ($pro->Quantity <= 0)
-                                                    <button disabled ><i class="ri-moon-fill pr-0"></i></button>
+                                                    <button disabled ><i class="ri-moons-fill pr-0"></i></button>
                                                     @else
-                                                    <button type="submit" class="btn btn-link"><i class="ri-moon-fill pr-0"></i></button>
+                                                    <button type="submit" class="btn btn-link"><i
+                                                        class="ri-check-line ri-lg fw-bold"></i></button>
                                                     @endif
 
                                                     </td>

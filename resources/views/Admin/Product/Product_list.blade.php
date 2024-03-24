@@ -38,7 +38,7 @@
 
                     </div>
 
-                    <a href="{{route('Admin.Product.add_product')}}" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Add Product</a>
+                    <a href="{{route('Admin.Product.add_product')}}" class="btn sidebar-bottom-btn mt-4 btn-lg add-list"><i class="las la-plus mr-3"></i>Add product</a>
                 </div>
             </div>
             <div class="col-lg-12">
@@ -87,7 +87,7 @@
 
 
 
-                                                                            
+
                                 </div>
                             </td>
                         </tr>

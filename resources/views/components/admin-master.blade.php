@@ -39,24 +39,13 @@
 
             @if (auth()->user()->userHasRole('Admin'))
                 <x-Dashboard></x-Dashboard>
-
                 <x-pos></x-pos>
-
                 <x-Attendance></x-Attendance>
-
                 <x-Employee></x-Employee>
-
                 <x-Store></x-Store>
-                {{-- <x-Expenditure></x-Expenditure> --}}
-
                 <x-Clinic></x-Clinic>
-
-                {{-- <x-bad></x-bad> --}}
-
                 <x-Orders_Sales_Report></x-Orders_Sales_Report>
-
                 <x-Admin_Report></x-Admin_Report>
-
                 <x-Authorisation></x-Authorisation>
             @endif
 
@@ -66,10 +55,7 @@
                 <x-Dashboard></x-Dashboard>
                 <x-pos></x-pos>
                 <x-Clinic></x-Clinic>
-
-                {{-- <x-bad></x-bad> --}}
                 <x-Employee></x-Employee>
-                {{-- <x-Expenditure></x-Expenditure> --}}
                 <x-Orders_Sales_Report></x-Orders_Sales_Report>
                 <x-Attendance></x-Attendance>
             @endif
@@ -79,9 +65,7 @@
                 <x-Dashboard></x-Dashboard>
                 <x-pos></x-pos>
                 <x-Clinic></x-Clinic>
-                {{-- <x-bad></x-bad> --}}
                 <x-Employee></x-Employee>
-                {{-- <x-Expenditure></x-Expenditure> --}}
                 <x-Orders_Sales_Report></x-Orders_Sales_Report>
                 <x-Attendance></x-Attendance>
                 <x-Admin_Report></x-Admin_Report>
@@ -144,13 +128,13 @@
 
 
 
-                @if (Session::has('success'))
+                {{-- @if (Session::has('success'))
                     <center>
                         <div class="alert alert-success" role="alert">
                             <div class="iq-alert-text">{{ Session::get('success') }}</div>
                         </div>
                     </center>
-                @endif
+                @endif --}}
 
 
 

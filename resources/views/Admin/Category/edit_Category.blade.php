@@ -8,6 +8,7 @@
                         <div class="header-title">
                             <h4 class="card-title">Update category</h4>
                         </div>
+                        <a href="{{ route("Admin.Category.list_Category") }}">   <button class="btn sidebar-bottom-btn btn-lg"> Back</button></a>
                     </div>
                     <div class="card-body">
                         <form action="{{route('Admin.Category.update_Category',$Category->id)}}" method="post" data-toggle="validator">
@@ -30,8 +31,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn sidebar-bottom-btn mt-4 btn-lg ">Update category</button>
-                            <button type="reset" class="btn btn-danger">Reset</button>
+                            <button type="submit" class="btn sidebar-bottom-btn mt-4 btn-lg btn-block">Update category</button>
+
                         </form>
                     </div>
                 </div>

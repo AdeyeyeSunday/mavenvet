@@ -9,6 +9,7 @@
                            <div class="header-title">
                                <h4 class="card-title">Update Supplier</h4>
                            </div>
+                           <a href="{{ route("Admin.Supplier.list_Supplier") }}">   <button class="btn sidebar-bottom-btn btn-lg"> Back</button></a>
                        </div>
                        <div class="card-body">
                            <form action="{{route('Admin.Supplier.update_Supplier',$supplier->id)}}" enctype="multipart/form-data" method="post" data-toggle="validator">

@@ -8,6 +8,7 @@
                         <div class="header-title">
                             <h6 class="card-title">Add Product</h6>
                         </div>
+                        <a href="{{ route("Admin.Product.Product_list") }}">   <button class="btn sidebar-bottom-btn btn-lg"> Back</button></a>
                     </div>
                     <div class="card-body">
                          <form action="{{route('Admin.Product.store_product')}}" method="post" enctype="multipart/form-data" data-toggle="validator">

@@ -7,8 +7,9 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Update Product</h4>
+                            <h4 class="card-title">Update product</h4>
                         </div>
+                     <a href="{{ route("Admin.Product.Product_list") }}">   <button class="btn sidebar-bottom-btn btn-lg"> Back</button></a>
                     </div>
 
                     @if (Session::has('error'))
@@ -63,7 +64,7 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>New Supply *</label>
+                                        <label>New supply *</label>
                                         <input type="number" class="form-control" name="new_supply" value="0"  placeholder="Enter New Supply" required>
                                         <div class="help-block with-errors"></div>
                                     </div>
@@ -71,7 +72,7 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Expiry Date *</label>
+                                        <label>Expiry date *</label>
                                         <input type="text" name="expiry_date" value="{{$Product->expiry_date}}"  class="form-control" placeholder="Enter Name" data-errors="Please Enter Name." required>
                                         <div class="help-block with-errors"></div>
                                     </div>
@@ -82,7 +83,7 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Update Quantity level *</label>
+                                        <label>Update quantity level *</label>
                                         <input type="text" name="Quantity_level" value="{{$Product->Quantity_level}}"  class="form-control" placeholder="Enter Name" data-errors="Please Enter Name." required>
                                         <div class="help-block with-errors"></div>
                                     </div>
@@ -91,7 +92,7 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Description / Product Details *</label>
+                                        <label>Description & Product details *</label>
                                         <textarea class="form-control" name="Description" rows="4">{{$Product->Description}}</textarea>
                                     </div>
                                 </div>
@@ -101,8 +102,7 @@
                                 <input type="hidden" name="year" value="{{date('Y')}}" id="">
 
                             </div>
-                            <button type="submit" class="btn btn-primary mr-2">Update Product</button>
-                            <button type="reset" class="btn btn-danger">Reset</button>
+                            <button type="submit" class="btn sidebar-bottom-btn mt-4 btn-lg btn-block">Update product</button>
                         </form>
                     </div>
                 </div>

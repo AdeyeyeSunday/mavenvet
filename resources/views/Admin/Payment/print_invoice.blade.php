@@ -173,49 +173,23 @@
                                   @endif
                                   @endforeach
 
-
-
-{{--
-
-                                  <tr class="tabletitle">
-                                    <td class="item"><h2>Item</h2></td>
-                                    <td class="Hours"><h2>Qty</h2></td>
-                                    <td class="Rate"><h2>Sub Total</h2></td>
-                                </tr>
-
-
- --}}
-
-
-
-
-
-
-
-
                                   <tr class="tabletitle">
                                     <td></td>
-                                    <td class="Rate"><h2>Amount charge</h2></td>
+                                    <td class="Rate"><h2>Amount charged</h2></td>
                                     <td class="payment"><h2>{{$print->total_price}}.00</h2></td>
                                 </tr>
+
                                 <tr class="tabletitle">
                                     <td></td>
-                                    <td class="Rate"><h2>Amount Paid</h2></td>
-                                    <td class="payment"><h2>{{$print->pay}}.00</h2></td>
-                                </tr>
-                                <tr class="tabletitle">
-                                    <td></td>
-                                    <td class="Rate"><h2>Balance </h2></td>
+                                    <td class="Rate"><h2>Balance</h2></td>
                                     <td class="payment"><h2>{{$print->due}}.00</h2></td>
                                 </tr>
 
-                                  <tr class="tabletitle">
+                                <tr class="tabletitle">
                                     <td></td>
-                                    <td class="Rate"><h2>Total</h2></td>
-                                    <td class="payment"><h2>{{$print->pay}}.00</h2></td>
+                                    <td class="Rate"><h2>Paid</h2></td>
+                                    <td class="payment"><h2>{{$print->pay + $print->cash_transfer + $print->cash_pos}}.00</h2></td>
                                 </tr>
-
-
                               </table>
                           </div><!--End Table-->
 

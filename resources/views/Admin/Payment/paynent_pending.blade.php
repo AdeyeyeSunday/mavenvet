@@ -21,7 +21,7 @@
                                     <th>Phone No</th>
                                     <th>Order Status</th>
                                     <th>Date</th>
-                                    <th>Invoice</th>
+                                    <th>Pay</th>
                                     @if (auth()->user()->userHasRole('Admin'))
                                     <th>Delete</th>
                                     @endif
@@ -35,12 +35,12 @@
                                 <td><button type="button" class="btn btn-danger btn-sm mr-2">{{$pos_view->order_status}}</button></td>
                                 <td>{{$pos_view->date}}</td>
                                 <td>
-                                   <a href="{{route('Admin.Payment.payment_invoice',$pos_view->id)}}"><button type="button" class="btn btn-primary btn-sm mr-2">Make payment</button></a>
+                                   <a href="{{route('Admin.Payment.payment_invoice',$pos_view->id)}}"><button type="button" class="btn btn-dark btn-sm mr-2">Process payment</button></a>
                                  </td>
 
                                 <td>
                                     @if (auth()->user()->userHasRole('Admin') || auth()->user()->userHasRole('Manager'))
-                                    <a href="{{ route('Admin.Payment.payment_invoice_delete',$pos_view->id) }}" class="btn btn-danger">Delete</a>
+                                    <a href="{{ route('Admin.Payment.payment_invoice_delete',$pos_view->id) }}" class="btn btn-danger btn-sm">Delete</a>
                                     @endif
                                 </td>
                                  </tr>

@@ -9,6 +9,7 @@
                            <div class="header-title">
                                <h6 class="card-title">Add Supplier</h6>
                            </div>
+                           <a href="{{ route("Admin.Supplier.list_Supplier") }}">   <button class="btn sidebar-bottom-btn btn-lg"> Back</button></a>
                        </div>
 
                        @if (Session::has('message'))

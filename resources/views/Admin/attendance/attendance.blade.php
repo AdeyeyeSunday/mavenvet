@@ -27,24 +27,12 @@
                             <form id="attendanceForm" action="{{ route('Admin.attendance.attendance_store') }}"
                                 method="post" enctype="multipart/form-data">
                                 @csrf
+
                                 @php
-                                    $check_tmer = App\Models\Attendance::where('Time', '!=', null)
-                                        ->where('staff_name', auth()->user()->name)
-                                        ->latest()
-                                        ->first();
+                                    $check_tmer = App\Models\Attendance::where('Time', '!=', null)->where('staff_name', auth()->user()->name)->latest()->first();
                                 @endphp
-                                @if (strtotime(date('H:i')) > strtotime(Auth::user()->resumption_time))
-                                    <center>
-                                        @if ($check_tmer->late_comment ?? '' == null)
-                                            <p style="color: red">
-                                                You are already late, and your charge is
-                                                {{ number_format(Auth::user()->late_charge, 2) }}.
-                                                Please
-                                                note.This will be deducted from your salary.
-                                            </p>
-                                        @endif
-                                    </center>
-                                @endif
+
+
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label>Staff name</label>
@@ -72,8 +60,10 @@
                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" id="">
                                 @if (strtotime(date('H:i')) > strtotime(Auth::user()->resumption_time))
                                 @if (!$check_tmer || $check_tmer->late_comment == null)
+                               <center> <p style="color: red"> You are already late, and your charge is {{ number_format(Auth::user()->late_charge, 2) }}.Please note.This will be deducted from your salary.</p></center>
                                     <label for="lateReason">Reason for late coming</label>
                                     <textarea name="late_comment" class="form-control" id="lateReason" cols="3" rows="3" required></textarea>
+
                                 @endif
                             @endif
                                 <br>
@@ -92,9 +82,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-
                             <div class="container-fluid">
-
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -103,8 +91,8 @@
                                             <tr class="ligth">
                                                 {{-- <th>Id</th> --}}
                                                 <th>Name</th>
-                                                <th>Clock In</th>
-                                                <th>Clock Out</th>
+                                                <th>Clockin</th>
+                                                <th>Clockout</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead>

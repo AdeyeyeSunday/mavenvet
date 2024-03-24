@@ -48,10 +48,6 @@ class StoreController extends Controller
     }
 
 
-
-
-
-
     public function store_cart(Request $request){
         $inputs =  request()->validate([
             'user_id'=>'required',
@@ -127,8 +123,7 @@ class StoreController extends Controller
             $curQty = Product::where("id",$shop_cart->prod_id)->first()->Quantity;
             Product::where("id",$shop_cart->prod_id)->update(['Quantity'=>$curQty-$shop_cart->Quantity,'syn_flag'=>0]);
         }
-
-        session()->flash('message','Items Move');
+        session()->flash('message','Item(s) transferred successful');
         $cart = Store_cart::where('user_id',Auth::id())->get();
         Store_cart::destroy($cart);
         return back();
@@ -165,18 +160,18 @@ class StoreController extends Controller
 
 
   public function service_due(){
-    $daily = Service_order::with('service_item')->where('order_status','success')->where('Payment_type','Half Payment')->where('location','MVC')->get();
-    $amount = DB::table('service_orders')->where('order_status','success')->where('Payment_type','Half Payment')->where('location','MVC')->sum('due');
+    $daily = Service_order::with('service_item')->where('order_status','success')->where('Payment_type','Half Payment')->get();
+    $amount = DB::table('service_orders')->where('order_status','success')->where('Payment_type','Half Payment')->sum('due');
     return view('Admin.Store.service_due',['daily'=>$daily,'amount'=>$amount]);
   }
 
 
   public function service_balance(){
-    $balance = Payment_due::where('location','MVC')->get();
-    $amount =  Payment_due::where('location','MVC')->sum('due');
-    $cash = DB::table('payment_dues')->where('Mode_of_payment','Cash')->where('location','MVC')->sum('due');
-    $tranfer = DB::table('payment_dues')->where('Mode_of_payment','Transfer')->where('location','MVC')->sum('due');
-    $pos = DB::table('payment_dues')->where('Mode_of_payment','Pos')->where('location','MVC')->sum('due');
+    $balance = Payment_due::get();
+    $amount =  Payment_due::sum('due');
+    $cash = DB::table('payment_dues')->where('Mode_of_payment','Cash')->sum('due');
+    $tranfer = DB::table('payment_dues')->where('Mode_of_payment','Transfer')->sum('due');
+    $pos = DB::table('payment_dues')->where('Mode_of_payment','Pos')->sum('due');
     return view('Admin.Store.service_balance',['balance'=>$balance,'amount'=>$amount,'cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos]);
   }
 
@@ -185,14 +180,14 @@ class StoreController extends Controller
 
     $date= $request->input('from');
     $search=  DB::table('service_dues')
-    ->whereDate('created_at', $date)->where('location','MVC')
+    ->whereDate('created_at', $date)
     ->get();
 
-    $cash = DB::table('payment_dues')->where('Mode_of_payment','Cash') ->whereDate('created_at', $date)->where('location','MVC')->sum('due');
-    $tranfer = DB::table('payment_dues')->where('Mode_of_payment','Transfer') ->whereDate('created_at', $date)->where('location','MVC')->sum('due');
-    $pos = DB::table('payment_dues')->where('Mode_of_payment','Pos') ->whereDate('created_at', $date)->where('location','MVC')->sum('due');
-    $amount = DB::table('servicpayment_duese_dues')->where('location','MVC')->sum('due');
-    $balance = Service_due::whereDate('created_at', $date)->where('location','MVC')->get();
+    $cash = DB::table('payment_dues')->where('Mode_of_payment','Cash') ->whereDate('created_at', $date)->sum('due');
+    $tranfer = DB::table('payment_dues')->where('Mode_of_payment','Transfer') ->whereDate('created_at', $date)->sum('due');
+    $pos = DB::table('payment_dues')->where('Mode_of_payment','Pos') ->whereDate('created_at', $date)->sum('due');
+    $amount = DB::table('servicpayment_duese_dues')->sum('due');
+    $balance = Service_due::whereDate('created_at', $date)->get();
 
     return view('Admin.Store.service_search',['cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos,'amount'=>$amount,'balance'=>$balance]);
   }
@@ -206,21 +201,21 @@ class StoreController extends Controller
 
 
   public function vaccine_due(){
-    $daily= Vaccineorder::with('vaccineiteams')->where('order_status','success')->where('Payment_type','Half Payment')->where('location','MVC')->get();
-    $amount = DB::table('vaccineorders')->where('order_status','success')->where('Payment_type','Half Payment')->where('location','MVC')->sum('due');
+    $daily= Vaccineorder::with('vaccineiteams')->where('order_status','success')->where('Payment_type','Half Payment')->get();
+    $amount = DB::table('vaccineorders')->where('order_status','success')->where('Payment_type','Half Payment')->sum('due');
   return view('Admin.Store.vaccine_due',['daily'=>$daily,'amount'=>$amount]);
   }
 
 
 
   public function vaccine_balance(){
-    $balance = Vaccine_due::where('location','MVC')->get();
+    $balance = Vaccine_due::get();
 
-    $amount =  Vaccine_due::where('location','MVC')->sum('due');
+    $amount =  Vaccine_due::sum('due');
 
-    $cash = DB::table('vaccine_dues')->where('Mode_of_payment','Cash')->where('location','MVC')->sum('due');
-    $tranfer = DB::table('vaccine_dues')->where('Mode_of_payment','Transfer')->where('location','MVC')->sum('due');
-    $pos = DB::table('vaccine_dues')->where('Mode_of_payment','Pos')->where('location','MVC')->sum('due');
+    $cash = DB::table('vaccine_dues')->where('Mode_of_payment','Cash')->sum('due');
+    $tranfer = DB::table('vaccine_dues')->where('Mode_of_payment','Transfer')->sum('due');
+    $pos = DB::table('vaccine_dues')->where('Mode_of_payment','Pos')->sum('due');
 
    return view('Admin.Store.vaccine_balance',['balance'=>$balance,'amount'=>$amount,'cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos]);
   }
@@ -231,31 +226,16 @@ class StoreController extends Controller
 
     $date= $request->input('from');
     $search=  DB::table('vaccine_dues')
-    ->whereDate('created_at', $date)->where('location','MVC')
+    ->whereDate('created_at', $date)
     ->get();
 
-    $cash = DB::table('vaccine_dues')->where('Mode_of_payment','Cash') ->whereDate('created_at', $date)->where('location','MVC')->sum('due');
-    $tranfer = DB::table('vaccine_dues')->where('Mode_of_payment','Transfer') ->whereDate('created_at', $date)->where('location','MVC')->sum('due');
-    $pos = DB::table('vaccine_dues')->where('Mode_of_payment','Pos') ->whereDate('created_at', $date)->where('location','MVC')->sum('due');
-    $amount = DB::table('vaccine_dues')->where('location','MVC')->sum('due');
-    $balance =  Vaccine_due::whereDate('created_at', $date)->where('location','MVC')->get();
+    $cash = DB::table('vaccine_dues')->where('Mode_of_payment','Cash') ->whereDate('created_at', $date)->sum('due');
+    $tranfer = DB::table('vaccine_dues')->where('Mode_of_payment','Transfer') ->whereDate('created_at', $date)->sum('due');
+    $pos = DB::table('vaccine_dues')->where('Mode_of_payment','Pos') ->whereDate('created_at', $date)->sum('due');
+    $amount = DB::table('vaccine_dues')->sum('due');
+    $balance =  Vaccine_due::whereDate('created_at', $date)->get();
     return view('Admin.Store.vaccine_search',['cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos,'amount'=>$amount,'balance'=>$balance]);
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public function store_view(){
@@ -300,7 +280,8 @@ class StoreController extends Controller
 
     public function service_store(){
         $service = request()->validate([
-        'service'=>' required'
+        'service'=>' required',
+        'amount'=>'required'
         ]);
         Service::create($service);
         return back();
@@ -426,11 +407,76 @@ class StoreController extends Controller
 
 
         ]);
+
+        // dd("am here)");
         Service_cart::create($in);
         return back();
        }
 
-
+       public function direct_service_item(Request $request){
+        $order = New Service_order();
+        $order->user_id =Auth::user()->id;
+        $order->Pet_name =$request->input('Pet_name');
+        $order->Owner_name =$request->input('Owner_name');
+        $order->Unregister =$request->input('Unregister');
+        $order->Phone =$request->input('Phone');
+        $order->Next_vaccination_appointment =$request->input('Next_vaccination_appointment');
+        $order->Next_appointments =$request->input('Next_appointments');
+        $order->location =$request->input('location');
+        $order->Mode_of_payment =$request->input('Mode_of_payment');
+        $order->due =$request->input('due');
+        $order->Payment_type =$request->input('Payment_type');
+        $order->date =date('Y-d-m');
+        $order->month =date('F');
+        $order->year =date('Y');
+        $order->order_status ="success";
+        if($request->input('Mode_of_payment') == "Pos"){
+            $order->cash_pos = $request->input('pay');
+        }
+       if($request->input('Mode_of_payment') == "Transfer"){
+            $order->cash_transfer =$request->input('pay');
+        }
+        if($request->input('Mode_of_payment') == "Cash"){
+            $order->pay =$request->input('pay');
+        }
+        $total = 0;
+        $cartitem_total = Service_cart::where('user_id',Auth::id())->get();
+        foreach($cartitem_total as $prod){
+       $total+= $prod->selling_price * $prod->qty+$prod->Amount;
+        }
+       $order->total_price = $total;
+        $order->save();
+         $cart = Service_cart::where('user_id',Auth::id())->get();
+         foreach($cart as $cat){
+            Service_item::create([
+                'user_id'=>$order->user_id,
+                'order_id'=>$order->id,
+                'prod_name'=>$cat->items_name,
+                'qty'=>$cat->qty,
+                'price'=>$cat->selling_price,
+                'total_vaccine_amount'=>$cat->selling_price * $cat->qty,
+                'pro_id'=>$cat->vaccine_id,
+                'service'=>$cat->service,
+                'Amount'=>$cat->Amount,
+                'service_id'=>$cat->service_id,
+                'subtotal'=>0,
+                'date'=>date('d/m/y'),
+                'month'=>date('F'),
+                'year'=>date('Y'),
+                'location'=>'MVC'
+            ]);
+            if(isset(Vaccinestore::where("id",$cat->vaccine_id)->first()->Quantity)){
+            $cur = Vaccinestore::where("id",$cat->vaccine_id)->first()->Quantity;
+            Vaccinestore::where("id",$cat->vaccine_id)->update(['Quantity'=>$cur-$cat->qty]);
+            }}
+            $cart = Service_cart::where('user_id',Auth::id())->get();
+            Service_cart::destroy($cart);
+            if ($request->checkbox_print == 1){
+                return redirect()->route("Admin.Payment.direct_service");
+            }else{
+                return back();
+            }
+ }
 
 
        public function service_item(Request $request){
@@ -521,25 +567,27 @@ class StoreController extends Controller
 
 
        public function Retail(){
-        $Retail = DB::table('shop_items')->where('status','Retails')->where('location', 'MVC')->get();
+        $Retail = DB::table('shop_items')->where('status','Retails')->get();
         return view('Admin.Store.Retail',['Retail'=>$Retail]);
        }
 
 
        public function clinicuse(){
-        $clinicuse=Shop_item::where('status','Clinic_use')->where('location', 'MVC')->get();
+        $clinicuse=Shop_item::where('status','Clinic_use')->get();
          return view('Admin.Store.clinicuse',['clinicuse'=>$clinicuse]);
        }
        public function transfer_details(){
-        $get = Transferstore::where('location_transfer','MVC')->where('moved', "moved")->whereDate('created_at', date('Y-m-d'))->where('status', 'Head_Office_Breach_Office')->get();
+        $get = Transferstore::where('moved', "moved")->where('status', 'Head_Office_Breach_Office')->get();
+
+        // dd($get);
           return view('Admin.Store.transfer_details', ['get'=>$get]);
        }
         public function fatchonlineGood($id){
-        $shop = Transferstore::find($id);
+        $shop = Transferstore::where('id', $id)->first();
         $prod = Product::where('id', $shop->pro_id)->first();
         Product::where("id",$shop->pro_id)->update(['Quantity'=>$prod->Quantity + $shop->qty,'syn_flag'=>0]);
-        Transferstore::where('moved',"moved")->where('pro_id',$shop->pro_id)->update(['moved'=>'added']);
-        Shop_item::where('moved',"moved")->where('pro_id',$shop->pro_id)->update(['moved'=>'added','syn_flag'=>0]);
+        Transferstore::where('moved',"moved")->where('pro_id',$shop->pro_id)->update(['moved'=>'added','syn_flag'=>0,'added_by'=>Auth::user()->id, 'added_date'=>date("d-m-Y")]);
+        // Shop_item::where('moved',"moved")->where('pro_id',$shop->pro_id)->update(['moved'=>'added','syn_flag'=>0]);
         return back();
        }
 }

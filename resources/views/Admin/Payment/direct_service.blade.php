@@ -1,8 +1,17 @@
+{{-- <x-admin-master>
+    @section('content')
+
+    @endsection
+</x-admin-master> --}}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+    {{-- <link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" /> --}}
+    {{-- <link rel="mask-icon" type="" href="https://static.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" /> --}}
+
     <style>
         @media print {
             .page-break {
@@ -132,26 +141,35 @@
             }
         }
     </style>
+
     <script>
         window.console = window.console || function(t) {};
     </script>
+
     <script>
         if (document.location.search.match(/type=embed/gi)) {
             window.parent.postMessage("resize", "*");
         }
     </script>
+
+
 </head>
 
 <body translate="no">
+
+
     <div id="invoice-POS">
+
         <center id="top">
             <div class="">
                 <img width="120px" height="130px" src="{{ asset('image/WILLIAMS LOGO (1).png') }}" alt="">
             </div>
             <!--End Info-->
         </center><!--End InvoiceTop-->
-        <div id="">
-            <div class="">
+
+        <div id="mid">
+            <div class="info">
+                {{-- <h2>Contact Info</h2> --}}
                 <p>
                 <p class="mb-0">Tricia Plaza Anwii Road/Government House Road Beside First Bank at Interbau Flyover
                     Asaba, Delta State<br>
@@ -168,64 +186,78 @@
                 <table>
                     <tr class="tabletitle">
                         <td class="item">
-                            <h2>Item</h2>
+                            <h2>Item(s)</h2>
                         </td>
                         <td class="Hours">
-                            <h2>Qty</h2>
-                        </td>
-                        <td class="Rate">
-                            <h2>Price</h2>
+                            <h2>Qty/Amt</h2>
                         </td>
                         <td class="Rate">
                             <h2>Subtotal</h2>
                         </td>
                     </tr>
-                    @foreach ($Pos_invoice as $Pos_invoice)
+                    @foreach ($gettemss as $item)
                         <tr class="service">
-                            <td class="tableitem">
-                                <p class="itemtext">{{ $Pos_invoice->prod_id }}</p>
-                            </td>
-                            <td class="tableitem">
-                                <p class="itemtext">{{ $Pos_invoice->qty }}</p>
-                            </td>
-                            <td class="tableitem">
-                                <p class="itemtext">{{ $Pos_invoice->price }}</p>
-                            </td>
-                            <td class="tableitem">
-                                <p class="itemtext">{{ $Pos_invoice->price * $Pos_invoice->qty }}</p>
-                            </td>
+                            @if ($item->prod_name != 0)
+                                <td class="tableitem">
+                                    <p class="itemtext">{{ $item->prod_name }}</p>
+                                </td>
+                                <td class="tableitem">
+                                    <p class="itemtext">{{ $item->qty }}</p>
+                                </td>
+                                <td class="tableitem">
+                                    <p class="itemtext">{{ number_format($item->price, 2, '.', ',') }}</p>
+                                </td>
+                            @else
+                                <td class="tableitem">
+                                    <p class="itemtext">{{ $item->service }}</p>
+                                </td>
+                                <td class="tableitem">
+                                    <p class="itemtext">{{ number_format($item->Amount, 2, '.', ',')   }}</p>
+                                </td>
+                                <td class="tableitem">
+                                    <p class="itemtext">{{ number_format($item->Amount, 2, '.', ',')}}</p>
+                                </td>
+                            @endif
+
                         </tr>
                     @endforeach
-                    <center>
-                        <tr class="">
-                        </tr>
-                        <tr class="">
 
-                            <td class="Rate">
-                                <h2>Total</h2>
-                            </td>
-                            <td class="payment">
-                                <h2>{{ number_format($finalPrice, 2, '.', ',') }}</h2>
-                            </td>
-                        </tr>
-                    </center>
-
+                    {{-- @endif --}}
+                    <tr class="tabletitle">
+                        <td></td>
+                        <td class="Rate">
+                            <h2>Amount charged</h2>
+                        </td>
+                        <td class="payment">
+                            <h2>{{number_format($Pos_invoice->total_price, 2, '.', ',')  }}</h2>
+                        </td>
+                    </tr>
+                    <tr class="tabletitle">
+                        <td></td>
+                        <td class="Rate">
+                            <h2>Paid</h2>
+                        </td>
+                        <td class="payment">
+                            <h2>{{ number_format($Pos_invoice->pay + $Pos_invoice->cash_transfer + $Pos_invoice->cash_pos, 2, '.', ',') }}</h2>
+                        </td>
+                    </tr>
                 </table>
             </div><!--End Table-->
 
             <div id="legalcopy">
-                <center>
-                    <p class="legal"><strong>Thanks for your coming.</strong> </p>
-
-                    <h6>{{ date('d F Y') }}</h6>
-                </center>
+                <center><p class="legal"><strong>Thank you for coming.</strong>
+                </p>
+                <h6>{{ date('d F Y') }}</h6>
+            </center>
             </div>
-            <button id="btnPrint" class="hidden-print">Print</button>
-            <a href="{{ route('Admin.Pos.Pos') }}"><button class="btn btn-primary btn-lg hidden-print"
-                    style="margin-left: 50%">Back</button></a>
+            <br>
+            <button id="btnPrint" class="hidden-print btn-primary">Print</button>
+            <a href="{{ route('Admin.Payment.Payment') }}"><button class="btn btn-primary btn-lg hidden-print"
+                    style="margin-left: 60%">Back</button></a>
             <script src="script.js"></script>
         </div><!--End InvoiceBot-->
     </div><!--End Invoice-->
+
 </body>
 <script>
     const $btnPrint = document.querySelector("#btnPrint");

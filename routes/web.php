@@ -116,6 +116,10 @@ Route::post('/Admin/Clinic/Clinic_cart', 'ClinicController@Clinic_cart')->name('
 Route::get('/Admin/Clinic/{id}/Clinic_destory', 'ClinicController@Clinic_destory')->name('Admin.Clinic.Clinic_destory');
 Route::post('/Admin/Clinic/{id}/Clinic_cart_update', 'ClinicController@Clinic_cart_update')->name('Admin.Clinic.Clinic_cart_update');
 Route::post('/Admin/Clinic/Clinic_inventory', 'ClinicController@Clinic_inventory')->name('Admin.Clinic.Clinic_inventory');
+
+Route::post('/Admin/Clinic/drect_clinic_payment', 'ClinicController@drect_clinic_payment')->name('Admin.Clinic.drect_clinic_payment');
+
+
 Route::get('/Admin/Clinic/cart_pending', 'ClinicController@cart_pending')->name('Admin.Clinic.cart_pending');
 Route::get('/Admin/Clinic/cart_history', 'ClinicController@cart_history')->name('Admin.Clinic.cart_history');
 Route::get('/Admin/Clinic/vaccin_sale', 'ClinicController@vaccin_sale')->name('Admin.Clinic.vaccin_sale');
@@ -132,18 +136,14 @@ Route::get('/Admin/Clinic/{id}/cash_pos', 'ClinicController@cash_pos')->name('Ad
 Route::get('/Admin/Clinic/{id}/cash_transfer', 'ClinicController@cash_transfer')->name('Admin.Clinic.cash_transfer');
 Route::get('/Admin/Clinic/{id}/vaccin_edit', 'ClinicController@vaccin_edit')->name('Admin.Clinic.vaccin_edit');
 Route::patch('/Admin/Clinic/{id}/vaccin_update2', 'ClinicController@vaccin_update2')->name('Admin.Clinic.vaccin_update2');
-
 //brand start from here ....................
 Route::get('/Admin/Clinic/brand', 'ClinicController@brand')->name('Admin.Clinic.brand');
 Route::post('/Admin/Clinic/brand_store', 'ClinicController@brand_store')->name('Admin.Clinic.brand_store');
 Route::delete('/Admin/Clinic/{id}/brand_destory', 'ClinicController@brand_destory')->name('Admin.Clinic.brand_destory');
-
-
 //attendance start from here...................
 Route::get('/Admin/attendance/attendance', 'AttendanceController@attendance')->name('Admin.attendance.attendance');
 Route::post('/Admin/attendance/attendance_store', 'AttendanceController@attendance_store')->name('Admin.attendance.attendance_store');
 Route::get('/Admin/attendance/attendance_list', 'AttendanceController@attendance_list')->name('Admin.Attendance.attendance_list');
-
 
 ///Employee start from here............
 Route::get('/Admin/Employee/Employee', 'EmployeeController@Employee')->name('Admin.Employee.Employee');
@@ -199,6 +199,7 @@ Route::get('/Admin/Payment/{id}/payment_invoice_delete', 'PaymentController@paym
 Route::get('/Admin/Payment/{id}/order_status', 'PaymentController@order_status')->name('Admin.Payment.order_status');
 Route::patch('/Admin/Payment/{id}/order_update', 'PaymentController@order_update')->name('Admin.Payment.order_update');
 Route::get('/Admin/Payment/{id}/print_invoice', 'PaymentController@print_invoice')->name('Admin.Payment.print_invoice');
+Route::get('/Admin/Payment/direct_service', 'PaymentController@direct_service')->name('Admin.Payment.direct_service');
 //special vaccine start from here
 Route::get('/Admin/Payment/oustanding', 'PaymentController@oustanding')->name('Admin.Payment.oustanding');
 Route::get('/Admin/Payment/vaccineoustanding', 'PaymentController@vaccineoustanding')->name('Admin.Payment.vaccineoustanding');
@@ -365,12 +366,8 @@ Route::get('/Admin/Store/{id}/store_items', 'StoreController@store_items')->name
 // Damage
 Route::patch('/Admin/Store/{id}/store_damage_update', 'StoreController@store_damage_update')->name('Admin.Store.store_damage_update');
 Route::patch('/Admin/Store/{id}/store_head_update', 'StoreController@store_head_update')->name('Admin.Store.store_head_update');
-
 Route::patch('/Admin/Store/{id}/clinic_use', 'StoreController@clinic_use')->name('Admin.Store.clinic_use');
-
 Route::patch('/Admin/Store/{id}/Retails', 'StoreController@Retails')->name('Admin.Store.Retails');
-
-
 
 //add services
 Route::get('/Admin/Store/service', 'StoreController@service')->name('Admin.Store.service');
@@ -386,6 +383,9 @@ Route::post('/Admin/Store/service_item_store', 'StoreController@service_item_sto
 Route::post('/Admin/Store/item_store', 'StoreController@item_store')->name('Admin.Store.item_store');
 Route::post('/Admin/Store/item', 'StoreController@item')->name('Admin.Store.item');
 Route::post('/Admin/Store/service_item', 'StoreController@service_item')->name('Admin.Store.service_item');
+
+Route::post('/Admin/Store/direct_service_item', 'StoreController@direct_service_item')->name('Admin.Store.direct_service_item');
+
 Route::get('/Admin/Store/{id}/service_item_destory', 'StoreController@service_item_destory')->name('Admin.Store.service_item_destory');
 Route::Patch('/Admin/Store/{id}/service_item_update', 'StoreController@service_item_update')->name('Admin.Store.service_item_update');
 Route::Patch('/Admin/Store/{id}/service_item_update2', 'StoreController@service_item_update2')->name('Admin.Store.service_item_update2');

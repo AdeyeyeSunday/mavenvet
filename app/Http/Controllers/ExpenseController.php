@@ -38,13 +38,13 @@ class ExpenseController extends Controller
 
     public function Monthly(){
    $date = (date('F'));
-        $Expense= DB::table('expenses')->where('date', $date)->where('location','MVC')->get();
+        $Expense= DB::table('expenses')->where('date', $date)->get();
         $amount=DB::table('expenses')->where('date', $date)->sum('amount');
     return view('Admin.Expense.Monthly',['Expense'=>$Expense, 'amount'=>$amount]);
     }
 
     public function Monthly_edit($id){
-        $Expense = DB::table('expenses')->where('id', $id)->where('location','MVC')->first();
+        $Expense = DB::table('expenses')->where('id', $id)->first();
         return view('Admin.Expense.Monthly_edit',['Expense'=>$Expense]);
     }
 
@@ -62,11 +62,11 @@ class ExpenseController extends Controller
         $from= $request->input('from');
         $to = $request->input('to');
         $new=  DB::table('expenses')
-        ->whereBetween('created_at', [$from, $to])->where('location','MVC')
+        ->whereBetween('created_at', [$from, $to])
         ->get();
 
         $amount= DB::table('expenses')
-        ->whereBetween('created_at', [$from, $to])->where('location','MVC')
+        ->whereBetween('created_at', [$from, $to])
         ->sum('amount');
 
         return view('Admin.Expense.Expense_search',['new'=>$new,'amount'=>$amount]);

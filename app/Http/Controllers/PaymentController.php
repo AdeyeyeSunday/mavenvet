@@ -76,18 +76,18 @@ class PaymentController extends Controller
     public function Payment_list(){
         $date = (date('d/m/y'));
         $new_date = date('d/m/y');
-        $pay=Service_order::with('user')->with('service_item')->where('date',$date)->where('order_status','success')->where('location','MVC')->orWhere('new_date',$new_date)->get();
-        $cash = DB::table('service_orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Cash')->where('location','MVC')->sum('pay');
-        $new_pos = DB::table('service_orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Pos')->where('location','MVC')->sum('new_due');
-        $new_transfer= DB::table('service_orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Transfer')->where('location','MVC')->sum('new_due');
-        $new_cash = DB::table('service_orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Cash')->where('location','MVC')->sum('new_due');
-        $tranfer = DB::table('service_orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Transfer')->where('location','MVC')->sum('cash_transfer');
-        $pos = DB::table('service_orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Pos')->where('location','MVC')->sum('cash_pos');
-        $cash_transfer  = DB::table('service_orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC')->sum('cash_transfer');
-        $cash_cash  = DB::table('service_orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC')->sum('pay');
-        $cash_pos =DB::table('service_orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC')->sum('cash_pos');
-        $cash_cash_pos  = DB::table('service_orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC')->sum('pay');
-        $amount = DB::table('service_orders')->where('date', $date)->where('order_status','success')->where('location','MVC')->sum('pay');
+        $pay=Service_order::with('user')->with('service_item')->where('date',$date)->where('order_status','success')->orWhere('new_date',$new_date)->get();
+        $cash = DB::table('service_orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Cash')->sum('pay');
+        $new_pos = DB::table('service_orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Pos')->sum('new_due');
+        $new_transfer= DB::table('service_orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Transfer')->sum('new_due');
+        $new_cash = DB::table('service_orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Cash')->sum('new_due');
+        $tranfer = DB::table('service_orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Transfer')->sum('cash_transfer');
+        $pos = DB::table('service_orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Pos')->sum('cash_pos');
+        $cash_transfer  = DB::table('service_orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->sum('cash_transfer');
+        $cash_cash  = DB::table('service_orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->sum('pay');
+        $cash_pos =DB::table('service_orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->sum('cash_pos');
+        $cash_cash_pos  = DB::table('service_orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->sum('pay');
+        $amount = DB::table('service_orders')->where('date', $date)->where('order_status','success')->sum('pay');
 
          return view('Admin.Payment.Payment_list',['pay'=>$pay,'amount'=>$amount,'cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos,'cash_transfer'=>$cash_transfer,'cash_cash'=>$cash_cash,'cash_pos'=>$cash_pos,'cash_cash_pos'=>$cash_cash_pos,'new_pos'=>$new_pos,'new_transfer'=>$new_transfer,'new_cash'=>$new_cash]);
 
@@ -145,16 +145,16 @@ class PaymentController extends Controller
 
     public function fullpayment(){
         $date = date('d/m/y');
-        $amount = DB::table('service_orders')->where('date',$date)->where('Payment_type','Full Payment')->where('location','MVC')->sum('pay');
-        $payment=Service_order::with('user')->where('date',$date)->where('Payment_type','Full Payment')->where('location','MVC')->get();
+        $amount = DB::table('service_orders')->where('date',$date)->where('Payment_type','Full Payment')->sum('pay');
+        $payment=Service_order::with('user')->where('date',$date)->where('Payment_type','Full Payment')->get();
      return view('Admin.Payment.fullpayments',['payment'=>$payment,'amount'=>$amount]);
     }
 
 
 
     public function outstandingpayment(){
-        $amount = DB::table('service_orders')->where('Payment_type','Half Payment')->where('location','MVC')->sum('due');
-        $pay=Service_order::with('user')->with('service_item')->where('Payment_type','Half Payment')->where('location','MVC')->get();
+        $amount = DB::table('service_orders')->where('Payment_type','Half Payment')->sum('due');
+        $pay=Service_order::with('user')->with('service_item')->where('Payment_type','Half Payment')->get();
         return view('Admin.Payment.outstandingpayment',['pay'=>$pay,'amount'=>$amount]);
 
     }
@@ -162,8 +162,8 @@ class PaymentController extends Controller
 
 
     public function outstandingpayment_admin(){
-        $amount = DB::table('service_orders')->where('Payment_type','Half Payment')->where('location','MVC')->sum('due');
-        $pay=Service_order::with('user')->where('Payment_type','Half Payment')->where('location','MVC')->get();
+        $amount = DB::table('service_orders')->where('Payment_type','Half Payment')->sum('due');
+        $pay=Service_order::with('user')->where('Payment_type','Half Payment')->get();
         return view('Admin.Payment.outstandingpayment_admin',['pay'=>$pay,'amount'=>$amount]);
 
     }
@@ -185,7 +185,7 @@ class PaymentController extends Controller
       $amount = DB::table('payments')->where('Mode_Of_Payment','Pos')->sum('pay');
       $payment_pos=Service_order::with('clinic')->where('date', $date)->where('Mode_Of_Payment','Pos')->get();
 
-    $pos = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','Pos')->where('location','MVC')->sum('pay');
+    $pos = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','Pos')->sum('pay');
 
      return view('Admin.Payment.Account_pos',['payment_pos'=>$payment_pos]);
     }
@@ -210,17 +210,17 @@ class PaymentController extends Controller
 
     public function Account_cash(){
 
-        $cash = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','Cash')->where('location','MVC')->sum('pay');
-        $tranfer = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','Transfer')->where('location','MVC')->sum('cash_transfer');
-        $pos = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','Pos')->where('location','MVC')->sum('cash_pos');
+        $cash = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','Cash')->sum('pay');
+        $tranfer = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','Transfer')->sum('cash_transfer');
+        $pos = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','Pos')->sum('cash_pos');
         // dd($pos);
-        $cash_transfer  = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC')->sum('cash_transfer');
-        $cash_cash  = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC')->sum('pay');
-        $cash_pos =DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC')->sum('cash_pos');
-        $cash_cash_pos  = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC')->sum('pay');
-        $amount = DB::table('service_orders')->where('order_status','success')->where('location','MVC')->sum('pay');
-        $cash_transfer = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','Cash/Transfer')->where('location','MVC')->sum('cash_transfer');
-        $pay=Service_order::with('user')->where('order_status','success')->where('location','MVC')->get();
+        $cash_transfer  = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','cash_transfer')->sum('cash_transfer');
+        $cash_cash  = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','cash_transfer')->sum('pay');
+        $cash_pos =DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','cash_pos')->sum('cash_pos');
+        $cash_cash_pos  = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','cash_pos')->sum('pay');
+        $amount = DB::table('service_orders')->where('order_status','success')->sum('pay');
+        $cash_transfer = DB::table('service_orders')->where('order_status','success')->where('Mode_of_payment','Cash/Transfer')->sum('cash_transfer');
+        $pay=Service_order::with('user')->where('order_status','success')->get();
 
     return view('Admin.Payment.Account_cash',['pay'=>$pay,'amount'=>$amount,'cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos,'cash_transfer'=>$cash_transfer,'cash_cash'=>$cash_cash,'cash_pos'=>$cash_pos,'cash_cash_pos'=>$cash_cash_pos]);
      }
@@ -231,27 +231,27 @@ class PaymentController extends Controller
     public function vaccine_report(){
         $date = (date('d/m/y'));
 
-    $daily= Vaccineorder::with('vaccineiteams')->where('order_status','success')->where('location','MVC')->get();
+    $daily= Vaccineorder::with('vaccineiteams')->where('order_status','success')->get();
 
 
 
 
-    $cash = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Cash')->where('location','MVC')->sum('pay');
-    $tranfer = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Transfer')->where('location','MVC')->sum('cash_transfer');
-    $pos = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Pos')->where('location','MVC')->sum('cash_pos');
+    $cash = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Cash')->sum('pay');
+    $tranfer = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Transfer')->sum('cash_transfer');
+    $pos = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Pos')->sum('cash_pos');
 
 
     //transfer
-    $cash_transfer  = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC')->sum('cash_transfer');
+    $cash_transfer  = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','cash_transfer')->sum('cash_transfer');
 
-    $cash_cash  = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC')->sum('pay');
+    $cash_cash  = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','cash_transfer')->sum('pay');
 
       //pos
-    $cash_pos =DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC')->sum('cash_pos');
-    $cash_cash_pos  = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC')->sum('pay');
+    $cash_pos =DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','cash_pos')->sum('cash_pos');
+    $cash_cash_pos  = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','cash_pos')->sum('pay');
 
 
-    $amount = DB::table('vaccineorders')->where('order_status','success')->where('location','MVC')->sum('pay');
+    $amount = DB::table('vaccineorders')->where('order_status','success')->sum('pay');
  return view('Admin.Payment.vaccine_report',['daily'=>$daily,'amount'=>$amount,'cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos,'cash_transfer'=>$cash_transfer,'cash_cash'=>$cash_cash,'cash_pos'=>$cash_pos,'cash_cash_pos'=>$cash_cash_pos]);
 
      }
@@ -260,9 +260,9 @@ class PaymentController extends Controller
 
      public function vaccine_outstanding_report(){
 
-        $daily = DB::table('vaccineorders')->where('Payment_type', 'Half Payment')->where('order_status','success')->where('location','MVC')->get();
+        $daily = DB::table('vaccineorders')->where('Payment_type', 'Half Payment')->where('order_status','success')->get();
 
-        $amount = DB::table('vaccineorders')->where('Payment_type', 'Half Payment')->where('order_status','success')->where('location','MVC')->sum('due');
+        $amount = DB::table('vaccineorders')->where('Payment_type', 'Half Payment')->where('order_status','success')->sum('due');
 
 
     return view('Admin.Payment.vaccine_outstanding_report',['daily'=>$daily,'amount'=>$amount]);
@@ -296,7 +296,7 @@ class PaymentController extends Controller
 
      public function cash_report(){
          $date = date('d/m/y');
-      $cash= Cash::where('location','MVC')->get();
+      $cash= Cash::get();
       return view('Admin.Payment.cash_report',['cash'=>$cash]);
      }
 
@@ -321,7 +321,7 @@ class PaymentController extends Controller
 
 
      public function paynent_pending(){
-        $pending = DB::table('service_orders')->where('order_status','pending')->where('location','MVC')->get();
+        $pending = DB::table('service_orders')->where('order_status','pending')->get();
         return view('Admin.Payment.paynent_pending',['pending'=>$pending]);
      }
 
@@ -352,7 +352,7 @@ class PaymentController extends Controller
 
 
      public function payment_invoice($id){
-        $Pos_invoice =Service_order::with('service_item')->where('id',$id)->where('user_id',Auth::id())->where('location','MVC')->first();
+        $Pos_invoice =Service_order::with('service_item')->where('id',$id)->where('user_id',Auth::id())->first();
          $banklist =DB::table('bank_lists')->get();
   return view('Admin.Payment.payment_invoice',['Pos_invoice'=>$Pos_invoice,'banklist'=>$banklist]);
       }
@@ -389,16 +389,12 @@ class PaymentController extends Controller
                 }else{
                     session()->flash('success','Transaction Successful!!!');
                 };
-
                 if((request('Mode_of_payment')=='Pos') != request('cash_pos')){
 
                     session()->flash('success','Transaction Successful!!!');
                 }else{
                     session()->flash('success','Transaction Successful!!!');
                 };
-
-
-
 
         if (request('pay') + request('cash_transfer') + request('cash_pos') <= request('total_price')) {
             Service_order::whereId($id)->update([
@@ -507,22 +503,24 @@ return redirect()->route('Admin.Payment.Payment_list');
 
 public function print_invoice($id){
 
-            $Pos_invoice =Service_order::with('service_item')->where('id',$id)->where('user_id',Auth::id())->where('location','MVC')->first();
-
-
-            $service =Service_order::with('service_item')->where('id',$id)->where('user_id',Auth::id())->where('location','MVC')->first();
-
-            $print=Service_order::with('service_item')->where('id',$id)->where('user_id',Auth::id())->where('location','MVC')->first();
-
-
+            $Pos_invoice =Service_order::with('service_item')->where('id',$id)->where('user_id',Auth::id())->first();
+            $service =Service_order::with('service_item')->where('id',$id)->where('user_id',Auth::id())->first();
+            $print=Service_order::with('service_item')->where('id',$id)->where('user_id',Auth::id())->first();
             return view('Admin.Payment.print_invoice',['Pos_invoice'=>$Pos_invoice, 'print'=>$print,'service'=>$service]);
 
-         }
+ }
+
+
+ public function direct_service(){
+    $Pos_invoice =Service_order::latest()->first();
+    $gettemss = Service_item::where('order_id', $Pos_invoice->id)->get();
+    return view('Admin.Payment.direct_service',['Pos_invoice'=>$Pos_invoice,'gettemss'=>$gettemss]);
+}
 
          public function fullpayment_view($id){
 
-            $invoice =Service_order::with('service_item')->where('id',$id)->where('user_id',Auth::id())->where('location','MVC')->first();
-            $total=Service_order::where('id',$id)->where('user_id',Auth::id())->where('location','MVC')->first();
+            $invoice =Service_order::with('service_item')->where('id',$id)->where('user_id',Auth::id())->first();
+            $total=Service_order::where('id',$id)->where('user_id',Auth::id())->first();
 
             // dd($invoice);
             return view('Admin.Payment.fullpayment_view',['invoice'=>$invoice,'total'=>$total]);
@@ -534,38 +532,38 @@ public function oustanding(){
 
               $date = (date('d/m/y'));
             $new_date = date('d/m/y');
-            $daily= Vaccineorder::with('vaccineiteams')->where('date', $date)->where('order_status','success')->where('location','MVC')->orWhere('new_date',$new_date)->get();
+            $daily= Vaccineorder::with('vaccineiteams')->where('date', $date)->where('order_status','success')->orWhere('new_date',$new_date)->get();
         // $date = (date('d/m/y'));
-        $cash = DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Cash')->where('location','MVC')->sum('pay');
-        $tranfer = DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Transfer')->where('location','MVC')->sum('cash_transfer');
-        $pos = DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Pos')->where('location','MVC')->sum('cash_pos');
+        $cash = DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Cash')->sum('pay');
+        $tranfer = DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Transfer')->sum('cash_transfer');
+        $pos = DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Pos')->sum('cash_pos');
 
 
 
-        $new_pos = DB::table('vaccineorders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Pos')->where('location','MVC')->sum('new_due');
-        $new_transfer= DB::table('vaccineorders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Transfer')->where('location','MVC')->sum('new_due');
-        $new_cash = DB::table('vaccineorders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Cash')->where('location','MVC')->sum('new_due');
+        $new_pos = DB::table('vaccineorders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Pos')->sum('new_due');
+        $new_transfer= DB::table('vaccineorders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Transfer')->sum('new_due');
+        $new_cash = DB::table('vaccineorders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Cash')->sum('new_due');
 
 
 
 
-        $cash_transfer  = DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC')->sum('cash_transfer');
-        $cash_cash  = DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC')->sum('pay');
-        $cash_pos =DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC')->sum('cash_pos');
-        $cash_cash_pos  = DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC')->sum('pay');
-        $amount = DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->where('location','MVC')->sum('pay');
-        $cash_transfer = DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC')->sum('cash_transfer');
+        $cash_transfer  = DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->sum('cash_transfer');
+        $cash_cash  = DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->sum('pay');
+        $cash_pos =DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->sum('cash_pos');
+        $cash_cash_pos  = DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_pos')->sum('pay');
+        $amount = DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->sum('pay');
+        $cash_transfer = DB::table('vaccineorders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','cash_transfer')->sum('cash_transfer');
            return view('Admin.Payment.oustanding',['daily'=>$daily,'amount'=>$amount,'cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos,'cash_transfer'=>$cash_transfer,'cash_cash'=>$cash_cash,'cash_pos'=>$cash_pos,'cash_cash_pos'=>$cash_cash_pos,'new_pos'=>$new_pos,'new_transfer'=>$new_transfer,'new_cash'=>$new_cash]);
          }
 
          public function vaccineoustanding(){
-            $daily = Vaccineorder::with('vaccineiteams')->where('Payment_type', 'Half Payment')->where('order_status','success')->where('location','MVC')->get();
-            $amount = DB::table('vaccineorders')->where('Payment_type', 'Half Payment')->where('order_status','success')->where('location','MVC')->sum('due');
+            $daily = Vaccineorder::with('vaccineiteams')->where('Payment_type', 'Half Payment')->where('order_status','success')->get();
+            $amount = DB::table('vaccineorders')->where('Payment_type', 'Half Payment')->where('order_status','success')->sum('due');
             return view('Admin.Payment.vaccineoustanding',['daily'=>$daily,'amount'=>$amount,]);
          }
 
          public function oustanding_edit($id){
-            $oustanding_edit = DB::table('vaccineorders')->where('id',$id)->where('location','MVC')->first();
+            $oustanding_edit = DB::table('vaccineorders')->where('id',$id)->first();
             return view('Admin.Payment.oustanding_edit',['oustanding_edit'=>$oustanding_edit]);
          }
 
@@ -598,9 +596,9 @@ public function oustanding(){
         }
 
         public function Payment_admin_outstanding(){
-            $amount = DB::table('service_orders')->where('Payment_type','Half Payment')->where('location','MVC')->sum('due');
+            $amount = DB::table('service_orders')->where('Payment_type','Half Payment')->sum('due');
 
-            $pay=Service_order::with('user')->where('Payment_type','Half Payment')->where('location','MVC')->get();
+            $pay=Service_order::with('user')->where('Payment_type','Half Payment')->get();
          return view('Admin.Payment.Payment_admin_outstanding',['pay'=>$pay,'amount'=>$amount]);
         }
 
@@ -611,12 +609,12 @@ public function oustanding(){
         public function due_payment(){
 
             $date = date('d/m/y');
-            $due_payment = Payment_due::where('location','MVC')->get();
-            $amount = Payment_due::where('location','MVC')->sum('due');
-            $cash = DB::table('payment_dues')->where('Mode_of_payment','Cash') ->whereDate('date', $date)->where('location','MVC')->sum('due');
-            $tranfer = DB::table('payment_dues')->where('Mode_of_payment','Transfer') ->whereDate('date', $date)->where('location','MVC')->sum('due');
-            $pos = DB::table('payment_dues')->where('Mode_of_payment','Pos') ->whereDate('created_at', $date)->where('location','MVC')->sum('due');
-            $amount = DB::table('payment_dues')->where('location','MVC')->sum('due');
+            $due_payment = Payment_due::get();
+            $amount = Payment_due::sum('due');
+            $cash = DB::table('payment_dues')->where('Mode_of_payment','Cash') ->whereDate('date', $date)->sum('due');
+            $tranfer = DB::table('payment_dues')->where('Mode_of_payment','Transfer') ->whereDate('date', $date)->sum('due');
+            $pos = DB::table('payment_dues')->where('Mode_of_payment','Pos') ->whereDate('created_at', $date)->sum('due');
+            $amount = DB::table('payment_dues')->sum('due');
             return view('Admin.Payment.due_payment',['due_payment'=>$due_payment,'amount'=>$amount]);
 
 

@@ -16,16 +16,22 @@
                                 <div class="col-md-12">
 
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Service Name *</label>
-                                        <input type="text" class="form-control" name="service" placeholder="Enter Product Name" required>
+                                        <label>Service </label>
+                                        <input type="text" class="form-control" name="service" placeholder="Enter service" required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Amount </label>
+                                        <input type="number" class="form-control" name="amount" placeholder="Enter amount" required>
                                         <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary mr-2">Add Service</button>
-                            <button type="reset" class="btn btn-danger">Reset</button>
+                            <button type="submit" class="btn sidebar-bottom-btn mt-4 btn-lg btn-block">Add service</button>
                         </form>
                     </div>
 
@@ -49,7 +55,7 @@
                                       <tr class="ligth ligth-data">
                                         <th>Id</th>
                                         <th>Name</th>
-
+                                        <th>Amount</th>
                                       </tr>
                                   </thead>
                                   <tbody class="ligth-body">
@@ -58,7 +64,7 @@
 
                                             <td>{{$item->id}}</td>
                                             <td>{{$item->service}}</td>
-
+                                            <td>{{$item->amount}}</td>
 
                                       </tr>
                                   </form>

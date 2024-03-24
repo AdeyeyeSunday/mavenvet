@@ -12,12 +12,9 @@
                               <thead>
                                  <tr class="ligth">
                                     <th>#</th>
-                                    {{-- <th>Name</th> --}}
                                     <th>Product Name</th>
                                     <th>Quantity</th>
-                                    {{-- <th>Date</th>
-                                    <th>Month</th> --}}
-                                    <th>Add</th>
+                                    <th>Add to store</th>
                                  </tr>
                               </thead>
                               <tbody>
@@ -25,8 +22,7 @@
                              <tr>  <td>{{ $key+1 }}</td>
                                  <td>{{ $item->prod_name }}</td>
                                 <td>{{ $item->qty }}</td>
-                         <td><a href="{{route('Admin.Store.fatchonlineGood',$item->id)  }}"><button  class="btn btn-primary">Add</button></a></td>
-
+                             <td><a href="{{route('Admin.Store.fatchonlineGood',$item->id)  }}"><button  class="btn sidebar-bottom-btn mt-4 btn-lg btn-block">Add to store</button></a></td>
                              </tr>
                              @endforeach
                               </tbody>

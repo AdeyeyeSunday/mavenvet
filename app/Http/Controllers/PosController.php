@@ -161,8 +161,6 @@ class PosController extends Controller
             if($request->input('Mode_of_payment') == "Cash"){
                 $order->pay =$request->input('pay');
             }
-
-
             $total = 0;
             $cartitem_total = Cart::where('user_id',Auth::id())->get();
             foreach($cartitem_total as $prod){
@@ -755,7 +753,7 @@ $new_date = date('d/m/y');
 
   public function balance(){
 
-    $balance = Pos_deu::where('location','MVC')->get();
+    $balance = Pos_deu::get();
     $amount =  Pos_deu::sum('due');
     $cash = DB::table('pos_deus')->where('Mode_of_payment','Cash')->sum('due');
     $tranfer = DB::table('pos_deus')->where('Mode_of_payment','Transfer')->sum('due');

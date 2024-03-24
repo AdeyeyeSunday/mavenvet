@@ -163,7 +163,7 @@ class ProductController extends Controller
     }
 
     public function new_supply(){
-        $new = Newproduct::where('location','MVC')->latest()->get();
+        $new = Newproduct::latest()->get();
       return view('Admin.Product.new_supply',['new'=>$new]);
     }
 

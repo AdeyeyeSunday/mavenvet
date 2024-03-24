@@ -9,6 +9,7 @@ use App\Models\Service_item;
 use App\Models\Service_order;
 use App\Models\Systemupdate;
 use App\Models\Transferstore;
+use Exception;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,8 +45,6 @@ $year = request("year");
 
 $optional = request("optional");
 $profitmonthlySales = DB::table('orders')->where('order_status','success')->where('month',$month)->Where('year', $year)->sum('total_price');
-
-
 $profitmonthlyCost =  DB::table('orders')->where('order_status','success')->where('month',$month)->Where('year', $year)->sum('Cost');
 $profitmonthlyExpense= DB::table('expenses')->where('month',$month)->Where('year', $year)->sum('amount');
 $check = DB::table('profits')->get();
@@ -1648,62 +1647,86 @@ return back();
 
 
 function update2(){
-try {
+
+    try {
+        // Set max execution time and time limit
         ini_set('max_execution_time', 3600); // 3600 seconds = 60 minutes
         set_time_limit(3600);
-    // Offline database connection
-$dbhost = "localhost";
-$dbuser = "root";
-$dbpass = "";
-$db = "mavenvet";
 
-// Offline SQL connection
-$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $db);
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $mysqli->connect_error);
-}
-
-// Online database connection
-$online_host = '131.153.147.34';
-$online_user = 'mavenvet_midwifery';
-$online_password = 'mavenvet_midwifery';
-$online_db = 'mavenvet_midwifery';
-
-$online_con = mysqli_connect($online_host, $online_user, $online_password, $online_db);
-if ($online_con === false) {
-    die("Online database connection error: " . mysqli_connect_error());
-}
-
-// Truncate table in offline database
-         $truncateQuery = "TRUNCATE TABLE transferstores";
-        if ($mysqli->query($truncateQuery) === false) {
-            die("Error truncating table: " . $mysqli->error);
+        // Offline database connection
+        $dbhost = "localhost";
+        $dbuser = "root";
+        $dbpass = "";
+        $db = "mavenvet";
+        $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $db);
+        if ($mysqli->connect_error) {
+            throw new Exception("Connection failed: " . $mysqli->connect_error);
         }
 
-            // Copy data from online table to offline table
-        $selectQuery = "SELECT * FROM shop_items WHERE moved = 'moved'";
+        // Online database connection
+        $online_host = '131.153.147.34';
+        $online_user = 'mavenvet_midwifery';
+        $online_password = 'mavenvet_midwifery';
+        $online_db = 'mavenvet_midwifery';
+        $online_con = mysqli_connect($online_host, $online_user, $online_password, $online_db);
+        if ($online_con === false) {
+            throw new Exception("Online database connection error: " . mysqli_connect_error());
+        }
+
+        // Truncate table in offline database
+        // $truncateQuery = "TRUNCATE TABLE transferstores";
+        // if ($mysqli->query($truncateQuery) === false) {
+        //     throw new Exception("Error truncating table: " . $mysqli->error);
+        // }
+
+        // Copy data from online table to offline table
+        $selectQuery = "SELECT * FROM shop_items WHERE moved = 'moved' AND moved_status = 0 AND status = 'Head_Office_Breach_Office'";
         $result = mysqli_query($online_con, $selectQuery);
         if ($result === false) {
-            die("Error selecting data from online table: " . mysqli_error($online_con));
+            throw new Exception("Error selecting data from online table: " . mysqli_error($online_con));
         }
+        if ($result->num_rows > 0) {
+            while ($detorRow = $result->fetch_assoc()) {
+                // Fetch data from online table
+                $id = $detorRow['id'];
+                $user_id = $detorRow['user_id'];
+                $prod_name = $detorRow['prod_name'];
+                $pro_id = $detorRow['pro_id'];
+                $qty = $detorRow['qty'];
+                $price = $detorRow['price'];
+                $status = $detorRow['status'];
+                $subtotal = $detorRow['subtotal'];
+                $date = $detorRow['date'];
+                $month = $detorRow['month'];
+                $year = $detorRow['year'];
+                $moved = $detorRow['moved'];
+                $location_transfer = $detorRow['location_transfer'];
+                $created_at = $detorRow['created_at'];
+                $syn_flag = 1;
 
-        while ($row = mysqli_fetch_assoc($result)) {
-            // Insert data into offline table
-            $fields = implode(",", array_keys($row));
-            $values = "'" . implode("','", array_values($row)) . "'";
-            $insertQuery = "INSERT INTO transferstores ($fields) VALUES ($values)";
-            if ($mysqli->query($insertQuery) === false) {
-                die("Error inserting data into offline table: " . $mysqli->error);
+                // Insert data into offline table
+                $insertQuery = "INSERT INTO transferstores ( user_id, prod_name, pro_id, qty, price, status, subtotal, date, month, year, moved, location_transfer, syn_flag,created_at) VALUES ('$user_id', '$prod_name', '$pro_id', '$qty', '$price', '$status', '$subtotal', '$date', '$month', '$year', '$moved', '$location_transfer', '$syn_flag', '$created_at')";
+                $mysqli->query($insertQuery);
+
+                // Update online table after successful insertzzz
+                $updateQuery = "UPDATE shop_items SET syn_flag = '1', moved_status = '1' WHERE id = '$id'";
+                $updateResult = mysqli_query($online_con, $updateQuery);
+                if ($updateResult === false) {
+                    throw new Exception("Error updating data in online table: " . mysqli_error($online_con));
+                }
             }
         }
-        session()->flash('item', 'Product successful');
-        return back();
 
-        }  catch (\Throwable $th) {
-            //throw $th;s
-            session()->flash('item_not', 'Product was not successful due to a weak network. Please try again later. Error: ');
-            return back();
-        }
+        // Success flash message
+        session()->flash('item', 'Product synchronization successful');
+        return back();
+    } catch (\Throwable $th) {
+        // Error flash message
+        session()->flash('item_not', 'Product synchronization failed: ' . $th->getMessage());
+        return back();
+    }
+
+
 }
 
 // this update software from backend .....
@@ -1733,13 +1756,13 @@ try {
     $zipFile = file_get_contents($repositoryUrl);
 
     // Specify the path where you want to save the downloaded ZIP file
-    $localZipPath = 'C:\xampp\htdocs\test\repo.zip';
+    $localZipPath = 'C:\xampp\htdocs\repo.zip';
 
     // Save the downloaded ZIP file to a local directory
     file_put_contents($localZipPath, $zipFile);
 
     // Specify the path where you want to extract the repository contents
-    $extractPath = 'C:\xampp\htdocs\test';
+    $extractPath = 'C:\xampp\htdocs';
 
     // Remove the existing mavenvet folder if it exists
     $existingFolderPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet';

@@ -29,7 +29,8 @@
                        <input type="text" name="brand" class="form-control" required >
 
                     </div>
-                 <center>  <button class="btn btn-primary" type="submit">Submit</button></center>
+                 <center>  <button class="btn sidebar-bottom-btn btn-lg btn-block" type="submit">Submit</button></center>
+
                 </form>
                  </div>
               </div>
@@ -73,16 +74,8 @@
 
                     </tbody>
                  </table>
-
-
                  </div>
               </div>
-
-
-
-
-
-
            </div>
         </div>
      </div>

@@ -311,23 +311,83 @@ class ClinicController extends Controller
 
 
 
-public function Clinic_inventory(Request $request){
+   public function Clinic_inventory(Request $request){
+    $inventory = new Vaccineorder();
+    $inventory->name = $request->input('name');
+   $inventory->discount = $request->input('discount');
+   $inventory->phone = $request->input('phone');
+   $inventory->address = $request->input('address');
+   $inventory->order_status = $request->input('order_status');
+   $inventory->Mode_of_payment = $request->input('Mode_of_payment');
+   $inventory->pay = $request->input('pay');
+   $inventory->location = $request->input('location');
+   $inventory->due = $request->input('due');
+   $inventory->Payment_type = $request->input('Payment_type');
+   $inventory->date = $request->input('date');
+   $inventory->month = $request->input('month');
+   $inventory->year = $request->input('year');
+   $inventory->user_id = $request->input('user_id');
+
+   $total = 0;
+   $Vaccineitams_total = Clinic_cart::where('user_id', Auth::id())->get();
+   foreach($Vaccineitams_total as $vaccine){
+       $total += $vaccine->selling_price * $vaccine->qty;
+   }
+   $inventory->total = $total;
+      $inventory->save();
+
+       $Vaccineitams = Clinic_cart::where('user_id', Auth::id())->get();
+        foreach($Vaccineitams as $items){
+           Vaccineiteam::create([
+               'order_id'=>$inventory->id,
+               'items_name'=>$items->items_name,
+               'qty'=>$items->qty,
+               'price'=>$items->selling_price,
+               'vaccine_id'=>$items->vaccine_id,
+               'location'=>'MVC'
+           ]);
+
+           $curQty = Vaccinestore::where("id",$items->vaccine_id)->first()->Quantity;
+           Vaccinestore::where("id",$items->vaccine_id)->update(['Quantity'=>$curQty-$items->qty,'syn_flag'=>0]);
+       };
+
+           $cart = Clinic_cart::where('user_id',Auth::id())->get();
+           Clinic_cart::destroy($cart);
+              return redirect()->route('Admin.Clinic.cart_pending');
+      }
+
+
+
+
+
+public function drect_clinic_payment(Request $request){
  $inventory = new Vaccineorder();
  $inventory->name = $request->input('name');
-$inventory->discount = $request->input('discount');
+$inventory->discount = 0;
 $inventory->phone = $request->input('phone');
-$inventory->address = $request->input('address');
-$inventory->order_status = $request->input('order_status');
+$inventory->address = 0;
+$inventory->order_status = "success";
 $inventory->Mode_of_payment = $request->input('Mode_of_payment');
-$inventory->pay = $request->input('pay');
 $inventory->location = $request->input('location');
-$inventory->due = $request->input('due');
-$inventory->Payment_type = $request->input('Payment_type');
-$inventory->date = $request->input('date');
-$inventory->month = $request->input('month');
-$inventory->year = $request->input('year');
-$inventory->user_id = $request->input('user_id');
+$inventory->due = 0;
+// $inventory->pay = $request->input('pay');
+$inventory->Payment_type = "Full Payment";
+$inventory->date =date('d/m/y');
+$inventory->location = $request->input('location');
+$inventory->month = date('F') ;
+$inventory->year = date('Y') ;
+$inventory->user_id = Auth::user()->id;
+if($request->input('Mode_of_payment') == "Pos"){
+    $inventory->cash_pos = $request->input('pay');
+}
 
+if($request->input('Mode_of_payment') == "Transfer"){
+    $inventory->cash_transfer =$request->input('pay');
+}
+
+if($request->input('Mode_of_payment') == "Cash"){
+    $inventory->pay =$request->input('pay');
+}
 
 $total = 0;
 $Vaccineitams_total = Clinic_cart::where('user_id', Auth::id())->get();
@@ -354,7 +414,7 @@ $inventory->total = $total;
 
         $cart = Clinic_cart::where('user_id',Auth::id())->get();
         Clinic_cart::destroy($cart);
-           return redirect()->route('Admin.Clinic.cart_pending');
+          return back();
    }
 
 
@@ -609,7 +669,7 @@ public function vaccin_update2(Request $request,$id){
 
      public function expenditure(){
 
-    $clinic_expense=Clinic_expense::where('location','MVC')->get();
+    $clinic_expense=Clinic_expense::get();
 
          return view('Admin.Clinic.expenditure',['clinic_expense'=>$clinic_expense]);
      }
@@ -636,7 +696,7 @@ public function vaccin_update2(Request $request,$id){
 
 
          public function Monthly_edit($id){
-             $Expense = DB::table('clinic_expenses')->where('location','MVC')->where('id', $id)->first();
+             $Expense = DB::table('clinic_expenses')->where('id', $id)->first();
              return view('Admin.Clinic.Monthly_edit',['Expense'=>$Expense]);
          }
 
@@ -655,11 +715,11 @@ public function vaccin_update2(Request $request,$id){
              $from= $request->input('from');
              $to = $request->input('to');
              $jan=  DB::table('clinic_expenses')
-             ->whereBetween('created_at', [$from, $to])->where('location','MVC')
+             ->whereBetween('created_at', [$from, $to])
              ->get();
 
              $amount= DB::table('clinic_expenses')
-             ->whereBetween('created_at', [$from, $to])->where('location','MVC')
+             ->whereBetween('created_at', [$from, $to])
              ->sum('amount');
 
              return view('Admin.Clinic.clinic_monthly_expense',['jan'=>$jan, 'amount'=>$amount]);
@@ -728,29 +788,27 @@ public function vaccin_update2(Request $request,$id){
    public function search(Request $request){
     $date= $request->input('from');
     $search=  DB::table('vaccineorders')
-    ->whereDate('created_at', $date)->where('location','MVC')
+    ->whereDate('created_at', $date)
     ->get();
-    $daily = DB::table('vaccineorders')->where('order_status','success')->whereDate('created_at', $date)->where('location','MVC')->get();
+    $daily = DB::table('vaccineorders')->where('order_status','success')->whereDate('created_at', $date)->get();
     // $date = (date('d/m/y'));
     // $daily = DB::table('orders')->where('date', $date)->where('order_status','success')->get();
-    $cash = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Cash')->where('location','MVC')->whereDate('created_at', $date)->sum('pay');
+    $cash = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Cash')->whereDate('created_at', $date)->sum('pay');
 
-    $tranfer = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Transfer')->where('location','MVC')->whereDate('created_at', $date)->sum('cash_transfer');
-    $pos = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Pos')->where('location','MVC')->whereDate('created_at', $date)->sum('cash_pos');
+    $tranfer = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Transfer')->whereDate('created_at', $date)->sum('cash_transfer');
+    $pos = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Pos')->whereDate('created_at', $date)->sum('cash_pos');
     //transfer
-    $cash_transfer  = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','cash_transfer')->where('location','MVC')->whereDate('created_at', $date)->sum('cash_transfer');
-    $cash_cash  = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Transfer')->where('location','MVC')->whereDate('created_at', $date)->sum('pay');
+    $cash_transfer  = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','cash_transfer')->whereDate('created_at', $date)->sum('cash_transfer');
+    $cash_cash  = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Transfer')->whereDate('created_at', $date)->sum('pay');
 
       //posfv
-    $cash_pos =DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','cash_pos')->where('location','MVC')->whereDate('created_at', $date)->sum('cash_pos');
-    $cash_cash_pos  = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','pos')->where('location','MVC')->whereDate('created_at', $date)->sum('cash_pos');
+    $cash_pos =DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','cash_pos')->whereDate('created_at', $date)->sum('cash_pos');
+    $cash_cash_pos  = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','pos')->whereDate('created_at', $date)->sum('cash_pos');
 
 
-    $amount = DB::table('vaccineorders')->where('order_status','success')->where('location','MVC')->whereDate('created_at', $date)->sum('pay');
-    $cash_transfer = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Cash/Transfer')->where('location','MVC')->whereDate('created_at', $date)->sum('cash_transfer');
+    $amount = DB::table('vaccineorders')->where('order_status','success')->whereDate('created_at', $date)->sum('pay');
+    $cash_transfer = DB::table('vaccineorders')->where('order_status','success')->where('Mode_of_payment','Cash/Transfer')->whereDate('created_at', $date)->sum('cash_transfer');
  return view('Admin.Clinic.search',['daily'=>$daily,'amount'=>$amount,'cash'=>$cash,'tranfer'=>$tranfer,'pos'=>$pos,'cash_transfer'=>$cash_transfer,'cash_cash'=>$cash_cash,'cash_pos'=>$cash_pos,'cash_cash_pos'=>$cash_cash_pos]);
-
-
 
 
  }

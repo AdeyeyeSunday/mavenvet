@@ -8,6 +8,7 @@
                         <div class="header-title">
                             <h6 class="card-title">Add category</h6>
                         </div>
+                        <a href="{{ route("Admin.Category.list_Category") }}">   <button class="btn sidebar-bottom-btn btn-lg"> Back</button></a>
                     </div>
 
 
@@ -36,8 +37,8 @@
                                     </div>
                                 </div> --}}
                             </div>
-                            <button type="submit" class="btn sidebar-bottom-btn mt-4 btn-lg ">Add category</button>
-                            <button type="reset" class="btn btn-danger">Reset</button>
+                            <button type="submit" class="btn sidebar-bottom-btn mt-4 btn-lg btn-block">Add category</button>
+
                         </form>
                     </div>
                 </div>

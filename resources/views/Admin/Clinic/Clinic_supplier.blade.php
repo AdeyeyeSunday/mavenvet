@@ -6,7 +6,7 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <div class="header-title">
-                                <h4 class="card-title">Add vaccine Supplier</h4>
+                                <h4 class="card-title">Add vaccine supplier</h4>
                             </div>
                         </div>
                         @if (Session::has('message'))
@@ -58,7 +58,7 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Phone Number *</label>
+                                            <label>Phone number *</label>
                                             <input type="text" class="form-control" name="Phone_Number"
                                                 placeholder="Enter Phone Number" required>
                                             <div class="help-block with-errors"></div>
@@ -76,8 +76,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary mr-2">Add Supplier</button>
-                                <button type="reset" class="btn btn-danger">Reset</button>
+                                <button type="submit" class="btn sidebar-bottom-btn btn-lg btn-block">Add Supplier</button>
                             </form>
                         </div>
                     </div>

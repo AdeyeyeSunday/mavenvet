@@ -68,9 +68,9 @@
                         <div class="row mt-4 mb-3">
                             <div class="offset-lg-8 col-lg-4">
                                 <div class="or-detail rounded">
-                                    <div class="p-3">
-                                        <h5 class="mb-3">Order Details</h5>
-
+                                    <div class="p-6">
+                                        <h5 class="mb-3">Order details</h5>
+                                        <hr>
                                         <div class="mb-2">
                                             <h6>Due Date</h6>
                                             <p>{{ $Pos_invoice->date }}</p>
@@ -97,23 +97,24 @@
                                             <h6>Grant total </h6>
                                             <h6>₦{{ $Pos_invoice->total_price - $Pos_invoice->discount }} </h6><br>
                                         @endif
-                                        <h6>Mode of Payment</h6>
-                                        <a href="{{ route('Admin.Payment.order_cash', $Pos_invoice->id) }}"
-                                            class="btn btn-success">Cash</a>
-                                        <a href="{{ route('Admin.Payment.order_pos', $Pos_invoice->id) }}"
-                                            class="btn btn-info">Pos</a>
-                                        <a href="{{ route('Admin.Payment.order_transfer', $Pos_invoice->id) }}"
-                                            style="margin-right: 15px;" class="btn btn-primary">Transfer</a>
-                                        <a href="{{ route('Admin.Payment.cash_pos', $Pos_invoice->id) }}"
-                                            class= "btn btn-danger">Cash/Pos</a>
-                                        <a href="{{ route('Admin.Payment.cash_transfer', $Pos_invoice->id) }}"
-                                            class="btn btn-warning" style="margin-right: 26px;">Cash/Transfer</a>
+                                        @if ($Pos_invoice->pay > 0 || $Pos_invoice->cash_transfer > 0 || $Pos_invoice->cash_pos > 0)
+                                            <h6>Transaction completed</h6>
+                                        @else
+                                            <h6>Mode of Payment</h6>
+                                            <a href="{{ route('Admin.Payment.order_cash', $Pos_invoice->id) }}"
+                                                class="btn btn-success">Cash</a>
+                                            <a href="{{ route('Admin.Payment.order_pos', $Pos_invoice->id) }}"
+                                                class="btn btn-info">Pos</a>
+                                            <a href="{{ route('Admin.Payment.order_transfer', $Pos_invoice->id) }}"
+                                                class="btn btn-primary">Transfer</a>
+                                            <a href="{{ route('Admin.Payment.cash_pos', $Pos_invoice->id) }}"
+                                                class="btn btn-danger" style="padding: 1%">Cash & Pos</a>
+                                            <a href="{{ route('Admin.Payment.cash_transfer', $Pos_invoice->id) }}"
+                                                class="btn btn-warning" style="margin-right: 23px;">Cash & Transfer</a>
+                                        @endif
                                     </div>
                                 </div>
-
-
-
-
+                                <br>
                                 <form action="{{ route('Admin.Payment.order_update', $Pos_invoice->id) }}"
                                     enctype="multipart/form-data" method="post">
                                     @csrf
@@ -121,9 +122,6 @@
                                     <input type="hidden" name="date" value="{{ gmdate(' jS \ F Y ') }}">
                                     <input type="hidden" name="total_price"
                                         value="{{ $Pos_invoice->total_price - $price }}">
-
-
-
                                     @php
                                         $payment = $payment = DB::table('service_orders')->first();
                                     @endphp
@@ -157,11 +155,15 @@
                                                 <input type="hidden" class="form-control" style="width: 120px"
                                                     value="0" name="cash_transfer">
                                             @endif
-                                            @if ($Pos_invoice->pay > 1)
-                                                <button type="submit" disabled class="btn btn-primary">Paid</button>
-                                            @else($Pos_invoice->pay > 1 )
-                                                <button type="submit" class="btn btn-primary">Pay</button>
-                                            @endif
+                                            <div class="col-md-4">
+                                                @if ($Pos_invoice->pay > 1)
+                                                    <button type="submit" disabled
+                                                        class="btn btn-primary btn-block btn-lg">Paid</button>
+                                                @else($Pos_invoice->pay > 1 )
+                                                    <button type="submit"
+                                                        class="btn btn-primary btn-block btn-lg">Pay</button>
+                                                @endif
+                                            </div>
                                         @elseif ($Pos_invoice->Mode_of_payment == 'Pos')
                                             <label for="">Select Bank</label>
                                             <select name="bankName" id="" class="form-control">
@@ -171,10 +173,8 @@
                                                         value="{{ $banklist->name }}  {{ $banklist->accountNumber }}">
                                                         {{ $banklist->name }} {{ $banklist->accountNumber }}</option>
                                                 @endforeach
-
                                             </select>
-
-                                            <label for="">Pos:</label>
+                                            <label for="" style="padding: 1%">Pos:</label>
                                             @if ($Pos_invoice->cash_pos > 1)
                                                 <input type="text" disabled class="form-control"
                                                     value="{{ $Pos_invoice->cash_pos }}" style="width: 120px"
@@ -196,9 +196,11 @@
                                                     value="0" name="cash_transfer">
                                             @endif
                                             @if ($Pos_invoice->cash_pos > 1)
-                                                <button type="submit" disabled class="btn btn-primary">Paid</button>
+                                                <button type="submit" disabled
+                                                    class="btn btn-primary btn-block btn-lg">Paid</button>
                                             @else($Pos_invoice->cash_pos > 1 )
-                                                <button type="submit" class="btn btn-primary">Pay</button>
+                                                <button type="submit"
+                                                    class="btn btn-primary btn-block btn-lg">Pay</button>
                                             @endif
                                         @elseif ($Pos_invoice->Mode_of_payment == 'Transfer')
                                             <label for="">Select Bank</label>
@@ -211,7 +213,7 @@
                                                 @endforeach
 
                                             </select>
-                                            <label for="">Transfer:</label>
+                                            <label for="" style="padding: 1%">Transfer:</label>
                                             @if ($Pos_invoice->cash_transfer > 1)
                                                 <input type="text" disabled placeholder="Transfer"
                                                     class="form-control" style="width: 120px"
@@ -229,39 +231,45 @@
                                                     style="width: 120px" placeholder="Pay">
                                             @endif
                                             @if ($Pos_invoice->cash_transfer > 1)
-                                                <button type="submit" disabled class="btn btn-primary">Paid</button>
+                                                <button type="submit" disabled
+                                                    class="btn btn-primary btn-block btn-lg">Paid</button>
                                             @else($Pos_invoice->cash_transfer > 1 )
-                                                <button type="submit" class="btn btn-primary">Pay</button>
+                                                <button type="submit"
+                                                    class="btn btn-primary btn-block btn-lg">Pay</button>
                                             @endif
                                         @elseif ($Pos_invoice->Mode_of_payment == 'cash_pos')
                                             @if ($Pos_invoice->cash_pos > 1)
-                                                <label for="">Pos:</label>
+                                                <label for="" style="padding: 1%">Pos:</label>
                                                 <input type="text" disabled class="form-control" style="width: 120px"
                                                     value="{{ $Pos_invoice->cash_pos }}" name="cash_pos">
                                                 <input type="hidden" class="form-control" style="width: 120px"
                                                     value="0" name="cash_transfer">
-                                                <label for="">Cash:</label>
+                                                <label for="" style="padding: 1%">Cash</label>
                                                 <input type="text" disabled placeholder="Transfer"
                                                     class="form-control" style="width: 120px"
                                                     value="{{ $Pos_invoice->pay }}" name="pay">
                                             @else
-                                                <label for="">Pos:</label>
+                                                <label for="" style="padding: 1%">Pos</label>
                                                 <input type="text" class="form-control" style="width: 120px"
                                                     value="0" name="cash_pos">
                                                 <input type="hidden" class="form-control" style="width: 120px"
                                                     value="0" name="cash_transfer">
-                                                <label for="">Cash:</label>
+                                                <label for="" style="padding: 1%">Cash</label>
                                                 <input type="text" placeholder="Transfer" class="form-control"
                                                     style="width: 120px" value="0" name="pay">
                                             @endif
-                                            @if ($Pos_invoice->cash_pos > 1)
-                                                <button type="submit" disabled class="btn btn-primary">Paid</button>
-                                            @else($Pos_invoice->cash_pos > 1 )
-                                                <button type="submit" class="btn btn-primary">Pay</button>
-                                            @endif
+                                            <div class="col-md-4">
+                                                @if ($Pos_invoice->cash_pos > 1)
+                                                    <button type="submit" disabled
+                                                        class="btn btn-primary btn-block btn-lg">Paid</button>
+                                                @else($Pos_invoice->cash_pos > 1 )
+                                                    <button type="submit"
+                                                        class="btn btn-primary btn-block btn-lg">Pay</button>
+                                                @endif
+                                            </div>
                                         @elseif ($Pos_invoice->Mode_of_payment == 'cash_transfer')
                                             @if ($Pos_invoice->cash_transfer > 1)
-                                                <label for="">Transfer:</label>
+                                                <label for="" style="padding: 1%">Transfer</label>
                                                 <input type="hidden" class="form-control" style="width: 120px"
                                                     value="0" name="cash_pos">
                                                 <input type="text" disabled placeholder="Transfer"
@@ -272,32 +280,36 @@
                                                     class="form-control" style="width: 120px"
                                                     value="{{ $Pos_invoice->pay }}" name="pay">
                                             @else
-                                                <label for="">Transfer:</label>
+                                                <label for=""style="padding: 1%">Transfer</label>
                                                 <input type="hidden" class="form-control" style="width: 120px"
                                                     value="0" name="cash_pos">
                                                 <input type="text" placeholder="Transfer" class="form-control"
                                                     style="width: 120px" value="0" name="cash_transfer">
-                                                <label for="">Cash:</label>
+                                                <label for="" style="padding: 1%">Cash</label>
                                                 <input type="text" placeholder="Transfer" class="form-control"
                                                     style="width: 120px" value="0" name="pay">
                                             @endif
-
-                                            @if ($Pos_invoice->cash_transfer > 1)
-                                                <button type="submit" disabled class="btn btn-primary">Paid</button>
-                                            @else($Pos_invoice->cash_transfer > 1 )
-                                                <button type="submit" class="btn btn-primary">Pay</button>
-                                            @endif
+                                            <div class="col-md-4">
+                                                @if ($Pos_invoice->cash_transfer > 1)
+                                                    <button type="submit" disabled
+                                                        class="btn btn-primary btn-block btn-lg">Paid</button>
+                                                @else($Pos_invoice->cash_transfer > 1 )
+                                                    <button type="submit"
+                                                        class="btn btn-primary btn-block btn-lg">Pay</button>
+                                                @endif
+                                            </div>
                                         @endif
                                 </form>
-                                @if ($Pos_invoice->cash_transfer == null)
-                                @elseif(
-                                    $Pos_invoice->cash_transfer == 0 ||
-                                        $Pos_invoice->pay == 0 ||
-                                        $Pos_invoice->cash_pos == 0 ||
-                                        $Pos_invoice->cash_pos == 0)
+
+
+                                @if (
+                                    $Pos_invoice->cash_transfer != 0 ||
+                                        $Pos_invoice->pay != 0 ||
+                                        $Pos_invoice->cash_pos != 0 ||
+                                        $Pos_invoice->cash_pos != 0)
                                     <div class="col-md-4">
                                         <a href="{{ route('Admin.Payment.order_status', $Pos_invoice->id) }}"
-                                            class="btn btn-success">Done</a>
+                                            class="btn btn-success btn-block btn-lg">Done</a>
                                     </div>
                             </div>
                             <script src="script.js"></script>
