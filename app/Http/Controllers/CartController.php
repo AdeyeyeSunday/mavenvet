@@ -117,36 +117,44 @@ class CartController extends Controller
 
     public function update_cart_all()
     {
-        $input = new Cart();
-        $input->Qty = request('Qty');
-        $input->Quantity = request('Quantity');
-        $input->Name = request('Name');
-        $input->product_id = request('product_id');
 
-        $qtyArr = $input->Qty;
-        $idArr = $input->product_id;
-        $qtyQuantity = $input->Quantity;
-        $pro_nameArr = $input->Name;
+$input = new Cart();
+$input->Qty = request('Qty');
+$input->Quantity = request('Quantity');
+$input->Name = request('Name');
+$input->product_id = request('product_id');
 
-        foreach ($qtyArr as $i => $qty) {
-            $cartItem = Cart::where('product_id', $idArr[$i])->where('Name', $pro_nameArr[$i])->first();
+$qtyArr = $input->Qty;
+$idArr = $input->product_id;
+$qtyQuantity = $input->Quantity;
+$pro_nameArr = $input->Name;
 
-            if (!$cartItem) {
-                // If the item is not found in the cart, handle the error
-                Session()->flash('message', 'Item not found in the cart.');
-                return back();
-            }
-            // Check if the requested quantity exceeds the available stock quantity
-            if ($cartItem->Quantity >= $qty ) {
-                Session()->flash('message', 'Your request exceeds one or more available stock quantities. Please try again.');
-                return back();
-            }else{
-                $cartItem->update(['Quantity' => $qtyQuantity[$i]]);
-            }
-        }
+foreach ($qtyArr as $i => $qty) {
+    $cartItem = Cart::where('product_id', $idArr[$i])->where('Name', $pro_nameArr[$i])->first();
 
-        Session()->flash('message', 'Successfully updated. Please fill in the information below.');
+    if (!$cartItem) {
+        // If the item is not found in the cart, handle the error
+        Session()->flash('message', 'Item not found in the cart.');
         return back();
+    }
+
+    // Check if the requested quantity exceeds the available stock quantity
+    if ($cartItem->Quantity >= $qty) {
+        // If the requested quantity exceeds the available stock quantity, handle the error
+        Session()->flash('message', 'Your request for ' . $cartItem->Name . ' exceeds the available stock quantity. Please try again.');
+        return back();
+    }
+}
+
+// If all checks pass, update the quantities in the cart
+foreach ($qtyArr as $i => $qty) {
+    $cartItem = Cart::where('product_id', $idArr[$i])->where('Name', $pro_nameArr[$i])->first();
+    $cartItem->update(['Quantity' => $qtyQuantity[$i]]);
+}
+
+// Redirect back with success message
+Session()->flash('message', 'Quantities updated successfully.');
+return back();
 
     }
 

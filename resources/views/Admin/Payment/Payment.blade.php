@@ -484,7 +484,7 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h6 class="modal-title"
-                                                                        id="exampleModalScrollableTitle"> Add New Treatment
+                                                                        id="exampleModalScrollableTitle"> Add new Treatment
                                                                     </h6>
                                                                     <button type="button" class="close"
                                                                         data-dismiss="modal" aria-label="Close">

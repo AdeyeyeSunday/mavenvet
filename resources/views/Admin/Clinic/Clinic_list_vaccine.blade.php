@@ -11,7 +11,7 @@
                         </div>
                 @if (auth()->user()->userHasRole('Admin'))
                         <div class="header-title">
-                        <a href="{{ route('Admin.Clinic.Clinic_add_vaccine') }}"><button class="btn btn-primary">Add New Vaccin</button></a>
+                        <a href="{{ route('Admin.Clinic.Clinic_add_vaccine') }}"><button class="btn sidebar-bottom-btn mt-4 btn-lg">Add new vaccin</button></a>
                          </div>
                      </div>
                      @endif

@@ -8,7 +8,7 @@
                 <div class="card-header d-flex justify-content-between">
                    <div class="header-title">
 
-                      <h4 class="card-title">MVC Expense</h4>
+                      <h5 class="card-title">MVC Expense</h5>
                    </div>
                 </div>
                 <div class="card-body">
@@ -47,8 +47,8 @@
                         <input type="hidden" name="date"  value="{{date("d/m/y")}}" class="form-control" >
                      </div>
 
-                      <button type="submit" class="btn btn-primary">Submit</button>
-                      <button type="submit" class="btn bg-danger">Cancel</button>
+                      <button type="submit" class="btn sidebar-bottom-btn mt-4 btn-lg btn-block">Submit</button>
+
                    </form>
                 </div>
             </div>

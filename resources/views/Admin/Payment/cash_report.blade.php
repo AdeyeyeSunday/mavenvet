@@ -35,7 +35,7 @@
                            <input type="hidden" name="year" value="{{date('Y')}}">
                         </div>
                           <br>
-                        <center><button type="submit" class="btn btn-primary">Submit</button></center>
+                        <center><button type="submit" class="btn sidebar-bottom-btn mt-4 btn-lg btn-block">Submit</button></center>
                      </form>
                   </div>
                </div>
@@ -50,7 +50,7 @@
                             </div>
 
 
-                            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#exampleModalScrollable">Search with date
+                            <button type="button" class="btn sidebar-bottom-btn mt-4 btn-lg" data-toggle="modal" data-target="#exampleModalScrollable">Search with date
                             </button>
                          </div>
                          <div class="card-body">

@@ -6,12 +6,9 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Add Vaccine</h4>
+                            <h4 class="card-title">Add vaccine</h4>
                         </div>
                     </div>
-
-
-
 
                     <div class="card-body">
                         <form action="{{route('Admin.Clinic.Clinic_add_vaccine_store')}}" method="post" enctype="multipart/form-data" data-toggle="validator">
@@ -106,8 +103,8 @@
                                 <input type="hidden" name="new_supply" value="0" id="">
                                 <input type="hidden" name="supply_date" value="{{date('d/m/y')}}" id="">
                             </div>
-                            <button type="submit" class="btn btn-primary mr-2">Add Vaccine</button>
-                            <button type="reset" class="btn btn-danger">Reset</button>
+                            <button type="submit" class="btn sidebar-bottom-btn mt-4 btn-lg btn-block">Add vaccine</button>
+
                         </form>
                     </div>
                 </div>

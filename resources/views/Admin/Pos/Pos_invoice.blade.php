@@ -134,16 +134,17 @@
                                                 <h6>Transaction completed</h6>
                                             @else
                                                 <h6>Mode of Payment</h6>
-                                                <a href="{{ route('Admin.Pos.order_cash', $Pos_invoice->id) }}"
+                                                <a  href="{{ route('Admin.Pos.order_cash', $Pos_invoice->id) }}"
                                                     class="btn btn-success">Cash</a>
                                                 <a
                                                     href="{{ route('Admin.Pos.order_pos', $Pos_invoice->id) }}"class="btn btn-info">Pos</a>
-                                                <a href="{{ route('Admin.Pos.order_transfer', $Pos_invoice->id) }}"
-                                                    class="btn btn-primary">Transfer</a>
-                                                <a href="{{ route('Admin.Pos.cash_pos', $Pos_invoice->id) }}"
-                                                    class="btn btn-danger">Cash & Pos</a>
-                                                <a href="{{ route('Admin.Pos.cash_transfer', $Pos_invoice->id) }}"
-                                                    class="btn btn-warning" style="margin-right: 26px;">Cash & Transfer</a>
+                                                    <a  href="{{ route('Admin.Pos.order_transfer', $Pos_invoice->id) }}"
+                                                        class="btn btn-primary">Transfer</a>
+                                                            <a href="{{ route('Admin.Pos.cash_pos', $Pos_invoice->id) }}"
+                                                                class="btn btn-danger">Cash & Pos</a>
+                                                        <a href="{{ route('Admin.Pos.cash_transfer', $Pos_invoice->id) }}"
+                                                            class="btn btn-warning " style="margin-right: 26px;">Cash & Transfer</a>
+
                                             @endif
                                         </div>
                                     </div>
@@ -341,11 +342,7 @@
                                     </form>
                                     <br><br>
                                     <script src="script.js"></script>
-                                    @if (
-                                        $Pos_invoice->cash_transfer != 0 ||
-                                            $Pos_invoice->pay != 0 ||
-                                            $Pos_invoice->cash_pos != 0 ||
-                                            $Pos_invoice->cash_pos != 0)
+                                    @if ( $Pos_invoice->cash_transfer != 0 || $Pos_invoice->pay != 0 || $Pos_invoice->cash_pos != 0 || $Pos_invoice->cash_pos != 0)
                                         <div class="col-md-4">
                                             <a href="{{ route('Admin.Pos.order_status', $Pos_invoice->id) }}"
                                                 class="btn btn-success btn-lg btn-block">Done</a>

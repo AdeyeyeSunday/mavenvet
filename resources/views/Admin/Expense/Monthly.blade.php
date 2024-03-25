@@ -13,15 +13,15 @@
                             </center>
                         @endif
                        <center> <div>
-                            <button type="button" class="btn btn-primary mt-2" data-toggle="modal"
+                            <button type="button" class="btn sidebar-bottom-btn btn-lg" data-toggle="modal"
                                 data-target="#exampleModalScrollable">Search with Date
                             </button>
                         </div>
                     </center>
                         <div class="header-title card-header d-flex justify-content-between">
                             <h4 class="card-title"></h4>
-                            <a href="{{ route('Admin.Expense.Expense') }}"><button class="btn btn-primary">Add
-                                    Expense</button></a>
+                            <a href="{{ route('Admin.Expense.Expense') }}"><button class="btn sidebar-bottom-btn btn-lg">Add
+                                    expense</button></a>
                         </div>
 
                         <div class="card-header d-flex justify-content-between">

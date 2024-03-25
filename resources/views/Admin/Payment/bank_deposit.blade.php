@@ -7,7 +7,7 @@
                   <div class="card">
                      <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#exampleModalScrollable">Search with Date
+                            <button type="button" class="btn sidebar-bottom-btn btn-lg" data-toggle="modal" data-target="#exampleModalScrollable">Search with Date
                             </button>
                             </div>
                         <center> <h6  style="color: red" class="card-title">{{gmdate(" jS \ F Y ")}} </h6></center>
