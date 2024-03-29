@@ -433,12 +433,12 @@
                                                         @csrf
                                                         <div class="row  col-md-12">
                                                             <center>
-                                                                <p>This section doesn't accept double payments; you can only
+                                                                <p>This section doesn't accept partial payments; you can only
                                                                     use
-                                                                    a single payment method. For double payments, you can
-                                                                    utilize the "Process double payment" button below.</p>
+                                                                    a full payment method. For partial payments, you can
+                                                                    utilize the "Process partial payment" button below.</p>
                                                             </center>
-                                                            <div class="col-md-4 off col-md-4">
+                                                            <div class="col-md-3">
                                                                 {{-- <br> --}}
                                                                 <h6 class="card-title">Amount charged</h6>
                                                                 <input type="text" disabled name=""
@@ -446,7 +446,7 @@
                                                                     id="">
                                                                 {{-- <br> --}}
                                                             </div>
-                                                            <div class="col-md-8 off col-md-1">
+                                                            <div class="col-md-6">
                                                                 {{-- <br> --}}
                                                                 <h6 class="card-title">Mode of payment </h6>
                                                                 <select name="Mode_of_payment" id="modeOfPayment"
@@ -502,15 +502,18 @@
                                                                     </label>
                                                                 </div>
                                                             </div>
-
+                                                            <div class="col-md-3 off col-md-1">
+                                                                <label for="">Name</label>
+                                                            <input type="text" name="fname" class="form-control"
+                                                                placeholder="Full name optional"><br>
+                                                            </div>
                                                             <div class="col-md-12">
                                                                 <center> <button
                                                                         class="btn sidebar-bottom-btn mt-4 btn-lg btn-block">Process
                                                                         payment</button></center>
                                                             </div>
 
-                                                            <input type="hidden" name="fname" class="form-control"
-                                                              placeholder="Full Name"><br>
+
                                                             <input type="hidden" name="phone"
                                                                 class="form-control" placeholder="Phone"><br>
                                                             <input type="hidden" name="address"

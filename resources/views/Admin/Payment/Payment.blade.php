@@ -190,10 +190,10 @@
                                             @csrf
                                             <div class="row  col-md-12">
                                                 <center>
-                                                    <p>This section doesn't accept double payments; you can only
+                                                    <p>This section doesn't accept partial payments; you can only
                                                         use
-                                                        a single payment method. For double payments, you can
-                                                        utilize the "Process double payment" button below.</p>
+                                                        a full payment method. For partial payments, you can
+                                                        utilize the "Process partial payment" button below.</p>
                                                 </center>
                                                 <div class="col-md-4 off col-md-4">
                                                     <h6 class="card-title">Amount charged</h6>
@@ -220,7 +220,7 @@
                                                 <div class="col-md-4 off col-md-1">
                                                     <label for="">Owner name</label>
                                                     <input type="text" class="form-control"
-                                                        name="Owner_name" id="" required>
+                                                        name="Owner_name" id="" placeholder="Owner name optional" required>
                                                     <input type="hidden" class="form-control" value="MVC"
                                                         name="location" id="">
                                                     <input type="hidden" name="pay" value="{{ $total + $amount2 }}"
@@ -234,7 +234,7 @@
                                                 <div class="col-md-4 off col-md-1">
                                                     <label for="">Phone No.</label>
                                                     <input type="number" class="form-control"
-                                                        name="Phone" id="" required>
+                                                        name="Phone" id="" required placeholder="Phone number optional">
                                                 </div>
                                                 {{-- <div class="row"> --}}
                                                 <div class="col-md-4 off col-md-1" id="cashField">
@@ -376,7 +376,7 @@
 
                                                 @if ($total + $amount2 != '0.00')
                                                     <center> <button class="btn btn-success btn-lg btn-block">Process
-                                                            double
+                                                        partial
                                                             payment</button>
                                                     </center>
                                                 @endif
