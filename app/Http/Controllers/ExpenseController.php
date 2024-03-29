@@ -62,9 +62,10 @@ class ExpenseController extends Controller
         $from= $request->input('from');
         $to = $request->input('to');
         $new=  DB::table('expenses')
+
         ->whereBetween('created_at', [$from, $to])
         ->get();
-
+        // dd($new);
         $amount= DB::table('expenses')
         ->whereBetween('created_at', [$from, $to])
         ->sum('amount');

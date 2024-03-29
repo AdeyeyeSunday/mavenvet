@@ -163,8 +163,12 @@ return back();
 
     public function destory_cart($id){
      $destory_cart = Cart::find($id);
-      $destory_cart->delete();
-      return back();
+
+     if($destory_cart != null){
+        $destory_cart->delete();
+        return back();
+     }
+
     }
 
 

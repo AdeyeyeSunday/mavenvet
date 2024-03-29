@@ -50,10 +50,19 @@
                                                                         @endphp
 
                                                                         @if (Session::has('message'))
-                                                                            <div class="btn btn-success">
-                                                                                {{ session('message') }}
-                                                                            </div>
+                                                                            <p style="color: red">{{ session('message') }}
+                                                                            </p>
                                                                         @endif
+
+                                                                        @if (Session::has('success'))
+                                                                            <p style="color: rgb(9, 96, 9)">
+                                                                                {{ session('success') }}</p>
+                                                                        @endif
+                                                                        @if (Session::has('error1'))
+                                                                            <p style="color: red">{{ session('error1') }}
+                                                                            </p>
+                                                                        @endif
+
                                                                         @foreach ($get_cart as $get_cart)
                                                                             <tr>
                                                                                 <th>{{ $get_cart->Name }}</th>
@@ -109,7 +118,8 @@
                                                                             @endphp
                                                                         @endforeach
 
-                                                                        <h6 id="granttotal">Grand Total : {{ number_format($total, 2) }}
+                                                                        <h6 id="granttotal">Grand Total :
+                                                                            {{ number_format($total, 2) }}
                                                                         </h6>
                                                                         <br>
                                                                     </tbody>
@@ -117,7 +127,8 @@
                                                             </div>
                                                         </ul>
                                                         @if ($total != '0.00')
-                                                            <button class="btn sidebar-bottom-btn mt-4 btn-lg btn-block">Update
+                                                            <button
+                                                                class="btn sidebar-bottom-btn mt-4 btn-lg btn-block">Update
                                                                 cart</button>
                                                         @endif
                                                         </form>
@@ -135,9 +146,9 @@
                                                     <a href="{{ route('Admin.Pos.direct_print') }}"><button
                                                             class="btn btn-dark btn-lg btn-block">Print invoice</button></a>
 
-                                                    <button class="btn btn-secondary btn-lg "
-                                                            data-toggle="modal" data-target=".bd-example-modal-xl">Today
-                                                            report</button>
+                                                    <button class="btn btn-secondary btn-lg " data-toggle="modal"
+                                                        data-target=".bd-example-modal-xl">Today
+                                                        report</button>
                                                     <div class="modal fade bd-example-modal-xl" tabindex="-1"
                                                         role="dialog" aria-hidden="true">
                                                         <div class="modal-dialog modal-xl">
@@ -404,12 +415,17 @@
                                                     </div>
                                                 </div>
                                                 @if ($total == '0.00')
-                                                <div class="col-md-12">
-                                                    <div class="warning">
-                                                        <p><strong style="color: red">Important Notice:</strong> Your account security is paramount. You are accountable for all actions performed using your login credentials.
-                                                            Please safeguard your account information and refrain from sharing it with others. Any misuse or unauthorized access may result in penalties. Your cooperation is appreciated. Thank you.</p>
+                                                    <div class="col-md-12">
+                                                        <div class="warning">
+                                                            <p><strong style="color: red">Important Notice:</strong> Your
+                                                                account security is paramount. You are accountable for all
+                                                                actions performed using your login credentials.
+                                                                Please safeguard your account information and refrain from
+                                                                sharing it with others. Any misuse or unauthorized access
+                                                                may result in penalties. Your cooperation is appreciated.
+                                                                Thank you.</p>
+                                                        </div>
                                                     </div>
-                                                </div>
                                                 @endif
                                                 @if ($total != '0.00')
                                                     <form action="{{ route('Admin.Pos.directPayment') }}"
@@ -433,26 +449,70 @@
                                                             <div class="col-md-8 off col-md-1">
                                                                 {{-- <br> --}}
                                                                 <h6 class="card-title">Mode of payment </h6>
-                                                                <select name="Mode_of_payment" id=""
+                                                                <select name="Mode_of_payment" id="modeOfPayment"
                                                                     class="form-control" required>
                                                                     <option value="" selected>select</option>
                                                                     <option value="Cash">Cash</option>
                                                                     <option value="Pos">Pos</option>
                                                                     <option value="Transfer">Transfer</option>
+                                                                    <option value="cash_transfer">Cash & Transfer </option>
+                                                                    <option value="cash_pos">Cash & Pos</option>
                                                                 </select>
                                                                 <br>
-                                                                 <div class="custom-control custom-checkbox custom-checkbox-color-check custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input bg-dark" name="checkbox_print" value="1" id="customCheck-5" checked="">
-                                                                    <label class="custom-control-label" for="customCheck-5">Print invoice after payment </label>
-                                                                 </div>
+
+                                                                <div class="row">
+                                                                    <div class="col-md-6 off col-md-1" id="cashField">
+                                                                        <label for="">Cash</label>
+                                                                        <input type="text" class="form-control"
+                                                                            placeholder="Cash" name="transfer_pay"
+                                                                            id="cashInput" onblur="validatePayment()">
+                                                                    </div>
+                                                                    <div class="col-md-6 off col-md-1" id="transferField">
+                                                                        <label for="">Transfer</label>
+                                                                        <input type="text" class="form-control"
+                                                                            placeholder="Transfer" name="cash_transfer"
+                                                                            id="transferInput" onblur="validatePayment()">
+                                                                        <br>
+                                                                    </div>
+
+                                                                </div>
+
+
+                                                                <div class="row">
+                                                                    <div class="col-md-6 off col-md-1" id="cashFieldPos">
+                                                                        <label for="">Cash</label>
+                                                                        <input type="text" class="form-control"
+                                                                            placeholder="Cash" name="pos_pay"
+                                                                            id="cashInput">
+                                                                    </div>
+                                                                    <div class="col-md-6 off col-md-1" id="posField">
+                                                                        <label for="">Pos</label>
+                                                                        <input type="text" class="form-control"
+                                                                            placeholder="Pos" name="cash_pos"
+                                                                            id="transferInput">
+                                                                        <br>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div
+                                                                    class="custom-control custom-checkbox custom-checkbox-color-check custom-control-inline">
+                                                                    <input type="checkbox"
+                                                                        class="custom-control-input bg-dark"
+                                                                        name="checkbox_print" value="1"
+                                                                        id="customCheck-5" checked="">
+                                                                    <label class="custom-control-label"
+                                                                        for="customCheck-5">Print invoice after payment
+                                                                    </label>
+                                                                </div>
                                                             </div>
 
                                                             <div class="col-md-12">
                                                                 <center> <button
                                                                         class="btn sidebar-bottom-btn mt-4 btn-lg btn-block">Process
-                                                                        direct
                                                                         payment</button></center>
                                                             </div>
+
                                                             <input type="hidden" name="fname" class="form-control"
                                                                 value="****" placeholder="Full Name"><br>
                                                             <input type="hidden" name="phone" value="****"
@@ -463,8 +523,10 @@
                                                                 placeholder="discount">
                                                             <input type="hidden" name="order_status"
                                                                 class="form-control" value="success">
+
                                                             <input type="hidden" name="pay"
-                                                                value="{{ $total }}" class="form-control">
+                                                                value="{{ $total }}" class="form-control"
+                                                                id="totalAmount">
                                                             <input type="hidden" name="due" class="form-control"
                                                                 value="0">
                                                             <input type="hidden" name="Payment_type"
@@ -528,8 +590,8 @@
                                             @if ($total != '0.00')
                                                 <div class="col-md-12 off col-md-1">
                                                     <center> <button type="submit"
-                                                            class="btn btn-dark btn-lg btn-block">Process double
-                                                            payment section</button>
+                                                            class="btn btn-dark btn-lg btn-block">Open flexible payment
+                                                            options with partial payment feature</button>
                                                     </center>
                                                 </div>
                                             @endif
@@ -546,8 +608,8 @@
                                             <form id="barcodeForm" action="{{ route('Admin.Cart.barcode_scanner') }}"
                                                 method="POST">
                                                 @csrf
-                                                <input type="text" disabled placeholder="barcode coming 2weeks ...." name="barcode_scanner"
-                                                    class="form-control" id="barcode_scanner">
+                                                <input type="text" disabled placeholder="barcode coming 2weeks ...."
+                                                    name="barcode_scanner" class="form-control" id="barcode_scanner">
                                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                                 <input type="hidden" name="Name" value="">
                                                 <input type="hidden" name="Quantity" value="">
@@ -573,8 +635,8 @@
                                                                 <th>Description</th>
                                                                 <th>Category</th>
                                                                 <th>Quantity</th>
-                                                                <th>Status</th>
                                                                 <th>Price</th>
+                                                                <th>Status</th>
                                                                 <th>Action</th>
                                                             </tr>
                                                         </thead>
@@ -583,7 +645,8 @@
                                                             @foreach ($product as $product)
                                                                 <tr>
                                                                     <form action="{{ route('Admin.Cart.add_cart') }}"
-                                                                        method="post" enctype="multipart/form-data" id="barcodeForm2">
+                                                                        method="post" enctype="multipart/form-data"
+                                                                        id="barcodeForm2">
                                                                         @csrf
                                                                         <input type="hidden" name="user_id"
                                                                             value="{{ auth()->user()->id }}">
@@ -610,25 +673,27 @@
                                                                         </td>
                                                                         <td>{{ $product->Category }}</td>
                                                                         <td>{{ $product->Quantity }}</td>
+                                                                        <td>{{ $product->Price }}</td>
                                                                         <td>
-
                                                                             @php
-                                                                                if ( $product->Quantity == 0 ) {
+                                                                                if ($product->Quantity == 0) {
                                                                                     echo '<button type="button" class="btn btn-dark btn-sm mr-2">out of stock</button>';
-                                                                                }
-                                                                                 elseif ($product->Quantity >= $product->Quantity_level)
-                                                                                 {
+                                                                                } elseif (
+                                                                                    $product->Quantity >=
+                                                                                    $product->Quantity_level
+                                                                                ) {
                                                                                     echo ' <button type="button" class="btn btn-primary btn-sm mr-2">In Stock</button>';
-                                                                                 }
-                                                                                 elseif ($product->Quantity <= $product->Quantity_level)
-                                                                                 {
+                                                                                } elseif (
+                                                                                    $product->Quantity <=
+                                                                                    $product->Quantity_level
+                                                                                ) {
                                                                                     echo ' <button type="button" class="btn btn-danger btn-sm mr-2">low Stock</button>';
-                                                                                 }
+                                                                                }
 
                                                                             @endphp
                                                                         </td>
 
-                                                                        <td>{{ $product->Price }}</td>
+
                                                                         <td>
                                                                             @if ($product->Quantity <= 0)
                                                                                 <button disabled><i
@@ -636,7 +701,7 @@
                                                                             @else
                                                                                 <button type="submit"
                                                                                     class="btn btn-link"><i
-                                                                                      class="ri-check-line ri-lg fw-bold"></i></button>
+                                                                                        class="ri-check-line ri-lg fw-bold"></i></button>
                                                                             @endif
                                                                         </td>
                                                                 </tr>

@@ -73,7 +73,7 @@
                             <div class="row">
                                 <div class="col-md-6 off col-md-4">
                                     <label for="">Name</label>
-                                        <input type="text"  name="name" value=""
+                                        <input type="text" placeholder="Name" name="name" value=""
                                         class="form-control" id="">
                                         <br>
                                     <h6 class="card-title">Amount charged</h6>
@@ -83,7 +83,7 @@
 
                                 <div class="col-md-6 off col-md-1">
                                     <label for="">Phone</label>
-                                    <input type="text"  name="phone" value=""
+                                    <input type="text" placeholder="Phone number"  name="phone" value=""
                                     class="form-control" id="">
                                     <br>
                                     <h6 class="card-title">Mode of payment </h6>
@@ -92,10 +92,12 @@
                                         <option value="Cash">Cash</option>
                                         <option value="Pos">Pos</option>
                                         <option value="Transfer">Transfer</option>
+                                        {{-- <option value="cash_transfer">Cash & Transfer</option>
+                                        <option value="cash_pos">Cash & Pos</option> --}}
                                     </select>
                                 </div>
                                 <div class="col-md-12">
-                                    <center> <button class="btn sidebar-bottom-btn mt-4 btn-lg btn-block">Process direct payment</button></center>
+                                    <center> <button class="btn sidebar-bottom-btn mt-4 btn-lg btn-block">Process payment</button></center>
                                 </div>
                             </div>
                         </form>
@@ -103,9 +105,9 @@
                         <br>
                         <hr>
                         <p>
-                            <button class="btn btn-success btn-lg btn-block" type="button" data-toggle="collapse"
+                            <button class="btn btn-dark btn-lg btn-block" type="button" data-toggle="collapse"
                                 data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                Proccess double mode of payment section
+                                Open flexible payment options with partial payment feature
                             </button>
                         </p>
                         @endif
@@ -146,13 +148,11 @@
                                 <input type="hidden" name="price" value="{{ $clinic_get->selling_price }}"
                                     id="">
                             @endforeach
-                            <button type="submit" class="btn btn-dark btn-lg btn-block">Process double
-                                payment section</button>
+                            <button type="submit" class="btn btn-success btn-lg btn-block">Process double
+                                payment</button>
                             </form>
                         </div>
                     </div>
-
-
                 </div>
 
                 <div class="col-sm-12 col-lg-6 col-md-6">

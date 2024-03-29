@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,12 +19,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
 </head>
+
 <body class=" color-light ">
     <!-- loader Start -->
-    {{-- <div id="loading">
+    <div id="loading">
         <div id="loading-center">
         </div>
-    </div> --}}
+    </div>
     <!-- loader END -->
     <!-- Wrapper Start -->
     <div class="wrapper">
@@ -36,7 +38,6 @@
                     <h5 class="logo-title light-logo ml-3">MVC</h5>
                 </a>
             </div>
-
             @if (auth()->user()->userHasRole('Admin'))
                 <x-Dashboard></x-Dashboard>
                 <x-pos></x-pos>
@@ -87,14 +88,15 @@
                 @php
                     $verstion = App\Models\Systemupdate::first();
                 @endphp
-                <center><p>You need Internet to update <br> version {{ $verstion->version }}</p>
+                <center>
+                    <p>You need Internet to update <br> version {{ $verstion->version }}</p>
                     <p>Last update: {{ $verstion->updated_at->format('d-m-Y') }}</p>
 
-                    <a href="{{ route("Admin.update_software") }}">
+                    <a href="{{ route('Admin.update_software') }}">
                         <button class="btn sidebar-bottom-btn mt-4 btn-lg">Update software</button>
                         {{-- <button type="button" >Go Premium</button> --}}
                     </a>
-              </div>
+            </div>
         </div>
     </div>
     <div class="iq-top-navbar">
@@ -104,7 +106,7 @@
                 <div class="iq-search-bar device-search">
 
                     <div class="dropdown show">
-                        <a href="{{ route('update2') }}" class="btn sidebar-bottom-btn mt-4 btn-lg">Update product</a>
+                        <a href="{{ route('update2') }}" class="btn sidebar-bottom-btn btn-lg">Update product</a>
 
                     </div>
                 </div>
@@ -156,12 +158,12 @@
                 @endif
 
                 @if (Session::has('item'))
-                <p> {{ Session::get('item') }}</p>
+                    <p> {{ Session::get('item') }}</p>
                 @endif
 
 
                 @if (Session::has('item_not'))
-                <p> {{ Session::get('item_not') }}</p>
+                    <p> {{ Session::get('item_not') }}</p>
                 @endif
 
 
@@ -177,7 +179,7 @@
                         <ul class="navbar-nav ml-auto navbar-list align-items-center">
 
                             <div>
-                                <a href="{{ route('sync') }}" class="btn btn-secondary btn-lg">
+                                <a href="{{ route('sync') }}" class="btn btn-dark btn-lg">
                                     Push button
                                 </a>
                             </div>
@@ -243,10 +245,8 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            <ul class="list-inline mb-0">
-                                <li class="list-inline-item"><a href="privacy-policy.html">Privacy Policy</a></li>
-                                <li class="list-inline-item"><a href="terms-of-service.html">Terms of Use</a></li>
-                            </ul>
+                            <p>Contact the developer Email:<a href="#" class=""> adeyeye005@gmail.com</a>.
+                                Phone: 08026456658</p>
                         </div>
                         <div class="col-lg-6 text-right">
                             <span class="mr-1">
@@ -280,5 +280,79 @@
 
     @yield('scripts')
 
+    <script>
+        // Variable to keep track of whether both input fields have been filled
+        var cashFilled = false;
+        var transferFilled = false;
+
+        function validatePayment() {
+            // Get the entered payment amount from both input fields
+            var cashAmount = parseFloat(document.getElementById('cashInput').value) || 0;
+            var transferAmount = parseFloat(document.getElementById('transferInput').value) || 0;
+
+            // Check if both input fields have been filled
+            if (cashAmount !== 0 && transferAmount !== 0) {
+                // Mark both input fields as filled
+                cashFilled = true;
+                transferFilled = true;
+
+                // Get the total amount
+                var totalAmount = parseFloat(document.querySelector('[name="pay"]').value);
+
+                // Calculate the total entered amount
+                var totalEnteredAmount = cashAmount + transferAmount;
+
+                // Check if the entered amount is not equal to the total amount
+                if (totalEnteredAmount !== totalAmount) {
+                    alert("The entered payment amount does not match the total amount. Please enter the correct payment.");
+                }
+            } else {
+                // Reset the filled status if any input field is cleared
+                cashFilled = false;
+                transferFilled = false;
+            }
+        }
+    </script>
+
+    <script>
+        // Get references to the select element and text input fields
+        var modeOfPaymentSelect = document.getElementById('modeOfPayment');
+        var cashField = document.getElementById('cashField');
+        var cashFieldPos = document.getElementById('cashFieldPos');
+        var posField = document.getElementById('posField');
+        var transferField = document.getElementById('transferField');
+        var cashInput = document.getElementById('cashInput');
+        var transferInput = document.getElementById('transferInput');
+        var totalAmountInput = document.getElementById('totalAmount');
+
+        cashField.style.display = 'none';
+        transferField.style.display = 'none';
+        cashFieldPos.style.display = 'none';
+        posField.style.display = 'none';
+        // Add event listener to the select element
+        modeOfPaymentSelect.addEventListener('change', function() {
+            // Hide both text input fields initially
+            cashField.style.display = 'none';
+            transferField.style.display = 'none';
+            cashFieldPos.style.display = 'none';
+            posField.style.display = 'none';
+            // Get the selected option value
+            var selectedOption = modeOfPaymentSelect.value;
+
+            // Show corresponding text input fields based on the selected option
+            if (selectedOption === 'Cash' || selectedOption === 'Pos' || selectedOption === 'Transfer') {
+                cashField.style.display = 'none';
+            } else if (selectedOption === 'cash_transfer') {
+                cashField.style.display = 'block';
+                transferField.style.display = 'block';
+            } else if (selectedOption === 'cash_pos') {
+                cashFieldPos.style.display = 'block';
+                posField.style.display = 'block';
+            }
+        });
+    </script>
+
+
 </body>
+
 </html>

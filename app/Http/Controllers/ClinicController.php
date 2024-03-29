@@ -370,7 +370,6 @@ $inventory->order_status = "success";
 $inventory->Mode_of_payment = $request->input('Mode_of_payment');
 $inventory->location = $request->input('location');
 $inventory->due = 0;
-// $inventory->pay = $request->input('pay');
 $inventory->Payment_type = "Full Payment";
 $inventory->date =date('d/m/y');
 $inventory->location = $request->input('location');

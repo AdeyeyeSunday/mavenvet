@@ -426,56 +426,117 @@ class StoreController extends Controller
         $order->Mode_of_payment =$request->input('Mode_of_payment');
         $order->due =$request->input('due');
         $order->Payment_type =$request->input('Payment_type');
-        $order->date =date('Y-d-m');
-        $order->month =date('F');
-        $order->year =date('Y');
+        $order->date = date('d/m/y');
+        $order->month = date('F');
+        $order->year = date('Y');
         $order->order_status ="success";
         if($request->input('Mode_of_payment') == "Pos"){
             $order->cash_pos = $request->input('pay');
         }
+
        if($request->input('Mode_of_payment') == "Transfer"){
             $order->cash_transfer =$request->input('pay');
         }
+
         if($request->input('Mode_of_payment') == "Cash"){
             $order->pay =$request->input('pay');
         }
+
+        if($request->input('Mode_of_payment') == "cash_transfer"){
+            $order->pay =$request->input('transfer_pay');
+            $order->cash_transfer =$request->input('cash_transfer');
+        }
+
+
+        if($request->input('Mode_of_payment') == "cash_pos"){
+            $order->pay =$request->input('pos_pay');
+            $order->cash_pos =$request->input('cash_pos');
+        }
+
         $total = 0;
         $cartitem_total = Service_cart::where('user_id',Auth::id())->get();
         foreach($cartitem_total as $prod){
        $total+= $prod->selling_price * $prod->qty+$prod->Amount;
         }
        $order->total_price = $total;
+
+       if($request->input('Mode_of_payment') == "Pos" || $request->input('Transfer') == "Pos" || $request->input('Mode_of_payment') == "Cash" ){
         $order->save();
-         $cart = Service_cart::where('user_id',Auth::id())->get();
-         foreach($cart as $cat){
-            Service_item::create([
-                'user_id'=>$order->user_id,
-                'order_id'=>$order->id,
-                'prod_name'=>$cat->items_name,
-                'qty'=>$cat->qty,
-                'price'=>$cat->selling_price,
-                'total_vaccine_amount'=>$cat->selling_price * $cat->qty,
-                'pro_id'=>$cat->vaccine_id,
-                'service'=>$cat->service,
-                'Amount'=>$cat->Amount,
-                'service_id'=>$cat->service_id,
-                'subtotal'=>0,
-                'date'=>date('d/m/y'),
-                'month'=>date('F'),
-                'year'=>date('Y'),
-                'location'=>'MVC'
-            ]);
-            if(isset(Vaccinestore::where("id",$cat->vaccine_id)->first()->Quantity)){
-            $cur = Vaccinestore::where("id",$cat->vaccine_id)->first()->Quantity;
-            Vaccinestore::where("id",$cat->vaccine_id)->update(['Quantity'=>$cur-$cat->qty]);
-            }}
-            $cart = Service_cart::where('user_id',Auth::id())->get();
-            Service_cart::destroy($cart);
-            if ($request->checkbox_print == 1){
-                return redirect()->route("Admin.Payment.direct_service");
-            }else{
-                return back();
-            }
+        $cart = Service_cart::where('user_id',Auth::id())->get();
+        foreach($cart as $cat){
+           Service_item::create([
+               'user_id'=>$order->user_id,
+               'order_id'=>$order->id,
+               'prod_name'=>$cat->items_name,
+               'qty'=>$cat->qty,
+               'price'=>$cat->selling_price,
+               'total_vaccine_amount'=>$cat->selling_price * $cat->qty,
+               'pro_id'=>$cat->vaccine_id,
+               'service'=>$cat->service,
+               'Amount'=>$cat->Amount,
+               'service_id'=>$cat->service_id,
+               'subtotal'=>0,
+               'date'=>date('d/m/y'),
+               'month'=>date('F'),
+               'year'=>date('Y'),
+               'location'=>'MVC'
+           ]);
+           if(isset(Vaccinestore::where("id",$cat->vaccine_id)->first()->Quantity)){
+           $cur = Vaccinestore::where("id",$cat->vaccine_id)->first()->Quantity;
+           Vaccinestore::where("id",$cat->vaccine_id)->update(['Quantity'=>$cur-$cat->qty]);
+           }}
+           $cart = Service_cart::where('user_id',Auth::id())->get();
+           Service_cart::destroy($cart);
+           if ($request->checkbox_print == 1){
+               return redirect()->route("Admin.Payment.direct_service");
+           }else{
+            Session()->flash('success', 'Your payment has been successfully processed. Thank you for your purchase!');
+
+               return back();
+           }
+       }
+       elseif($request->input('Mode_of_payment') == "cash_transfer" && $request->input('transfer_pay') + $request->input('cash_transfer') == $total ||
+       $request->input('Mode_of_payment') == "cash_pos" && $request->input('cash_pos') + $request->input('pos_pay') == $total)
+       {
+        $order->save();
+        $cart = Service_cart::where('user_id',Auth::id())->get();
+        foreach($cart as $cat){
+           Service_item::create([
+               'user_id'=>$order->user_id,
+               'order_id'=>$order->id,
+               'prod_name'=>$cat->items_name,
+               'qty'=>$cat->qty,
+               'price'=>$cat->selling_price,
+               'total_vaccine_amount'=>$cat->selling_price * $cat->qty,
+               'pro_id'=>$cat->vaccine_id,
+               'service'=>$cat->service,
+               'Amount'=>$cat->Amount,
+               'service_id'=>$cat->service_id,
+               'subtotal'=>0,
+               'date'=>date('d/m/y'),
+               'month'=>date('F'),
+               'year'=>date('Y'),
+               'location'=>'MVC'
+           ]);
+           if(isset(Vaccinestore::where("id",$cat->vaccine_id)->first()->Quantity)){
+           $cur = Vaccinestore::where("id",$cat->vaccine_id)->first()->Quantity;
+           Vaccinestore::where("id",$cat->vaccine_id)->update(['Quantity'=>$cur-$cat->qty]);
+           }}
+           $cart = Service_cart::where('user_id',Auth::id())->get();
+           Service_cart::destroy($cart);
+           if ($request->checkbox_print == 1){
+               return redirect()->route("Admin.Payment.direct_service");
+           }else{
+            Session()->flash('success', 'Your payment has been successfully processed. Thank you for your purchase!');
+
+               return back();
+           }
+       }
+       else{
+
+        Session()->flash('error1', 'Payment unsuccessful. Please try again or contact support for assistance.');
+        return back();
+       }
  }
 
 

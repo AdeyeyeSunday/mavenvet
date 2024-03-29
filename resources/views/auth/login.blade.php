@@ -142,7 +142,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-5 content-right">
-                                        <img src="{{ asset("assets/images/login/logobig.png") }}" class="img-fluid image-right"
+                                        <img src="{{ asset("assets/images/login/mvc.png") }}" class="img-fluid image-right"
                                             alt="">
                                     </div>
                                 </div>

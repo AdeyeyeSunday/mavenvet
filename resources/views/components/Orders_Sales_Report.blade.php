@@ -45,9 +45,6 @@
             </a>
         </li>
 
-
-
-
         <li class="">
             <a href="{{route('Admin.Payment.bank_deposit')}}">
                 <i class="las la-minus"></i><span>Bank Deposit</span>
@@ -56,4 +53,4 @@
 
 
     </div>
-  </div>
+

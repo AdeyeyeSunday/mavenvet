@@ -108,7 +108,7 @@
                         <input type="hidden" class="form-control" value="{{date('Y')}}" name="year" required>
                         <input type="hidden" class="form-control" value=" {{auth()->user()->id}}" name="user_id" required>
                        <div class="form-group">
-                          <button class="btn btn-primary" type="submit">Submit form</button>
+                          <button class="btn sidebar-bottom-btn btn-lg btn-block" type="submit">Process</button>
                        </div>
                     </form>
                  </div>

@@ -11,11 +11,11 @@
                             </div>
 
                             <div class="header-title">
-                                <h6 class="card-title" style="color: green">Total Amount: {{ $amount }}</h6>
+                                <h6 class="card-title" style="color: green">Total amount: {{   number_format($amount, 2, '.', ',')}}</h6>
                              </div>
 
                             <div class="header-title">
-                          <a href="{{ route('Admin.Payment.cash_report') }}"><button class="btn btn-primary">Back</button></a>
+                          <a href="{{ route('Admin.Payment.cash_report') }}"><button class="btn sidebar-bottom-btn btn-lg ">Back</button></a>
                              </div>
                          </div>
                          <div class="card-body">
@@ -28,7 +28,6 @@
                                         <th>Amount</th>
                                         <th>Date</th>
                                         <th>Action</th>
-
                                      </tr>
                                   </thead>
                                   <tbody>

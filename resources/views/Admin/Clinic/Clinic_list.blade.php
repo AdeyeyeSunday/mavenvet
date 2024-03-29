@@ -7,12 +7,12 @@
                   <div class="card">
                      <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                           <h6 class="card-title">Registration List</h6>
+                           <h6 class="card-title">Registration list</h6>
                         </div>
 
 
                         <div class="header-title">
-                           <a href="{{route('Admin.Clinic.Clinic')}}"><button class="btn btn-primary">Add New Pet</button></a>
+                           <a href="{{route('Admin.Clinic.Clinic')}}"><button class="btn sidebar-bottom-btn btn-lg">Add new pet</button></a>
                          </div>
                      </div>
                      <div class="card-body">
@@ -22,7 +22,7 @@
                               <thead>
                                  <tr class="ligth">
                                      {{-- <th>Image</th> --}}
-                                    <th>Pet Owner</th>
+                                    <th>Pet owner</th>
                                     <th>Phone No</th>
                                     <th>Color</th>
                                     <th>Age</th>

@@ -1746,7 +1746,7 @@ try {
     $extractPath = 'C:\xampp\htdocs';
 
     // Remove the existing mavenvet folder if it exists
-    $existingFolderPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet';
+    $existingFolderPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet2';
     if (is_dir($existingFolderPath)) {
         $this->removeDirectory($existingFolderPath);
     }
@@ -1759,8 +1759,8 @@ try {
         unlink($localZipPath); // Remove the downloaded ZIP file after extraction
 
         // Rename the extracted folder if necessary
-        $oldExtractedPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet-main';
-        $newExtractedPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet'; // Change this to the desired new folder name
+        $oldExtractedPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet2-main';
+        $newExtractedPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet2'; // Change this to the desired new folder name
         if (is_dir($oldExtractedPath)) {
             rename($oldExtractedPath, $newExtractedPath);
         }

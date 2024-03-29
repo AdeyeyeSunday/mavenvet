@@ -54,7 +54,7 @@
                                                     <td>{{ $Exp->month }}</td>
 
                                                     <td><a href="{{ route('Admin.Expense.Monthly_edit', $Exp->id) }}"
-                                                            class="btn btn-primary">Edit</a></td>
+                                                            class="btn btn-primary btn-sm">Edit</a></td>
                                                 </tr>
                                             @endforeach
                                     </table>
@@ -78,21 +78,21 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-
                     <div class="col-lg-12">
                         <form action="{{ route('Admin.Expense.search') }}" enctype="multipart/form-data" method="post">
                             @csrf
                             <div class="form-row">
-                                <div class="col-md-4">
-                                    <label for="validationDefault02">From a date</label>
+                                <div class="col-md-6">
+                                    <label for="validationDefault02">From </label>
                                     <input type="date" class="form-control" name="from" id="date">
-
-                                    <label for="validationDefault02">To date</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="validationDefault02">To</label>
                                     <input type="date" class="form-control" name="to" id="date">
                                 </div>
                             </div>
-                            <br><br>
-                             <button type="submit" class="btn btn-primary">Search</button></center>
+                            <br>
+                             <button type="submit" class="btn sidebar-bottom-btn btn-lg btn-block">Search</button></center>
                         </form>
                         <br>
                     </div>

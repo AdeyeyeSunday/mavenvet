@@ -7,7 +7,7 @@
               <div class="card">
                  <div class="card-header d-flex justify-content-between">
                     <div class="header-title">
-                       <h6 class="card-title"> Pet Registration </h6>
+                       <h6 class="card-title"> Pet registration </h6>
                     </div>
                  </div>
                  <div class="card-body">
@@ -84,7 +84,7 @@
                         <input type="hidden" class="form-control" value="{{date('Y')}}" name="year" required>
                         <input type="hidden" class="form-control" value=" {{auth()->user()->id}}" name="user_id" required>
                        <div class="form-group">
-                          <button class="btn btn-primary" type="submit">Submit Registration</button>
+                          <button class="btn sidebar-bottom-btn btn-lg btn-block" type="submit">Process registration</button>
                        </div>
                     </form>
                  </div>

@@ -126,8 +126,8 @@ class PosController extends Controller
         }
             $cart = Cart::where('user_id',Auth::id())->get();
             Cart::destroy($cart);
-
-            // return back();
+            // Session()->flash('message', 'Item(s) are pending');
+            //  return back();
                return redirect()->route('Admin.Pos.Pos_pending');
          }
 
@@ -150,6 +150,7 @@ class PosController extends Controller
             $order->Mode_of_payment =$request->input('Mode_of_payment');
             $order->Payment_type =$request->input('Payment_type');
             $order->trackking_id = rand(1111,9999);
+
             if($request->input('Mode_of_payment') == "Pos"){
                 $order->cash_pos = $request->input('pay');
             }
@@ -161,6 +162,17 @@ class PosController extends Controller
             if($request->input('Mode_of_payment') == "Cash"){
                 $order->pay =$request->input('pay');
             }
+
+            if($request->input('Mode_of_payment') == "cash_transfer"){
+                $order->pay =$request->input('transfer_pay');
+                $order->cash_transfer =$request->input('cash_transfer');
+            }
+
+
+            if($request->input('Mode_of_payment') == "cash_pos"){
+                $order->pay =$request->input('pos_pay');
+                $order->cash_pos =$request->input('cash_pos');
+            }
             $total = 0;
             $cartitem_total = Cart::where('user_id',Auth::id())->get();
             foreach($cartitem_total as $prod){
@@ -169,34 +181,77 @@ class PosController extends Controller
             }
            $order->total_price = $total;
            $order->Cost = $cost;
-            $order->save();
-             $cart = Cart::where('user_id',Auth::id())->get();
 
-             foreach($cart as $cat){
-                OrderIteams::create([
-                    'order_id'=>$order->id,
-                    'user_id'=>$cat->user_id,
-                    'prod_id'=>$cat->Name,
-                    'qty'=>$cat->Quantity,
-                    'price'=>$cat->Price,
-                    'product_id'=>$cat->product_id,
-                    'date'=>$cat->date,
-                    'month'=>$cat->month,
-                    'year'=>$cat->year,
-                    'location'=>'MVC',
-                     'Cost'=>$cat->Cost
-                ]);
-                $curQty = Product::where("id",$cat->product_id)->first()->Quantity;
-                Product::where("id",$cat->product_id)->update(['Quantity'=>$curQty-$cat->Quantity,'syn_flag'=>0]);
-             }
-                $cart = Cart::where('user_id',Auth::id())->get();
-                Cart::destroy($cart);
-                if ($request->checkbox_print == 1){
-                    return redirect()->route("Admin.Pos.direct_print");
-                }else{
-                    return back();
-                }
-             }
+           if($request->input('Mode_of_payment') == "Pos" || $request->input('Transfer') == "Pos" || $request->input('Mode_of_payment') == "Cash" ){
+            $order->save();
+            $cart = Cart::where('user_id',Auth::id())->get();
+            foreach($cart as $cat){
+               OrderIteams::create([
+                   'order_id'=>$order->id,
+                   'user_id'=>$cat->user_id,
+                   'prod_id'=>$cat->Name,
+                   'qty'=>$cat->Quantity,
+                   'price'=>$cat->Price,
+                   'product_id'=>$cat->product_id,
+                   'date'=>$cat->date,
+                   'month'=>$cat->month,
+                   'year'=>$cat->year,
+                   'location'=>'MVC',
+                    'Cost'=>$cat->Cost
+               ]);
+               $curQty = Product::where("id",$cat->product_id)->first()->Quantity;
+               Product::where("id",$cat->product_id)->update(['Quantity'=>$curQty-$cat->Quantity,'syn_flag'=>0]);
+            }
+               $cart = Cart::where('user_id',Auth::id())->get();
+               Cart::destroy($cart);
+
+               if ($request->checkbox_print == 1){
+                   return redirect()->route("Admin.Pos.direct_print");
+               }else{
+                Session()->flash('success', 'Your payment has been successfully processed. Thank you for your purchase!');
+
+                   return back();
+               }
+           }
+           elseif($request->input('Mode_of_payment') == "cash_transfer" && $request->input('transfer_pay') + $request->input('cash_transfer') == $total ||
+            $request->input('Mode_of_payment') == "cash_pos" && $request->input('cash_pos') + $request->input('pos_pay') == $total)
+           {
+            $order->save();
+            $cart = Cart::where('user_id',Auth::id())->get();
+            foreach($cart as $cat){
+               OrderIteams::create([
+                   'order_id'=>$order->id,
+                   'user_id'=>$cat->user_id,
+                   'prod_id'=>$cat->Name,
+                   'qty'=>$cat->Quantity,
+                   'price'=>$cat->Price,
+                   'product_id'=>$cat->product_id,
+                   'date'=>$cat->date,
+                   'month'=>$cat->month,
+                   'year'=>$cat->year,
+                   'location'=>'MVC',
+                    'Cost'=>$cat->Cost
+               ]);
+               $curQty = Product::where("id",$cat->product_id)->first()->Quantity;
+               Product::where("id",$cat->product_id)->update(['Quantity'=>$curQty-$cat->Quantity,'syn_flag'=>0]);
+            }
+               $cart = Cart::where('user_id',Auth::id())->get();
+               Cart::destroy($cart);
+
+               if ($request->checkbox_print == 1){
+                   return redirect()->route("Admin.Pos.direct_print");
+               }else{
+
+                Session()->flash('success', 'Your payment has been successfully processed. Thank you for your purchase!');
+
+                 return back();
+               }
+           }
+          else{
+            Session()->flash('error1', 'Payment unsuccessful. Please try again or contact support for assistance.');
+            return back();
+           }
+    }
 
 
      public function Pos_view(){
@@ -297,12 +352,8 @@ class PosController extends Controller
             Product::where("id",$item->product_id)->update(['Quantity'=>$curQty+$item->qty]);
 
         }
-
-
        $Pos_pending_delete->delete();
-
-       session()->flash('message','Item Deleted,and return back to store!!!');
-
+       session()->flash('message', 'Item deleted, and returned back to store!');
        return back();
 
      }
@@ -355,7 +406,7 @@ class PosController extends Controller
          ]);
         } else{
 
-            session()->flash('payment','Amount Enter is Greater Than Total Bill, Please Enter a Vaild Payment!!!');
+            session()->flash('payment','Amount entered is greater than total bill. please enter a valid payment');
         }
 
         if (request('pay') + request('cash_transfer') + request('cash_pos')  == request('total_price')) {
@@ -374,10 +425,6 @@ class PosController extends Controller
         return back();
 
     }
-
-
-
-
 
 public function daily_sales_update(Request $request, $id){
         $input = request()->validate([
@@ -443,14 +490,6 @@ public function daily_sales_update(Request $request, $id){
     }
 
 
-
-
-
-
-
-
-
-
     public function daily_sales_edit($id){
 
         $daily_sales_edit = Order::where('id',$id)->first();
@@ -472,15 +511,6 @@ return view('Admin.Pos.daily_sales_edit',['daily_sales_edit'=>$daily_sales_edit]
 
      }
 
-
-
-
-
-
-
-
-
-
      public function print_invoice($id){
 
         $Pos_invoice =Order::with('orderIteams')->where('id',$id)->where('user_id',Auth::id())->first();
@@ -501,11 +531,7 @@ return view('Admin.Pos.daily_sales_edit',['daily_sales_edit'=>$daily_sales_edit]
 
         $daily = Order::with('orderIteams')->where('date', $date)->where('order_status','success')->orWhere('new_date',$new_date)->get();
 
-
-
         $cash = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Cash')->sum('pay');
-
-
         $new_pos = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Pos')->sum('new_due');
         $new_transfer= DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Transfer')->sum('new_due');
         $new_cash = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Cash')->sum('new_due');
@@ -642,6 +668,7 @@ return view('Admin.Pos.daily_sales_edit',['daily_sales_edit'=>$daily_sales_edit]
 
 
       public function sales_history(){
+        ini_set('memory_limit', '256M');
         $month =date('F');
         $date = (date('Y-d-m'));
         $new_date = date('d/m/y');
@@ -801,14 +828,19 @@ return view('Admin.Pos.balance',['balance'=>$balance,'amount'=>$amount,'cash'=>$
 
  public function cashbackseach(Request $request){
 
-    $date= $request->input('from');
-
+    $from= $request->input('from');
+    $to = $request->input('to');
+    // $new=  DB::table('cashes')
+    // ->whereDate('created_at', $date)
+    // ->get();
     $new=  DB::table('cashes')
-    ->whereDate('created_at', $date)
+    ->whereBetween('created_at', [$from, $to])
     ->get();
-
+// $amount= DB::table('cashes')
+// ->whereDate('created_at', $date)
+// ->sum('amount');
 $amount= DB::table('cashes')
-->whereDate('created_at', $date)
+->whereBetween('created_at', [$from, $to])
 ->sum('amount');
 
     return view('Admin.Pos.cashbackseach',['new'=>$new, 'amount'=>$amount]);

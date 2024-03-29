@@ -67,12 +67,6 @@ class PaymentController extends Controller
     }
 
 
-
-
-
-
-
-
     public function Payment_list(){
         $date = (date('d/m/y'));
         $new_date = date('d/m/y');
