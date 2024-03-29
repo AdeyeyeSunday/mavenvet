@@ -20,7 +20,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
 </head>
 
-<body class=" color-light ">
+<body class=" color- ">
     <!-- loader Start -->
     <div id="loading">
         <div id="loading-center">
@@ -33,9 +33,9 @@
         <div class="iq-sidebar  sidebar-default ">
             <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
                 <a href="{{ route('Admin.dashboard') }}" class="header-logo">
-                    <img src="{{ asset('assets/images/logo.png') }}" class="img-fluid rounded-normal light-logo"
+                    <img src="{{ asset('assets/images/logo.png') }}" class="img-fluid rounded-normal -logo"
                         alt="logo">
-                    <h5 class="logo-title light-logo ml-3">MVC</h5>
+                    <h5 class="logo-title -logo ml-3">MVC</h5>
                 </a>
             </div>
             @if (auth()->user()->userHasRole('Admin'))
@@ -101,7 +101,7 @@
     </div>
     <div class="iq-top-navbar">
         <div class="iq-navbar-custom">
-            <nav class="navbar navbar-expand-lg navbar-light p-0">
+            <nav class="navbar navbar-expand-lg navbar- p-0">
 
                 <div class="iq-search-bar device-search">
 

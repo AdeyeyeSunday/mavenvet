@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-light bg-white border-bottom sticky-top">
+<nav class="navbar navbar-expand-md navbar- bg-white border-bottom sticky-top">
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand mr-4" href="{{route('Admin.dashboard')}}">

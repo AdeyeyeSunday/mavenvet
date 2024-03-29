@@ -6,7 +6,7 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <div class="header-title">
-                                <button type="button" class="btn btn-primary mt-2" data-toggle="modal"
+                                <button type="button" class="btn sidebar-bottom-btn mt-4 btn-lg " data-toggle="modal"
                                     data-target="#exampleModalScrollable">Search with Date</button>
                             </div>
                             <div class="header-title">
@@ -39,9 +39,9 @@
                         <div class="card-body">
                             <div class="table-responsive rounded mb-3">
                                 <table class="data-table table mb-0 tbl-server-info">
-                                    <thead class="bg-white text">
-                                        <tr class="light light-data">
-                                            {{-- <th>Id</th> --}}
+                                    <thead class="bg-white">
+                                        <tr class=" -data">
+                                            <th></th>
                                             <th>Name</th>
                                             <th>Total bill</th>
                                             <th>Cash</th>
@@ -54,10 +54,10 @@
                                             <th>View</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="light-body">
+                                    <tbody class="-body">
                                         @foreach ($daily as $entry)
                                             <tr>
-                                                {{-- <td>{{ $entry->id }}</td> --}}
+                                                <td></td>
                                                 <td>{{ $entry->fname }}</td>
                                                 <td>{{ $entry->total_price }}</td>
                                                 <td>{{ $entry->pay }}</td>
@@ -135,7 +135,7 @@
             <div class="modal-dialog modal-dialog-scrollable" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalScrollableTitle">Search with Date</h5>
+                        <h5 class="modal-title" id="exampleModalScrollableTitle">Search with date</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -150,7 +150,7 @@
                                 </div>
                             </div>
                             <br><br>
-                            <center><button type="submit" class="btn btn-primary">Search</button></center>
+                            <center><button type="submit" class="btn sidebar-bottom-btn mt-4 btn-lg">Search</button></center>
                         </form>
                     </div>
                 </div>

@@ -45,7 +45,7 @@
                      <div class="table-responsive">
                         <table id="datatable" class="table data-table table-striped">
                            <thead>
-                              <tr class="ligth">
+                              <tr class="">
                                  <th>Id</th>
                                  <th>Name</th>
                                  <th>Slug</th>
@@ -55,7 +55,7 @@
                            <tbody>
 
                            @foreach ($role as $role)
-                              <tr class="ligth">
+                              <tr class="">
                                  <td>{{$role->id}}</td>
                                  <td>{{$role->name}}</td>
                                  <td>{{$role->slug}}</td>

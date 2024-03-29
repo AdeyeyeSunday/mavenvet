@@ -27,8 +27,8 @@
                         <div class="table-responsive">
                            <table id="datatable" class="table data-table table-striped">
                               <thead>
-                                 <tr class="ligth">
-                                    <tr class="ligth">
+                                 <tr class="">
+                                    <tr class="">
                                         <th>Pet Name</th>
                                        <th>Owner Name</th>
                                         <th>Phone No</th>

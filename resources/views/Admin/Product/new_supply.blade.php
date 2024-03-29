@@ -7,45 +7,40 @@
             <div class="col-lg-12">
                 <div class="d-flex flex-wrap flex-wrap align-items-center justify-content-between mb-4">
                     <div>
-
-                        <h4 class="mb-3">New Product List</h4>
+                        <h4 class="mb-3">New product list</h4>
                         <p class="mb-0">The product list effectively dictates product presentation and provides space<br> to list your products and offering in the most appealing way.</p>
-
-                        <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#exampleModalScrollable">Search with Date
+                        <button type="button" class="btn sidebar-bottom-btn btn-lg" data-toggle="modal" data-target="#exampleModalScrollable">Search with date
                         </button>
-
                     </div>
 
-                    <a href="{{route('Admin.Product.add_product')}}" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Add Product</a>
+                    <a href="{{route('Admin.Product.add_product')}}" class="btn sidebar-bottom-btn btn-lg "><i class="las la-plus mr-3"></i>Add product</a>
                 </div>
             </div>
             <div class="col-lg-12">
                 <div class="table-responsive rounded mb-3">
                 <table class="data-table table mb-0 tbl-server-info">
-                    <thead class="bg-white text-uppercase">
-                        <tr class="ligth">
+                    <thead class="bg-white">
+                        <tr class="">
                             <th>S/N</th>
-                            <th> Name</th>
+                            <th>Name</th>
                             <th>Cost</th>
                             <th>Price</th>
-                         
-                            <th>New Quantity</th>
-                            <th>Expiry Date</th>
+                            <th>New quantity</th>
+                            <th>Expiry date</th>
                               <th>Date</th>
-                           
                         </tr>
                     </thead>
                     <tbody >
 
                         @foreach ($new as $key=>$new)
                         <tr>
-                            
+
 
 <td>{{$key+1}}</td>
                             <td>{{$new->Name}}</td>
                             <td>{{$new->Cost}}</td>
                             <td>{{$new->Price}}</td>
-                            
+
                             <td>{{$new->new_supply}}</td>
                             <td>{{$new->expiry_date}}</td>
                             <td>{{$new->new_date}}</td>

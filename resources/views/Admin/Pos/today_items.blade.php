@@ -44,8 +44,8 @@
                          {{-- <div class="table-responsive"> --}}
                             <div class="table-responsive rounded mb-3">
                                 <table class="data-table table mb-0 tbl-server-info">
-                                    <thead class="bg-white text-uppercase">
-                                        <tr class="ligth ligth-data">
+                                    <thead class="bg-white">
+                                        <tr class=" -data">
                                             <th></th>
                                      <th>Item</th>
                                      <th>Qty</th>
@@ -53,7 +53,7 @@
                                     <th>Assigned</th>
                                  </tr>
                               </thead>
-                              <tbody class="ligth-body">
+                              <tbody class="-body">
 
                                 @foreach ($today_items  as $daily )
                                 <tr>

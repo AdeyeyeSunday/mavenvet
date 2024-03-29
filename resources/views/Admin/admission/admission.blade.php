@@ -83,7 +83,7 @@
                  <div class="card-body">
                        <table id="datatable" class="table data-table table-striped">
                           <thead>
-                             <tr class="ligth">
+                             <tr class="">
                                  <th>Image</th>
                                 <th>Name</th>
                                 <th>Breed</th>

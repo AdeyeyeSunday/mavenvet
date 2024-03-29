@@ -120,7 +120,7 @@
                    <table class="table">
 
                       <thead>
-                         <tr class="ligth">
+                         <tr class="">
                             {{-- <th scope="col">#</th> --}}
 
                              <th scope="col">Name</th>

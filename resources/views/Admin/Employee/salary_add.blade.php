@@ -84,7 +84,7 @@
 
                <table class="table">
                 <thead>
-                    <tr class="ligth">
+                    <tr class="">
                         <th>Id</th>
                         <th scope="col">Name</th>
                         <th scope="col">Salary</th>

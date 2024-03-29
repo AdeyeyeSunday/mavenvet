@@ -9,12 +9,12 @@
 
                             <div class="header-title">
                                 <a href="{{ route('Admin.Payment.outstandingpayment') }}">
-                                    <h6 style="color: red" class="card-title">Outstanding Payment List</h6>
+                                    <h6 style="color: red" class="card-title">Outstanding payment list</h6>
                                 </a>
                             </div>
                             <div class="header-title">
                                 <a href="{{ route('Admin.Payment.oustanding') }}">
-                                    <h6 style="color:#6495ED " class="card-title">Vaccine Payment List</h6>
+                                    <h6 style="color:#6495ED " class="card-title">Vaccine payment list</h6>
                                 </a>
                             </div>
 
@@ -90,17 +90,17 @@
                             <div class="table-responsive">
                                 <table id="datatable" class="table data-table table-striped">
                                     <thead>
-                                        <tr class="ligth">
+                                        <tr class="">
                                             <th>Name</th>
-                                            <th>Total Bill</th>
+                                            <th>Total bill</th>
                                             <th>Cash</th>
                                             <th>Pos</th>
                                             <th>Tranfer</th>
                                             <th>Due</th>
                                             <th>Bank</th>
-                                            <th>Payment Mode</th>
+                                            <th>Payment mode</th>
                                             <th>Assinged</th>
-                                            <th>Paid Debt</th>
+                                            <th>Paid debt</th>
                                             <th>Action</th>
                                         </tr>
 
@@ -159,7 +159,7 @@
                                                     </div>
                                                 </td>
                                             @else
-                                                <td>{{ $daily->Pet_name }}{{ $daily->Unregister }}</td>
+                                                <td>{{ $daily->Pet_name }}{{ $daily->Unregister }} {{ $daily->Owner_name }}</td>
                                                 <td>{{  number_format($daily->total_price)  }}</td>
                                                 <td>
                                                     @if ( $daily->pay != 0)
@@ -195,9 +195,9 @@
                                                         } elseif ($daily->Mode_of_payment == 'Pos') {
                                                             echo ' <button type="button" class="btn btn-warning btn-sm mr-2">Pos</button>';
                                                         } elseif ($daily->Mode_of_payment == 'cash_pos') {
-                                                            echo ' <button type="button" class="btn btn-info btn-sm mr-2">cash/pos</button>';
+                                                            echo ' <button type="button" class="btn btn-info btn-sm mr-2">cash & pos</button>';
                                                         } elseif ($daily->Mode_of_payment == 'cash_transfer') {
-                                                            echo ' <button type="button" class="btn btn-secondary btn-sm mr-2">cash/transfer</button>';
+                                                            echo ' <button type="button" class="btn btn-secondary btn-sm mr-2">cash & transfer</button>';
                                                         }
                                                     @endphp
                                                 </td>

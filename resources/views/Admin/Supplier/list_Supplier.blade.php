@@ -20,24 +20,24 @@
             <div class="col-lg-12">
                 <div class="table-responsive rounded mb-3">
                 <table class="data-table table mb-0 tbl-server-info">
-                    <thead class="bg-white text-uppercase">
-                        <tr class="ligth ligth-data">
+                    <thead class="bg-white">
+                        <tr class=" -data">
                             <th>
                                 <div class="checkbox d-inline-block">
                                     <input type="checkbox" class="checkbox-input" id="checkbox1">
                                     <label for="checkbox1" class="mb-0"></label>
                                 </div>
                             </th>
-                            <th>Company Name</th>
+                            <th>Company name</th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Phone No.</th>
+                            <th>Phone.</th>
                             <th>Address</th>
                             <th>Date</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody class="ligth-body">
+                    <tbody class="-body">
 
                         @foreach ($supplier as $supplier)
                         <tr>

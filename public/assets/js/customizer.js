@@ -29,14 +29,14 @@
             $('[data-mode="toggle"]').find('i.a-left').addClass('ri-moon-clear-line');
             $('#dark-mode').prop('checked', true).attr('data-active', 'false')
             $('.darkmode-logo').removeClass('d-none')
-            $('.light-logo').addClass('d-none')
+            $('.-logo').addClass('d-none')
             body.addClass('dark')
             dark = true
         } else {
             $('[data-mode="toggle"]').find('i.a-left').removeClass('ri-moon-clear-line');
             $('[data-mode="toggle"]').find('i.a-right').addClass('ri-sun-line');
             $('#dark-mode').prop('checked', false).attr('data-active', 'true');
-            $('.light-logo').removeClass('d-none')
+            $('.-logo').removeClass('d-none')
             $('.darkmode-logo').addClass('d-none')
             body.removeClass('dark')
             dark = false

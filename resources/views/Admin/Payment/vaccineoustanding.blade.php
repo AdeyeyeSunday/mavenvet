@@ -49,7 +49,7 @@
                             <div class="table-responsive">
                                <table id="datatable" class="table data-table table-striped">
                                   <thead>
-                                    <tr class="ligth">
+                                    <tr class="">
                                         {{-- <th>Id</th> --}}
                                         <th>Name</th>
                                         <th>Phone</th>
@@ -60,7 +60,7 @@
                                        <th>Due</th>
 <th>Date</th>>
                                        <th>Payment Mode</th>
-                                       
+
                                        <th>Action</th>
 <th>View</th>
                                     </tr>

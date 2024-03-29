@@ -459,35 +459,31 @@
                                                                     <option value="cash_pos">Cash & Pos</option>
                                                                 </select>
                                                                 <br>
-
                                                                 <div class="row">
                                                                     <div class="col-md-6 off col-md-1" id="cashField">
                                                                         <label for="">Cash</label>
-                                                                        <input type="text" class="form-control"
+                                                                        <input type="number" class="form-control"
                                                                             placeholder="Cash" name="transfer_pay"
                                                                             id="cashInput" onblur="validatePayment()">
                                                                     </div>
                                                                     <div class="col-md-6 off col-md-1" id="transferField">
                                                                         <label for="">Transfer</label>
-                                                                        <input type="text" class="form-control"
+                                                                        <input type="number" class="form-control"
                                                                             placeholder="Transfer" name="cash_transfer"
                                                                             id="transferInput" onblur="validatePayment()">
                                                                         <br>
                                                                     </div>
-
                                                                 </div>
-
-
                                                                 <div class="row">
                                                                     <div class="col-md-6 off col-md-1" id="cashFieldPos">
                                                                         <label for="">Cash</label>
-                                                                        <input type="text" class="form-control"
+                                                                        <input type="number" class="form-control"
                                                                             placeholder="Cash" name="pos_pay"
                                                                             id="cashInput">
                                                                     </div>
                                                                     <div class="col-md-6 off col-md-1" id="posField">
                                                                         <label for="">Pos</label>
-                                                                        <input type="text" class="form-control"
+                                                                        <input type="number" class="form-control"
                                                                             placeholder="Pos" name="cash_pos"
                                                                             id="transferInput">
                                                                         <br>
@@ -514,10 +510,10 @@
                                                             </div>
 
                                                             <input type="hidden" name="fname" class="form-control"
-                                                                value="****" placeholder="Full Name"><br>
-                                                            <input type="hidden" name="phone" value="****"
+                                                              placeholder="Full Name"><br>
+                                                            <input type="hidden" name="phone"
                                                                 class="form-control" placeholder="Phone"><br>
-                                                            <input type="hidden" name="address" value="****"
+                                                            <input type="hidden" name="address"
                                                                 class="form-control" placeholder="Address">
                                                             <input type="hidden" name="discount" class="form-control"
                                                                 placeholder="discount">
@@ -629,8 +625,8 @@
                                                 <br>
                                                 <div class="table-responsive rounded mb-3">
                                                     <table class="data-table table mb-0 tbl-server-info">
-                                                        <thead class="bg-white text-uppercase">
-                                                            <tr class="ligth ligth-data">
+                                                        <thead class="bg-white">
+                                                            <tr class=" -data">
                                                                 {{-- <th>Image</th> --}}
                                                                 <th>Description</th>
                                                                 <th>Category</th>
@@ -640,7 +636,7 @@
                                                                 <th>Action</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody class="ligth-body">
+                                                        <tbody class="-body">
 
                                                             @foreach ($product as $product)
                                                                 <tr>

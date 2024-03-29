@@ -21,20 +21,17 @@
                                 </div>
                             </center>
                         @endif
-
-
                         <div class="card-body">
-
                             <div class="table-responsive">
                                 <table id="datatable" class="table data-table table-striped">
                                     <thead>
-                                        <tr class="ligth">
-                                            <th>Name</th>
-                                            <th>Phone No</th>
-                                            <th>Tracking No</th>
-                                            <th>Order Status</th>
+                                        <tr class="">
+                                            {{-- <th>Name</th> --}}
+                                            {{-- <th>Phone no</th> --}}
+                                            <th>Tracking no</th>
+                                            <th>Order status</th>
                                             <th>Date</th>
-                                            <th>Pay</th>
+                                            <th>Process payment</th>
                                             <th>View</th>
                                             {{-- <th>Actions</th> --}}
                                             @if (auth()->user()->userHasRole('Admin'))
@@ -47,11 +44,11 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($pending as $pos_view)
-                                            <td>{{ $pos_view->fname }} </td>
-                                            <td>{{ $pos_view->phone }}</td>
+                                            {{-- <td>{{ $pos_view->fname }} </td> --}}
+                                            {{-- <td>{{ $pos_view->phone }}</td> --}}
                                             <td>Mavenvet{{ $pos_view->trackking_id }}</td>
                                             <td><button type="button"
-                                                    class="btn btn-danger btn-sm mr-2">{{ $pos_view->order_status }}</button>
+                                                    class="btn btn-warning btn-sm mr-2">{{ $pos_view->order_status }}</button>
                                             </td>
                                             <td>{{ $pos_view->date }}</td>
                                             <td>
@@ -115,7 +112,7 @@
                                                         <div class="d-flex align-items-center list-action">
                                                             <a
                                                                 href="{{ route('Admin.Pos.Pos_pending_delete', $pos_view->id) }}">
-                                                                <button class="btn btn-danger btn-sm">Delete</button></a>
+                                                                <button class="btn btn-danger btn-sm">Remove</button></a>
                                                         </div>
                                                     </form>
                                                 @elseif (auth()->user()->userHasRole('Manager'))
@@ -127,7 +124,7 @@
                                                         <div class="d-flex align-items-center list-action">
                                                             <a
                                                                 href="{{ route('Admin.Pos.Pos_pending_delete', $pos_view->id) }}">
-                                                                <button class="btn btn-danger btn-sm">Delete</button></a>
+                                                                <button class="btn btn-danger btn-sm">Remove</button></a>
                                                         </div>
                                                     </form>
                                                 @else

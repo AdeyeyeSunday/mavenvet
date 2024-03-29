@@ -21,7 +21,7 @@
                          <div class="card-body">
                                <table id="datatable" class="table data-table table-striped">
                                   <thead>
-                                     <tr class="ligth">
+                                     <tr class="">
                                          <th>Id</th>
                                         <th>Customet Name</th>
                                         <th>Mode</th>

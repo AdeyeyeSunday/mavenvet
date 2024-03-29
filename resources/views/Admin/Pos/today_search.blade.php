@@ -16,7 +16,7 @@
                          <div class="table-responsive">
                            <table id="datatable" class="table data-table table-striped">
                               <thead>
-                                 <tr class="ligth">
+                                 <tr class="">
 <th></th>
                                      <th>Item</th>
                                      <th>Qty</th>

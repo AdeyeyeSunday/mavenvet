@@ -59,7 +59,7 @@
                         <div class="card-body">
                             <table id="datatable" class="table data-table table-striped">
                                 <thead>
-                                    <tr class="ligth">
+                                    <tr class="">
                                         <th>Customet name</th>
                                         <th>Mode of payment</th>
                                         <th>Amount</th>

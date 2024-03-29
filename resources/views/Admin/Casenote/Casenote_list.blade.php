@@ -15,7 +15,7 @@
                         <div class="table-responsive">
                            <table id="datatable" class="table data-table table-striped">
                               <thead>
-                                 <tr class="ligth">
+                                 <tr class="">
                                      <th>Image</th>
                                     <th>Owner Name</th>
                                     <th>Phone No</th>

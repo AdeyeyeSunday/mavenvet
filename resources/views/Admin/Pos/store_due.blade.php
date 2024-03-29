@@ -20,8 +20,8 @@
                     <div class="card-body">
                         <div class="table-responsive rounded mb-3">
                             <table class="data-table table mb-0 tbl-server-info">
-                                <thead class="bg-white text-uppercase">
-                                    <tr class="light light-data">
+                                <thead class="bg-white">
+                                    <tr class=" -data">
                                         {{-- <th>Id</th> --}}
                                         <th>Name</th>
                                         <th>Phone</th>
@@ -33,7 +33,7 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody class="light-body">
+                                <tbody class="-body">
                                     @foreach ($daily as $entry)
                                     @if ($entry->due > 0)
                                     <tr>

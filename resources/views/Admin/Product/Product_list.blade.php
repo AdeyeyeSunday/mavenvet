@@ -32,7 +32,7 @@
                       </center>
                         @endif
 
-                        <h6 class="mb-3">Product List</h6>
+                        <h6 class="mb-3">Product list</h6>
                         <p class="mb-0">The product list effectively dictates product presentation and provides space<br> to list your products and offering in the most appealing way.</p>
 
 
@@ -44,8 +44,8 @@
             <div class="col-lg-12">
                 <div class="table-responsive rounded mb-3">
                 <table class="data-table table mb-0 tbl-server-info">
-                    <thead class="bg-white text-uppercase">
-                        <tr class="ligth ligth-data">
+                    <thead class="bg-white">
+                        <tr >
                             <th>
                                 <div class="checkbox d-inline-block">
                                     <input type="checkbox" class="checkbox-input" id="checkbox1">
@@ -53,16 +53,17 @@
                                 </div>
                             </th>
                             {{-- <th>Product</th> --}}
-                            <th>Product Name</th>
+                            <th>Product</th>
                             <th>Category</th>
                             <th>Price</th>
                             <th>Cost</th>
                             <th>Quantity</th>
-                            <th>Expiry Date</th>
+                            <th>Expiry date</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody class="ligth-body">
+
+                    <tbody class="-body">
 
                         @foreach ($Product as $Product)
                         <tr>

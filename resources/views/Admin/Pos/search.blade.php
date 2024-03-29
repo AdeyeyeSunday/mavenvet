@@ -40,7 +40,7 @@
 
                               <thead>
 
-                                 <tr class="ligth">
+                                 <tr class="">
                                      <th>Id</th>
                                      <th>Name</th>
                                       <th>Total Bill</th>

@@ -22,10 +22,10 @@
                         <div class="table-responsive">
                            <table id="datatable" class="table data-table table-striped">
                               <thead>
-                                 <tr class="ligth">
+                                 <tr class="">
                                     {{-- <th>Image</th> --}}
                                     <th>Name</th>
-                                    <th>Phone No</th>
+                                    <th>Phone no</th>
                                     <th>Address</th>
                                     <th>email</th>
                                     <th>Position</th>

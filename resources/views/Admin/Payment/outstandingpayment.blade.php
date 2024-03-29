@@ -27,17 +27,17 @@
                         <div class="table-responsive">
                            <table id="datatable" class="table data-table table-striped">
                               <thead>
-                                 <tr class="ligth">
-                                    <tr class="ligth">
+                                 <tr class="">
+                                    <tr class="">
                                         <th>Pet Name</th>
-                                       
+
                                         <th>Phone No</th>
                                         <th>Total bill</th>
                                         <th>Amount Paid</th>
                                         <th>Outstanding</th>
 <th>Date</th>
 
-                                        
+
                                         <th>Action</th>
 <th>View</th>
                                  </tr>
@@ -46,14 +46,14 @@
                                 @foreach ($pay as $payment)
                                 @if ($payment->due > 0)
                                 <td> {{$payment->Unregister}}</td>
-                           
+
                                 <td>{{$payment->Phone}}</td>
                                 <td>{{$payment->total_price}}</td>
                                 <td>{{$payment->pay + $payment->new_due}}</td>
                                 <td> {{$payment->due}}</td>
                                 <td> {{$payment->date}}</td>
 
-                                 
+
 
                                 <td>
                                     <div class="d-flex align-items-center list-action">
@@ -98,7 +98,7 @@
 
 
 
-                                                  
+
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
                                                             data-dismiss="modal">Close</button>

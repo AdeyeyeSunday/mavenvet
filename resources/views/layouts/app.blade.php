@@ -18,7 +18,7 @@
         <!-- Scripts -->
         <script src="{{ URL::asset('js/app.js') }}" defer></script>
     </head>
-    <body class="font-sans antialiased bg-light">
+    <body class="font-sans antialiased bg-">
         <x-jet-banner />
         @livewire('navigation-menu')
 

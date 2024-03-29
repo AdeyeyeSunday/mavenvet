@@ -20,7 +20,7 @@
                             <div class="table-responsive">
                                 <table id="datatable" class="table data-table table-striped">
                                     <thead>
-                                        <tr class="ligth">
+                                        <tr class="">
                                             <th>Name</th>
                                             <th>Phone</th>
                                             <th>Address</th>
@@ -28,7 +28,7 @@
                                             {{-- <th>Payment</th> --}}
                                             <th>Due</th><th>Date</th>
                                             <th>Payment Type</th>
-                                           
+
                                             <th>Action</th>
  <th>View</th>
                                         </tr>

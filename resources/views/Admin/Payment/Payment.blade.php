@@ -6,7 +6,7 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <div class="header-title">
-                                <h6 class="card-title">Services</h6>
+                                <h6 class="card-title">Service cart</h6>
                             </div>
 
                             {{-- <div class="header-title">
@@ -16,7 +16,7 @@
                         <div class="card-body">
                             <table class="table">
                                 <thead>
-                                    <tr class="ligth">
+                                    <tr class="">
                                         <th scope="col">Vaccination</th>
                                         <th scope="col">Quantity</th>
                                         <th scope="col">Price</th>
@@ -97,7 +97,7 @@
                         <div class="card-body">
                             <table class="table">
                                 <thead>
-                                    <tr class="ligth">
+                                    <tr class="">
 
                                         <th scope="col">Services</th>
                                         <th scope="col">Cost</th>
@@ -219,7 +219,7 @@
                                                 <br>
                                                 <div class="col-md-4 off col-md-1">
                                                     <label for="">Owner name</label>
-                                                    <input type="text" class="form-control" value="*******"
+                                                    <input type="text" class="form-control"
                                                         name="Owner_name" id="" required>
                                                     <input type="hidden" class="form-control" value="MVC"
                                                         name="location" id="">
@@ -233,20 +233,18 @@
 
                                                 <div class="col-md-4 off col-md-1">
                                                     <label for="">Phone No.</label>
-                                                    <input type="text" class="form-control" value="*******"
-                                                        name="Owner_name" id="" required>
+                                                    <input type="number" class="form-control"
+                                                        name="Phone" id="" required>
                                                 </div>
-
-
                                                 {{-- <div class="row"> --}}
                                                 <div class="col-md-4 off col-md-1" id="cashField">
                                                     <label for="">Cash</label>
-                                                    <input type="text" class="form-control" placeholder="Cash"
+                                                    <input type="number" class="form-control" placeholder="Cash"
                                                         name="transfer_pay" id="cashInput" onblur="validatePayment()">
                                                 </div>
                                                 <div class="col-md-4 off col-md-1" id="transferField">
                                                     <label for="">Transfer</label>
-                                                    <input type="text" class="form-control" placeholder="Transfer"
+                                                    <input type="number" class="form-control" placeholder="Transfer"
                                                         name="cash_transfer" id="transferInput"
                                                         onblur="validatePayment()">
                                                     <br>
@@ -255,12 +253,12 @@
 
                                                 <div class="col-md-4 off col-md-1" id="cashFieldPos">
                                                     <label for="">Cash</label>
-                                                    <input type="text" class="form-control" placeholder="Cash"
+                                                    <input type="number" class="form-control" placeholder="Cash"
                                                         name="pos_pay" id="cashInput">
                                                 </div>
                                                 <div class="col-md-4 off col-md-1" id="posField">
                                                     <label for="">Pos</label>
-                                                    <input type="text" class="form-control" placeholder="Pos"
+                                                    <input type="number" class="form-control" placeholder="Pos"
                                                         name="cash_pos" id="transferInput">
                                                     <br>
                                                 </div>
@@ -286,7 +284,6 @@
                                             </div>
                                         </form>
                                     @endif
-
                                     <br><br><br>
                                  @if ($total + $amount2 != '0.00')
                                         <div class="col-md-12">
@@ -319,12 +316,12 @@
                                                     <div class="col-md-6 off col-md-1">
                                                         <label for="">Owner name</label>
                                                         <input type="text" class="form-control"
-                                                            placeholder="Owner name" value="*******" name="Owner_name"
+                                                            placeholder="Owner name" name="Owner_name"
                                                             id="" required>
                                                     </div>
                                                     <div class="col-md-6 off col-md-1">
                                                         <label for="">Phone</label>
-                                                        <input type="text" class="form-control" value="*******"
+                                                        <input type="number" class="form-control"
                                                             name="Phone" id="" required>
                                                         <br>
                                                     </div>
@@ -404,8 +401,8 @@
 
                                 <div class="table-responsive">
                                     <table class="data-table table mb-0 tbl-server-info">
-                                        <thead class="bg-white text-uppercase">
-                                            <tr class="ligth ligth-data">
+                                        <thead class="bg-white">
+                                            <tr class=" -data">
 
                                                 <th>Name</th>
                                                 <th>Brand</th>
@@ -415,7 +412,7 @@
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody class="ligth-body">
+                                        <tbody class="-body">
                                             @foreach ($vaccine as $item)
                                                 <tr>
                                                     <form action="{{ route('Admin.Store.service_item_store') }}"
@@ -489,15 +486,15 @@
                                                 <div class="card-body">
                                                     <div class="table-responsive">
                                                         <table class="data-table table mb-0 tbl-server-info">
-                                                            <thead class="bg-white text-uppercase">
-                                                                <tr class="ligth ligth-data">
+                                                            <thead class="bg-white">
+                                                                <tr class=" -data">
                                                                     <th style="margin-left: 10%">Description</th>
                                                                     <th>Amount</th>
                                                                     <th>Action</th>
 
                                                                 </tr>
                                                             </thead>
-                                                            <tbody class="ligth-body">
+                                                            <tbody class="-body">
                                                                 @foreach ($service as $item)
                                                                     <tr>
                                                                         <form

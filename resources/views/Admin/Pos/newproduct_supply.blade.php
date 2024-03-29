@@ -20,8 +20,8 @@
             <div class="col-lg-12">
                 <div class="table-responsive rounded mb-3">
                 <table class="data-table table mb-0 tbl-server-info">
-                    <thead class="bg-white text-uppercase">
-                        <tr class="ligth ligth-data">
+                    <thead class="bg-white">
+                        <tr class=" -data">
                             <th>
                                 <div class="checkbox d-inline-block">
                                     <input type="checkbox" class="checkbox-input" id="checkbox1">
@@ -38,7 +38,7 @@
                             {{-- <th>Action</th> --}}
                         </tr>
                     </thead>
-                    <tbody class="ligth-body">
+                    <tbody class="-body">
 
                         @foreach ($new as $new)
                         <tr>

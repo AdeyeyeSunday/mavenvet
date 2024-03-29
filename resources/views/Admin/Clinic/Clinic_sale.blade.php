@@ -167,8 +167,8 @@
                             <div class="col-lg-12">
                                 <div class="table-responsive rounded mb-3">
                                     <table class="data-table table mb-0 tbl-server-info">
-                                        <thead class="bg-white text-uppercase">
-                                            <tr class="ligth ligth-data">
+                                        <thead class="bg-white">
+                                            <tr class=" -data">
                                                 <th>Name</th>
                                                 <th>Brand</th>
                                                 <th>Price</th>
@@ -177,7 +177,7 @@
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody class="ligth-body">
+                                        <tbody class="-body">
                                             @foreach ($Vaccinestore as $item)
                                                 <tr>
                                                     <form action="{{ route('Admin.Clinic.Clinic_cart') }}" method="post"

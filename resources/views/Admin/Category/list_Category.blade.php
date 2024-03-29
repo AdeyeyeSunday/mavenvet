@@ -16,10 +16,8 @@
             <div class="col-lg-12">
                 <div class="table-responsive rounded mb-3">
                 <table class="data-table table mb-0 tbl-server-info">
-                    <thead class="bg-white text-uppercase">
-                        <tr class="ligth ligth-data">
-
-
+                    <thead class="bg-white ">
+                        <tr class=" -data">
                               @if (Session::has('message'))
 
                      <center> <div class="alert alert-primary" role="alert">
@@ -37,18 +35,18 @@
                    </div>
                    </center>
                      @endif
-                            <th>id</th>
+                            <th></th>
                             <th>Category</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody class="ligth-body">
+                    <tbody class="-body">
 
 
                         @foreach ($Category as $key=>$Category)
                         <tr>
 
-                            <td>{{$key+1}} </td>
+                            <td> </td>
                             <td>{{$Category->Category}}</td>
                             <td>
                                 <div class="d-flex align-items-center list-action">

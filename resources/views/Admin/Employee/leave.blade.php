@@ -84,7 +84,7 @@
 
                <table class="table">
                   <thead>
-                     <tr class="ligth">
+                     <tr class="">
                         <th scope="col">Name</th>
                         <th scope="col">Type</th>
                         <th scope="col">To</th>

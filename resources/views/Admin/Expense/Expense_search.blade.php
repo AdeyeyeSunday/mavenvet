@@ -23,7 +23,7 @@
                        <table id="datatable" class="table data-table table-striped">
                         <center> <h6 style="color: red">Today Total Amount: ₦   {{ number_format( $amount, 2, '.', ',') }}</h6></center>
                           <thead>
-                             <tr class="ligth">
+                             <tr class="">
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Amount</th>

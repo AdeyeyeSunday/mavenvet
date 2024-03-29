@@ -37,14 +37,14 @@
 
                                                 <div class="table-responsive rounded mb-3">
                                                     <table class="data-table table mb-0 tbl-server-info">
-                                                        <thead class="bg-white text-uppercase">
-                                                            <tr class="ligth ligth-data">
+                                                        <thead class="bg-white">
+                                                            <tr class=" -data">
                                                                 <th>Service</th>
                                                                   <th>Amount</th>
                                                                   {{-- <th>Price</th> --}}
                                                             </tr>
                                                         </thead>
-                                                        <tbody class="ligth-body">
+                                                        <tbody class="-body">
                                                                 @foreach ($service_item as $items)
                                                                 <tr>
 
@@ -76,14 +76,14 @@
                                     <div class="col-lg-12">
                                         <div class="table-responsive rounded mb-3">
                                         <table class="data-table table mb-0 tbl-server-info">
-                                            <thead class="bg-white text-uppercase">
-                                                <tr class="ligth ligth-data">
+                                            <thead class="bg-white">
+                                                <tr class=" -data">
                                                     <th>Vaccine</th>
                                                     <th>Qty</th>
                                                     <th>Total</th>
                                                 </tr>
                                             </thead>
-                                            <tbody class="ligth-body">
+                                            <tbody class="-body">
                                                 @foreach ($service_items as $service_items)
                                                 <tr>
                                                 <td>{{ $service_items->prod_name }}</td>

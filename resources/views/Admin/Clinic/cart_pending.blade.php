@@ -23,7 +23,7 @@
                         <div class="table-responsive">
                            <table id="datatable" class="table data-table table-striped">
                               <thead>
-                                 <tr class="ligth">
+                                 <tr class="">
                                     <th>Name</th>
                                     <th>Phone No</th>
                                     <th>Order Status</th>

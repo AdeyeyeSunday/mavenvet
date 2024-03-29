@@ -122,7 +122,7 @@
                     <div class="table-responsive">
                         <table id="datatable" class="table data-table table-striped">
                             <thead>
-                                <tr class="ligth">
+                                <tr class="">
                                     <th>Id</th>
                                     <th>Name</th>
                                     <th>Account Number</th>
@@ -171,7 +171,7 @@
                             <div class="table-responsive">
                                 <table id="datatable" class="table data-table table-striped">
                                     <thead>
-                                        <tr class="ligth">
+                                        <tr class="">
                                             <th>Id</th>
                                             <th>Name</th>
                                             <th>Email</th>

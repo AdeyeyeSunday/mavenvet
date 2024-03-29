@@ -51,14 +51,14 @@
 
                           <div class="table-responsive">
                               <table class="data-table table mb-0 tbl-server-info">
-                                  <thead class="bg-white text-uppercase">
-                                      <tr class="ligth ligth-data">
+                                  <thead class="bg-white">
+                                      <tr class=" -data">
                                         <th>Id</th>
                                         <th>Name</th>
                                         <th>Amount</th>
                                       </tr>
                                   </thead>
-                                  <tbody class="ligth-body">
+                                  <tbody class="-body">
                                     @foreach ($service as $item)
                                       <tr>
 

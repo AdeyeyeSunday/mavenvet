@@ -2122,8 +2122,8 @@
 .ri-tornado-line:before { content: "\f21d"; }
 .ri-trademark-fill:before { content: "\f21e"; }
 .ri-trademark-line:before { content: "\f21f"; }
-.ri-traffic-light-fill:before { content: "\f220"; }
-.ri-traffic-light-line:before { content: "\f221"; }
+.ri-traffic--fill:before { content: "\f220"; }
+.ri-traffic--line:before { content: "\f221"; }
 .ri-train-fill:before { content: "\f222"; }
 .ri-train-line:before { content: "\f223"; }
 .ri-train-wifi-fill:before { content: "\f224"; }

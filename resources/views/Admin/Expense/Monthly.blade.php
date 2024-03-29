@@ -35,7 +35,7 @@
                                             </h6>
                                         </center>
                                         <thead>
-                                            <tr class="ligth">
+                                            <tr class="">
                                                 <th>Name</th>
                                                 <th>Description</th>
                                                 <th>Amount</th>

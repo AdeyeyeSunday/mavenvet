@@ -16,7 +16,7 @@
                                             <h4 style="color: red">Total Amount: ₦ {{ $amount }}</h4>
                                         </center>
                                         <thead>
-                                            <tr class="ligth">
+                                            <tr class="">
                                                 <th>Name</th>
                                                 <th>Description</th>
                                                 <th>Amount</th>

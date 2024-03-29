@@ -10,7 +10,7 @@
                             <div class="card card-block card-stretch card-height">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center mb-4 card-total-sale">
-                                        <div class="icon iq-icon-box-2 bg-info-light">
+                                        <div class="icon iq-icon-box-2 bg-info-">
                                             <img src="{{ asset('assets/images/product/1.png') }}" class="img-fluid"
                                                 alt="image">
                                         </div>
@@ -44,7 +44,7 @@
                             <div class="card card-block card-stretch card-height">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center mb-4 card-total-sale">
-                                        <div class="icon iq-icon-box-2 bg-info-light">
+                                        <div class="icon iq-icon-box-2 bg-info-">
                                             <img src="{{ asset('assets/images/product/15.png') }}" class="img-fluid"
                                                 alt="image">
                                         </div>
@@ -70,7 +70,7 @@
                             <div class="card card-block card-stretch card-height">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center mb-4 card-total-sale">
-                                        <div class="icon iq-icon-box-2 bg-danger-light">
+                                        <div class="icon iq-icon-box-2 bg-danger-">
                                             <img src="{{ asset('assets/images/product/12.png') }}" class="img-fluid"
                                                 alt="image">
                                         </div>
@@ -90,7 +90,7 @@
                             <div class="card card-block card-stretch card-height">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center mb-4 card-total-sale">
-                                        <div class="icon iq-icon-box-2 bg-success-light">
+                                        <div class="icon iq-icon-box-2 bg-success-">
                                             <img src="{{ asset('assets/images/product/13.png') }}" class="img-fluid"
                                                 alt="image">
                                         </div>
@@ -111,7 +111,7 @@
                             <div class="card card-block card-stretch card-height">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center mb-4 card-total-sale">
-                                        <div class="icon iq-icon-box-2 bg-success-light">
+                                        <div class="icon iq-icon-box-2 bg-success-">
                                             <img src="{{ asset('assets/images/product/14.png') }}" class="img-fluid"
                                                 alt="image">
                                         </div>
@@ -131,7 +131,7 @@
                             <div class="card card-block card-stretch card-height">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center mb-4 card-total-sale">
-                                        <div class="icon iq-icon-box-2 bg-success-light">
+                                        <div class="icon iq-icon-box-2 bg-success-">
                                             <img src="{{ asset('assets/images/product/3.png') }}" class="img-fluid"
                                                 alt="image">
                                         </div>
@@ -182,7 +182,7 @@
                             <div class="d-flex align-items-top">
                                 <table class="table">
                                     <thead>
-                                        <tr class="ligth">
+                                        <tr class="">
 
                                             <th scope="col">Name</th>
                                             <th scope="col">Clockin</th>
