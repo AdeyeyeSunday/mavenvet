@@ -1745,10 +1745,23 @@ public function update_software() {
         // Specify the path where you want to extract the repository contents
         $extractPath = 'C:\xampp\htdocs\test';
 
-        // Check if mavenvet folder already exists
-        $existingFolderPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet2';
-        $vendorExists = is_dir($existingFolderPath . DIRECTORY_SEPARATOR . 'vendor');
-        $envExists = file_exists($existingFolderPath . DIRECTORY_SEPARATOR . '.env');
+        // Remove the existing mavenvet folder if it exists
+        $existingFolderPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet';
+        if (is_dir($existingFolderPath)) {
+            // Preserve the vendor directory and .env file if they exist
+            $vendorExists = is_dir($existingFolderPath . DIRECTORY_SEPARATOR . 'vendor');
+            $envExists = file_exists($existingFolderPath . DIRECTORY_SEPARATOR . '.env');
+
+            if ($vendorExists) {
+                rename($existingFolderPath . DIRECTORY_SEPARATOR . 'vendor', $existingFolderPath . '-vendor');
+            }
+            if ($envExists) {
+                rename($existingFolderPath . DIRECTORY_SEPARATOR . '.env', $existingFolderPath . '-env');
+            }
+
+            // Remove the existing mavenvet folder
+            $this->removeDirectory($existingFolderPath);
+        }
 
         // Extract the contents of the ZIP file to the desired directory
         $zip = new ZipArchive;
@@ -1757,49 +1770,47 @@ public function update_software() {
             $zip->close();
             unlink($localZipPath); // Remove the downloaded ZIP file after extraction
 
-            // Rename the extracted folder if necessary
-            $oldExtractedPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet2-main';
-            $newExtractedPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet2'; // Change this to the desired new folder name
-            if (is_dir($oldExtractedPath)) {
-                rename($oldExtractedPath, $newExtractedPath);
+            // Rename the extracted folder to mavenvet
+            $extractedPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet-main';
+            $newExtractedPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet';
+            if (is_dir($extractedPath)) {
+                rename($extractedPath, $newExtractedPath);
             }
 
-            // Preserve vendor and .env if they already exist
+            // Restore the preserved vendor directory and .env file if they exist
             if ($vendorExists) {
-                // Restore the vendor folder
-                rename($existingFolderPath . DIRECTORY_SEPARATOR . 'vendor', $newExtractedPath . DIRECTORY_SEPARATOR . 'vendor');
+                rename($existingFolderPath . '-vendor', $newExtractedPath . DIRECTORY_SEPARATOR . 'vendor');
             }
             if ($envExists) {
-                // Restore the .env file
-                copy($existingFolderPath . DIRECTORY_SEPARATOR . '.env', $newExtractedPath . DIRECTORY_SEPARATOR . '.env');
+                rename($existingFolderPath . '-env', $newExtractedPath . DIRECTORY_SEPARATOR . '.env');
             }
 
             $checkCount = Systemupdate::count();
-            $verstion = "2.1";
+            $version = "2.3";
             if ($checkCount > 0) {
                 $systemUpdate = Systemupdate::first();
                 $systemUpdate->update([
-                    'version' => $verstion,
+                    'version' => $version,
                     'updated_at' => date("Y-m-d"),
                     'updated_by' => Auth::user()->id,
                 ]);
             } else {
                 // Create new record
                 $inp = new Systemupdate();
-                $inp->version = $verstion;
+                $inp->version = $version;
                 $inp->updated_at = date("Y-m-d");
                 $inp->updated_by = Auth::user()->id;
                 $inp->save();
             }
             session()->flash('item', 'Software updated successfully');
             return back();
-
         }
     } catch (\Throwable $th) {
         session()->flash('item', 'Software Failed to update.');
         return back();
     }
 }
+
 
 
 private function removeDirectory($path) {
