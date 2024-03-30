@@ -1724,9 +1724,8 @@ function update2(){
         session()->flash('item_not', 'Product synchronization failed: ' . $th->getMessage());
         return back();
     }
-
-
 }
+
 
 // this update software from backend .....
 public function update_software() {
@@ -1743,7 +1742,7 @@ public function update_software() {
         file_put_contents($localZipPath, $zipFile);
 
         // Specify the path where you want to extract the repository contents
-        $extractPath = 'C:\xampp\htdocs\test';
+        $extractPath = 'C:\xampp\htdocs';
 
         // Remove the existing mavenvet folder if it exists
         $existingFolderPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet';
@@ -1786,7 +1785,7 @@ public function update_software() {
             }
 
             $checkCount = Systemupdate::count();
-            $version = "2.3";
+            $version = "2";
             if ($checkCount > 0) {
                 $systemUpdate = Systemupdate::first();
                 $systemUpdate->update([
@@ -1810,8 +1809,6 @@ public function update_software() {
         return back();
     }
 }
-
-
 
 private function removeDirectory($path) {
     // Check if the path exists and is a directory
