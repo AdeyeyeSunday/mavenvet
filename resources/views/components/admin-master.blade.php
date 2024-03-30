@@ -12,10 +12,10 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/remixicon/fonts/remixicon.css') }}">
-    <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/print/bootstrap-table-print.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.24/webcam.js"></script>
+    <link href="{{ asset("https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css") }}" rel="stylesheet">
+    <script src="{{ asset("https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js") }}"></script>
+    <script src="{{ asset("https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/print/bootstrap-table-print.min.js") }}"></script>
+    <script type="text/javascript" src="{{ asset("https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.24/webcam.js") }}"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
 </head>
@@ -33,10 +33,10 @@
         <div class="iq-sidebar  sidebar-default ">
             <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
                 <a href="{{ route('Admin.dashboard') }}" class="header-logo">
-                    <img src="{{ asset('assets/images/logo.png') }}" class="img-fluid rounded-normal -logo"
+                  <img src="{{ asset('assets/images/logo.png') }}" style="height: 6em;"
                         alt="logo">
-                    <h5 class="logo-title -logo ml-3">MVC</h5>
                 </a>
+                <h5 class="logo-title -logo ml-3">Mavenvet</h5>
             </div>
             @if (auth()->user()->userHasRole('Admin'))
                 <x-Dashboard></x-Dashboard>
@@ -83,19 +83,21 @@
                 <x-Attendance></x-Attendance>
             @endif
             </nav>
-            <div class="p-3"></div>
+            {{-- <div class="p-3"></div> --}}
+            <hr>
             <div class="p-3">
                 @php
                     $verstion = App\Models\Systemupdate::first();
                 @endphp
                 <center>
-                    <p>You need Internet to update <br> version {{ $verstion->version }}</p>
-                    <p>Last update: {{ $verstion->updated_at->format('d-m-Y') }}</p>
+                    <div class="header-title">
+                    <p class="card-title">Software version {{ $verstion->version }}</p>
+                    <p class="card-title">Last update: {{ $verstion->updated_at->format('d-m-Y') }}</p>
 
                     <a href="{{ route('Admin.update_software') }}">
-                        <button class="btn sidebar-bottom-btn mt-4 btn-lg">Update software</button>
-                        {{-- <button type="button" >Go Premium</button> --}}
+                        <button class="btn sidebar-bottom-btn mt-4 btn-lg">Click to update software</button>
                     </a>
+                </div>
             </div>
         </div>
     </div>

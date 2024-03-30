@@ -14,7 +14,6 @@
                             <div class="row">
                                 <div class="col-sm-12 col-lg-6 col-md-6">
                                     <div class="card">
-
                                         <div class="card-header d-flex justify-content-between">
                                             <div class="header-title in-line">
                                                 <span
@@ -285,7 +284,7 @@
                                                                                                                 class="modal-footer">
                                                                                                                 <button
                                                                                                                     type="button"
-                                                                                                                    class="btn btn-secondary"
+                                                                                                                    class="btn btn-danger"
                                                                                                                     data-dismiss="modal">Close</button>
                                                                                                             </div>
                                                                                                         </div>
@@ -346,12 +345,12 @@
                                                                                                         $daily->Mode_of_payment ==
                                                                                                         'cash_pos'
                                                                                                     ) {
-                                                                                                        echo ' <button type="button" class="btn btn-info btn-sm mr-2">cash/pos</button>';
+                                                                                                        echo ' <button type="button" class="btn btn-info btn-sm mr-2">cash & pos</button>';
                                                                                                     } elseif (
                                                                                                         $daily->Mode_of_payment ==
                                                                                                         'cash_transfer'
                                                                                                     ) {
-                                                                                                        echo ' <button type="button" class="btn btn-secondary btn-sm mr-2">cash/transfer</button>';
+                                                                                                        echo ' <button type="button" class="btn btn-secondary btn-sm mr-2">cash & transfer</button>';
                                                                                                     }
                                                                                                 @endphp
                                                                                             </td>
@@ -399,7 +398,7 @@
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button"
-                                                                            class="btn btn-secondary btn-lg btn-block"
+                                                                            class="btn btn-danger btn-lg btn-block"
                                                                             data-dismiss="modal">Close</button>
                                                                     </div>
                                                                 </div>
@@ -607,7 +606,7 @@
                                             <form id="barcodeForm" action="{{ route('Admin.Cart.barcode_scanner') }}"
                                                 method="POST">
                                                 @csrf
-                                                <input type="text" disabled placeholder="barcode coming 2weeks ...."
+                                                <input type="text" disabled placeholder="barcode scanner coming soon...."
                                                     name="barcode_scanner" class="form-control" id="barcode_scanner">
                                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                                 <input type="hidden" name="Name" value="">
@@ -731,7 +730,6 @@
                     $("#barcodeForm").submit(function(e) {
                         e.preventDefault(); // Prevent default form submission
                         const formData = new FormData(this);
-
                         // Send AJAX request to handle the form submission
                         $.ajax({
                             url: '{{ route('Admin.Cart.barcode_scanner') }}',

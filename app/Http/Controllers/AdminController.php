@@ -1730,73 +1730,77 @@ function update2(){
 
 // this update software from backend .....
 public function update_software() {
-try {
-    $repositoryUrl = 'https://github.com/AdeyeyeSunday/mavenvet/archive/main.zip';
+    try {
+        $repositoryUrl = 'https://github.com/AdeyeyeSunday/mavenvet/archive/main.zip';
 
-    // Fetch the ZIP file from the repository
-    $zipFile = file_get_contents($repositoryUrl);
+        // Fetch the ZIP file from the repository
+        $zipFile = file_get_contents($repositoryUrl);
 
-    // Specify the path where you want to save the downloaded ZIP file
-    $localZipPath = 'C:\xampp\htdocs\repo.zip';
+        // Specify the path where you want to save the downloaded ZIP file
+        $localZipPath = 'C:\xampp\htdocs\repo.zip';
 
-    // Save the downloaded ZIP file to a local directory
-    file_put_contents($localZipPath, $zipFile);
+        // Save the downloaded ZIP file to a local directory
+        file_put_contents($localZipPath, $zipFile);
 
-    // Specify the path where you want to extract the repository contents
-    $extractPath = 'C:\xampp\htdocs';
+        // Specify the path where you want to extract the repository contents
+        $extractPath = 'C:\xampp\htdocs\test';
 
-    // Remove the existing mavenvet folder if it exists
-    $existingFolderPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet2';
-    if (is_dir($existingFolderPath)) {
-        $this->removeDirectory($existingFolderPath);
-    }
+        // Check if mavenvet folder already exists
+        $existingFolderPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet2';
+        $vendorExists = is_dir($existingFolderPath . DIRECTORY_SEPARATOR . 'vendor');
+        $envExists = file_exists($existingFolderPath . DIRECTORY_SEPARATOR . '.env');
 
-    // Extract the contents of the ZIP file to the desired directory
-    $zip = new ZipArchive;
-    if ($zip->open($localZipPath) === TRUE) {
-        $zip->extractTo($extractPath);
-        $zip->close();
-        unlink($localZipPath); // Remove the downloaded ZIP file after extraction
+        // Extract the contents of the ZIP file to the desired directory
+        $zip = new ZipArchive;
+        if ($zip->open($localZipPath) === TRUE) {
+            $zip->extractTo($extractPath);
+            $zip->close();
+            unlink($localZipPath); // Remove the downloaded ZIP file after extraction
 
-        // Rename the extracted folder if necessary
-        $oldExtractedPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet2-main';
-        $newExtractedPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet2'; // Change this to the desired new folder name
-        if (is_dir($oldExtractedPath)) {
-            rename($oldExtractedPath, $newExtractedPath);
+            // Rename the extracted folder if necessary
+            $oldExtractedPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet2-main';
+            $newExtractedPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet2'; // Change this to the desired new folder name
+            if (is_dir($oldExtractedPath)) {
+                rename($oldExtractedPath, $newExtractedPath);
+            }
+
+            // Preserve vendor and .env if they already exist
+            if ($vendorExists) {
+                // Restore the vendor folder
+                rename($existingFolderPath . DIRECTORY_SEPARATOR . 'vendor', $newExtractedPath . DIRECTORY_SEPARATOR . 'vendor');
+            }
+            if ($envExists) {
+                // Restore the .env file
+                copy($existingFolderPath . DIRECTORY_SEPARATOR . '.env', $newExtractedPath . DIRECTORY_SEPARATOR . '.env');
+            }
+
+            $checkCount = Systemupdate::count();
+            $verstion = "2.1";
+            if ($checkCount > 0) {
+                $systemUpdate = Systemupdate::first();
+                $systemUpdate->update([
+                    'version' => $verstion,
+                    'updated_at' => date("Y-m-d"),
+                    'updated_by' => Auth::user()->id,
+                ]);
+            } else {
+                // Create new record
+                $inp = new Systemupdate();
+                $inp->version = $verstion;
+                $inp->updated_at = date("Y-m-d");
+                $inp->updated_by = Auth::user()->id;
+                $inp->save();
+            }
+            session()->flash('item', 'Software updated successfully');
+            return back();
+
         }
-
-        $checkCount = Systemupdate::count();
-        $verstion = "2.0";
-        if ($checkCount > 0) {
-            $systemUpdate = Systemupdate::first();
-            $systemUpdate->update([
-                'version' => $verstion,
-                'updated_at' => date("Y-m-d"),
-                'updated_by' => Auth::user()->id,
-            ]);
-        } else {
-            // Create new record
-            $inp = new Systemupdate();
-            $inp->version = $verstion;
-            $inp->updated_at = date("Y-m-d");
-            $inp->updated_by = Auth::user()->id;
-            $inp->save();
-        }
-        // return response()->json(['success' => true, 'item' => 'Software updated successfully']);
+    } catch (\Throwable $th) {
+        session()->flash('item', 'Software Failed to update.');
+        return back();
     }
-
-
-    session()->flash('item', 'Software updated successfully');
-
-    return back();
-    //  else {
-    //     return response()->json(['success' => false, 'item' => ''], 500);
-    // }
-} catch (\Throwable $th) {
-    session()->flash('item', 'Software Failed to update.');
-    return back();
 }
-}
+
 
 private function removeDirectory($path) {
     // Check if the path exists and is a directory

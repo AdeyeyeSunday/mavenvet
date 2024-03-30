@@ -8,10 +8,6 @@
                             <div class="header-title">
                                 <h6 class="card-title">Service cart</h6>
                             </div>
-
-                            {{-- <div class="header-title">
-                                <h6  style="color: red" class="card-title">Grand Total:
-                             </div> --}}
                         </div>
                         <div class="card-body">
                             <table class="table">
