@@ -606,7 +606,7 @@
                                             <form id="barcodeForm" action="{{ route('Admin.Cart.barcode_scanner') }}"
                                                 method="POST">
                                                 @csrf
-                                                <input type="text" disabled placeholder="barcode scanner coming soon...."
+                                                <input type="text"  placeholder="barcode scanner coming soon...."
                                                     name="barcode_scanner" class="form-control" id="barcode_scanner">
                                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                                 <input type="hidden" name="Name" value="">

@@ -138,6 +138,20 @@ if ($con === false) {
         $year  = $detorRow['year'];
         $location = $detorRow['location'];
         $syn_flag =1;
+
+        $pet_id = isset($detorRow['pet_id']) ? mysqli_real_escape_string($mysqli, $detorRow['pet_id']) : null;
+$diagnosis = isset($detorRow['diagnosis']) ? mysqli_real_escape_string($mysqli, $detorRow['diagnosis']) : null;
+$amount = isset($detorRow['amount']) ? mysqli_real_escape_string($mysqli, $detorRow['amount']) : null;
+$date = isset($detorRow['date']) ? mysqli_real_escape_string($mysqli, $detorRow['date']) : null;
+$payment = isset($detorRow['payment']) ? mysqli_real_escape_string($mysqli, $detorRow['payment']) : null;
+$mode = isset($detorRow['mode']) ? mysqli_real_escape_string($mysqli, $detorRow['mode']) : null;
+$user_id = isset($detorRow['user_id']) ? mysqli_real_escape_string($mysqli, $detorRow['user_id']) : null;
+$month = isset($detorRow['month']) ? mysqli_real_escape_string($mysqli, $detorRow['month']) : null;
+$year = isset($detorRow['year']) ? mysqli_real_escape_string($mysqli, $detorRow['year']) : null;
+$location = isset($detorRow['location']) ? mysqli_real_escape_string($mysqli, $detorRow['location']) : null;
+
+
+
         $selectOnlineProduct = "SELECT 'pet_id' FROM admissions WHERE pet_id  = '".$pet_id."' AND syn_flag = '1'";
          $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
 
@@ -197,6 +211,17 @@ if ($con === false) {
         $h = $detorRow['month'];
         $i = $detorRow['year'];
         $syn_flag =1;
+
+        $s = isset($detorRow['staff_name']) ? mysqli_real_escape_string($mysqli, $detorRow['staff_name']) : null;
+$c = isset($detorRow['clockin']) ? mysqli_real_escape_string($mysqli, $detorRow['clockin']) : null;
+$d = isset($detorRow['clockout']) ? mysqli_real_escape_string($mysqli, $detorRow['clockout']) : null;
+$e = isset($detorRow['Timeout']) ? mysqli_real_escape_string($mysqli, $detorRow['Timeout']) : null;
+$f = isset($detorRow['Time']) ? mysqli_real_escape_string($mysqli, $detorRow['Time']) : null;
+$g = isset($detorRow['date']) ? mysqli_real_escape_string($mysqli, $detorRow['date']) : null;
+$h = isset($detorRow['month']) ? mysqli_real_escape_string($mysqli, $detorRow['month']) : null;
+$i = isset($detorRow['year']) ? mysqli_real_escape_string($mysqli, $detorRow['year']) : null;
+
+
          $insertOnline = "INSERT INTO `attendances`(`staff_name`, `clockin`, `clockout`, `Timeout`, `Time`, `date`, `month`, `year`)
          VALUES ('$s', '$c', '$d', '$e', '$f', '$g', '$h', '$i')";
             $resOnlineUpdate = mysqli_query($con, $insertOnline);
@@ -311,6 +336,16 @@ if ($con === false) {
                 $i = $detorRow['year'];
                 $l = $detorRow['location'];
                 $syn_flag =1;
+
+                $s = isset($detorRow['customer_name']) ? mysqli_real_escape_string($mysqli, $detorRow['customer_name']) : null;
+$c = isset($detorRow['mode']) ? mysqli_real_escape_string($mysqli, $detorRow['mode']) : null;
+$d = isset($detorRow['amount']) ? mysqli_real_escape_string($mysqli, $detorRow['amount']) : null;
+$e = isset($detorRow['name']) ? mysqli_real_escape_string($mysqli, $detorRow['name']) : null;
+$g = isset($detorRow['date']) ? mysqli_real_escape_string($mysqli, $detorRow['date']) : null;
+$h = isset($detorRow['month']) ? mysqli_real_escape_string($mysqli, $detorRow['month']) : null;
+$i = isset($detorRow['year']) ? mysqli_real_escape_string($mysqli, $detorRow['year']) : null;
+$l = isset($detorRow['location']) ? mysqli_real_escape_string($mysqli, $detorRow['location']) : null;
+
                    $selectOnlineProduct = "SELECT 'customer_name' FROM cashes WHERE customer_name  = '".$s."' AND syn_flag = '1'";
                     $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
                     if($resOnlineUpdate !== false && $resOnlineUpdate->num_rows > 0){
@@ -405,6 +440,15 @@ if ($con === false) {
                 $i = $detorRow['year'];
                 $l = $detorRow['location'];
                 $syn_flag =1;
+
+                $s = isset($detorRow['name']) ? mysqli_real_escape_string($mysqli, $detorRow['name']) : null;
+$c = isset($detorRow['description']) ? mysqli_real_escape_string($mysqli, $detorRow['description']) : null;
+$d = isset($detorRow['amount']) ? mysqli_real_escape_string($mysqli, $detorRow['amount']) : null;
+$g = isset($detorRow['date']) ? mysqli_real_escape_string($mysqli, $detorRow['date']) : null;
+$h = isset($detorRow['month']) ? mysqli_real_escape_string($mysqli, $detorRow['month']) : null;
+$i = isset($detorRow['year']) ? mysqli_real_escape_string($mysqli, $detorRow['year']) : null;
+$l = isset($detorRow['location']) ? mysqli_real_escape_string($mysqli, $detorRow['location']) : null;
+
                    $selectOnlineProduct = "SELECT 'name' FROM clinic_expenses WHERE name  = '".$s."' AND syn_flag = '1'";
                     $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
                     if($resOnlineUpdate !== false && $resOnlineUpdate->num_rows > 0){
@@ -465,6 +509,22 @@ if ($con === false) {
                 $position = $detorRow['position'];
                 $staff_no = $detorRow['staff_no'];
                 $syn_flag =1;
+
+                $user_id = isset($detorRow['user_id']) ? mysqli_real_escape_string($mysqli, $detorRow['user_id']) : null;
+                $title = isset($detorRow['Title']) ? mysqli_real_escape_string($mysqli, $detorRow['Title']) : null;
+                $name_id = isset($detorRow['name_id']) ? mysqli_real_escape_string($mysqli, $detorRow['name_id']) : null;
+                $email = isset($detorRow['email']) ? mysqli_real_escape_string($mysqli, $detorRow['email']) : null;
+                $number = isset($detorRow['number']) ? mysqli_real_escape_string($mysqli, $detorRow['number']) : null;
+                $gst_number = isset($detorRow['gst_number']) ? mysqli_real_escape_string($mysqli, $detorRow['gst_number']) : null;
+                $address = isset($detorRow['address']) ? mysqli_real_escape_string($mysqli, $detorRow['address']) : null;
+                $city = isset($detorRow['city']) ? mysqli_real_escape_string($mysqli, $detorRow['city']) : null;
+                $state = isset($detorRow['state']) ? mysqli_real_escape_string($mysqli, $detorRow['state']) : null;
+                $country = isset($detorRow['country']) ? mysqli_real_escape_string($mysqli, $detorRow['country']) : null;
+                $image = isset($detorRow['image']) ? mysqli_real_escape_string($mysqli, $detorRow['image']) : null;
+                $gender = isset($detorRow['gender']) ? mysqli_real_escape_string($mysqli, $detorRow['gender']) : null;
+                $position = isset($detorRow['position']) ? mysqli_real_escape_string($mysqli, $detorRow['position']) : null;
+                $staff_no = isset($detorRow['staff_no']) ? mysqli_real_escape_string($mysqli, $detorRow['staff_no']) : null;
+
                    $selectOnlineProduct = "SELECT 'user_id' FROM employees WHERE user_id  = '".$user_id."' AND syn_flag = '1'";
                     $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
                     if($resOnlineUpdate !== false && $resOnlineUpdate->num_rows > 0){
@@ -518,6 +578,16 @@ if ($con === false) {
                    $i = $detorRow['year'];
                    $l = $detorRow['location'];
                    $syn_flag =1;
+
+                   $s = isset($detorRow['name']) ? mysqli_real_escape_string($mysqli, $detorRow['name']) : null;
+                   $c = isset($detorRow['description']) ? mysqli_real_escape_string($mysqli, $detorRow['description']) : null;
+                   $d = isset($detorRow['amount']) ? mysqli_real_escape_string($mysqli, $detorRow['amount']) : null;
+                   $g = isset($detorRow['date']) ? mysqli_real_escape_string($mysqli, $detorRow['date']) : null;
+                   $h = isset($detorRow['month']) ? mysqli_real_escape_string($mysqli, $detorRow['month']) : null;
+                   $i = isset($detorRow['year']) ? mysqli_real_escape_string($mysqli, $detorRow['year']) : null;
+                   $l = isset($detorRow['location']) ? mysqli_real_escape_string($mysqli, $detorRow['location']) : null;
+
+
                       $selectOnlineProduct = "SELECT 'name','description' FROM expenses WHERE description  = '".$c."' AND syn_flag = '1'";
                        $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
                        if($resOnlineUpdate !== false && $resOnlineUpdate->num_rows > 0){
@@ -581,6 +651,24 @@ if ($con === false) {
           $user_id = $detorRow['user_id'];
 
         $syn_flag =1;
+        $id = isset($detorRow['id']) ? mysqli_real_escape_string($mysqli, $detorRow['id']) : '';
+        $name = isset($detorRow['Name']) ? mysqli_real_escape_string($mysqli, $detorRow['Name']) : '';
+        $cost = isset($detorRow['Cost']) ? mysqli_real_escape_string($mysqli, $detorRow['Cost']) : '';
+        $price = isset($detorRow['Price']) ? mysqli_real_escape_string($mysqli, $detorRow['Price']) : '';
+        $quantity = isset($detorRow['Quantity']) ? mysqli_real_escape_string($mysqli, $detorRow['Quantity']) : '';
+        $new_supply = isset($detorRow['new_supply']) ? mysqli_real_escape_string($mysqli, $detorRow['new_supply']) : '';
+        $expiry_date = isset($detorRow['expiry_date']) ? mysqli_real_escape_string($mysqli, $detorRow['expiry_date']) : '';
+        $quantity_level = isset($detorRow['Quantity_level']) ? mysqli_real_escape_string($mysqli, $detorRow['Quantity_level']) : '';
+        $description = isset($detorRow['description']) ? mysqli_real_escape_string($mysqli, $detorRow['description']) : '';
+        $month = isset($detorRow['month']) ? mysqli_real_escape_string($mysqli, $detorRow['month']) : '';
+        $year = isset($detorRow['year']) ? mysqli_real_escape_string($mysqli, $detorRow['year']) : '';
+        $new_date = isset($detorRow['new_date']) ? mysqli_real_escape_string($mysqli, $detorRow['new_date']) : '';
+        $location = isset($detorRow['location']) ? mysqli_real_escape_string($mysqli, $detorRow['location']) : '';
+        $Category = isset($detorRow['Category']) ? mysqli_real_escape_string($mysqli, $detorRow['Category']) : '';
+        $supplier = isset($detorRow['supplier']) ? mysqli_real_escape_string($mysqli, $detorRow['supplier']) : '';
+        $user_id = isset($detorRow['user_id']) ? mysqli_real_escape_string($mysqli, $detorRow['user_id']) : '';
+
+
            $selectOnlineProduct = "SELECT 'Name' FROM newproducts WHERE Name  = '".$name."' AND syn_flag = '1'";
             $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
             if($resOnlineUpdate !== false && $resOnlineUpdate->num_rows > 0){
@@ -637,6 +725,21 @@ if ($con === false) {
                     $location = $detorRow['location'];
                     $supplier = $detorRow['supplier'];
                     $syn_flag = 1;
+                    $user_id = isset($detorRow['user_id']) ? mysqli_real_escape_string($mysqli, $detorRow['user_id']) : '';
+                    $name = isset($detorRow['Name']) ? mysqli_real_escape_string($mysqli, $detorRow['Name']) : '';
+                    $cost = isset($detorRow['Cost']) ? mysqli_real_escape_string($mysqli, $detorRow['Cost']) : '';
+                    $price = isset($detorRow['Price']) ? mysqli_real_escape_string($mysqli, $detorRow['Price']) : '';
+                    $quantity = isset($detorRow['Quantity']) ? mysqli_real_escape_string($mysqli, $detorRow['Quantity']) : '';
+                    $minimum = isset($detorRow['minimum']) ? mysqli_real_escape_string($mysqli, $detorRow['minimum']) : '';
+                    $Image = isset($detorRow['Image']) ? mysqli_real_escape_string($mysqli, $detorRow['Image']) : '';
+                    $expiry_date = isset($detorRow['expiry_date']) ? mysqli_real_escape_string($mysqli, $detorRow['expiry_date']) : '';
+                    $new_supply = isset($detorRow['new_supply']) ? mysqli_real_escape_string($mysqli, $detorRow['new_supply']) : '';
+                    $supply_date = isset($detorRow['supply_date']) ? mysqli_real_escape_string($mysqli, $detorRow['supply_date']) : '';
+                    $brand = isset($detorRow['brand']) ? mysqli_real_escape_string($mysqli, $detorRow['brand']) : '';
+                    $location = isset($detorRow['location']) ? mysqli_real_escape_string($mysqli, $detorRow['location']) : '';
+                    $supplier = isset($detorRow['supplier']) ? mysqli_real_escape_string($mysqli, $detorRow['supplier']) : '';
+
+
                      $selectOnlineProduct = "SELECT 'Name' FROM new_vaccines WHERE Name  = '".$name."' AND syn_flag = '1'";
                       $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
                       if($resOnlineUpdate !== false && $resOnlineUpdate->num_rows > 0){
@@ -708,6 +811,33 @@ $offline = "SELECT `user_id`, `fname`, `phone`, `address`, `total_price`, `disco
         $new_due = $detorRow['new_due'];
         $bankName = $detorRow['bankName'];
         $Cost = $detorRow['Cost'];
+
+        $user_id = isset($detorRow['user_id']) ? mysqli_real_escape_string($mysqli, $detorRow['user_id']) : '';
+$fname = isset($detorRow['fname']) ? mysqli_real_escape_string($mysqli, $detorRow['fname']) : '';
+$phone = isset($detorRow['phone']) ? mysqli_real_escape_string($mysqli, $detorRow['phone']) : '';
+$address = isset($detorRow['address']) ? mysqli_real_escape_string($mysqli, $detorRow['address']) : '';
+$total_price = isset($detorRow['total_price']) ? mysqli_real_escape_string($mysqli, $detorRow['total_price']) : '';
+$discount = isset($detorRow['discount']) ? mysqli_real_escape_string($mysqli, $detorRow['discount']) : '';
+$trackking_id = isset($detorRow['trackking_id']) ? mysqli_real_escape_string($mysqli, $detorRow['trackking_id']) : '';
+$order_status = isset($detorRow['order_status']) ? mysqli_real_escape_string($mysqli, $detorRow['order_status']) : '';
+$Mode_of_payment = isset($detorRow['Mode_of_payment']) ? mysqli_real_escape_string($mysqli, $detorRow['Mode_of_payment']) : '';
+$pay = isset($detorRow['pay']) ? mysqli_real_escape_string($mysqli, $detorRow['pay']) : '';
+$due = isset($detorRow['due']) ? mysqli_real_escape_string($mysqli, $detorRow['due']) : '';
+$Payment_type = isset($detorRow['Payment_type']) ? mysqli_real_escape_string($mysqli, $detorRow['Payment_type']) : '';
+$cash_transfer = isset($detorRow['cash_transfer']) ? mysqli_real_escape_string($mysqli, $detorRow['cash_transfer']) : '';
+$cash_pos = isset($detorRow['cash_pos']) ? mysqli_real_escape_string($mysqli, $detorRow['cash_pos']) : '';
+$date = isset($detorRow['date']) ? mysqli_real_escape_string($mysqli, $detorRow['date']) : '';
+$month = isset($detorRow['month']) ? mysqli_real_escape_string($mysqli, $detorRow['month']) : '';
+$year = isset($detorRow['year']) ? mysqli_real_escape_string($mysqli, $detorRow['year']) : '';
+$location = isset($detorRow['location']) ? mysqli_real_escape_string($mysqli, $detorRow['location']) : '';
+$new_mode_of_payment = isset($detorRow['new_mode_of_payment']) ? mysqli_real_escape_string($mysqli, $detorRow['new_mode_of_payment']) : '';
+$new_date = isset($detorRow['new_date']) ? mysqli_real_escape_string($mysqli, $detorRow['new_date']) : '';
+$new_payment_user_id = isset($detorRow['new_payment_user_id']) ? mysqli_real_escape_string($mysqli, $detorRow['new_payment_user_id']) : '';
+$new_due = isset($detorRow['new_due']) ? mysqli_real_escape_string($mysqli, $detorRow['new_due']) : '';
+$bankName = isset($detorRow['bankName']) ? mysqli_real_escape_string($mysqli, $detorRow['bankName']) : '';
+$Cost = isset($detorRow['Cost']) ? mysqli_real_escape_string($mysqli, $detorRow['Cost']) : '';
+
+
           $selectOnlineProduct = "SELECT 'trackking_id' FROM orders WHERE trackking_id  = '".$trackking_id."' AND syn_flag = '1'";
            $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
            if($resOnlineUpdate !== false && $resOnlineUpdate->num_rows > 0){
@@ -769,37 +899,51 @@ $offline = "SELECT `user_id`, `fname`, `phone`, `address`, `total_price`, `disco
   }
 
 
-   ///*..............order_iteams start from here...........................*/
- $offline = "SELECT `user_id`, `order_id`, `prod_id`, `qty`, `price`, `product_id`, `date`, `month`, `year`,`Cost` FROM `order_iteams` WHERE syn_flag = '0'";
-   $resOffline = $mysqli->query($offline);
-   if($resOffline->num_rows > 0){
+  $offline = "SELECT `user_id`, `order_id`, `prod_id`, `qty`, `price`, `product_id`, `date`, `month`, `year`, `Cost` FROM `order_iteams` WHERE syn_flag = '0'";
+  $resOffline = $mysqli->query($offline);
+
+  if ($resOffline->num_rows > 0) {
       while ($detorRow = $resOffline->fetch_assoc()) {
-        $user_id = $detorRow['user_id'];
-        $prod_id = $detorRow['prod_id'];
-        $order_id = $detorRow['order_id'];
-        $qty = $detorRow['qty'];
-        $price = $detorRow['price'];
-        $product_id = $detorRow['product_id'];
-        $date = $detorRow['date'];
-        $month = $detorRow['month'];
-        $year = $detorRow['year'];
-        $Cost = $detorRow['Cost'];
-        $syn_flag = 1;
-        $insertOnline = "INSERT INTO order_iteams
-        (`user_id`, `prod_id`, `order_id`, `qty`, `price`, `product_id`, `date`, `month`, `year`, `Cost`, `syn_flag`)
-        VALUES
-        ('$user_id', '$prod_id', '$order_id', '$qty', '$price', '$product_id', '$date', '$month', '$year', '$Cost', '$syn_flag')";
-              $resOnlineUpdate = mysqli_query($con, $insertOnline);
-              if ($resOnlineUpdate === false) {
-                  die("Error checking for duplicate record: " . mysqli_error($con));
-              }
-              $offlineUpdateSyn = "UPDATE order_iteams SET syn_flag = '1' WHERE order_id = '".$order_id."'";
-              $resOfflineUpdate = mysqli_query($mysqli, $offlineUpdateSyn);
-              if ($resOfflineUpdate === false) {
-               die("Error getting service_requests: " . $mysqli->error);
-           }
+          $user_id = $detorRow['user_id'];
+          $prod_id = $detorRow['prod_id'];
+          $order_id = $detorRow['order_id'];
+          $qty = $detorRow['qty'];
+          $price = $detorRow['price'];
+          $product_id = $detorRow['product_id'];
+          $date = $detorRow['date'];
+          $month = $detorRow['month'];
+          $year = $detorRow['year'];
+          $Cost = $detorRow['Cost'];
+          $syn_flag = 1;
+
+          // Escape values and ensure they are safe to use in the SQL query
+          $user_id = isset($user_id) ? mysqli_real_escape_string($mysqli, $user_id) : '';
+          $prod_id = isset($prod_id) ? mysqli_real_escape_string($mysqli, $prod_id) : '';
+          $order_id = isset($order_id) ? mysqli_real_escape_string($mysqli, $order_id) : '';
+          $qty = isset($qty) ? mysqli_real_escape_string($mysqli, $qty) : '';
+          $price = isset($price) ? mysqli_real_escape_string($mysqli, $price) : '';
+          $product_id = isset($product_id) ? mysqli_real_escape_string($mysqli, $product_id) : '';
+          $date = isset($date) ? mysqli_real_escape_string($mysqli, $date) : '';
+          $month = isset($month) ? mysqli_real_escape_string($mysqli, $month) : '';
+          $year = isset($year) ? mysqli_real_escape_string($mysqli, $year) : '';
+          $Cost = isset($Cost) ? mysqli_real_escape_string($mysqli, $Cost) : '';
+
+          // Insert data into the online table
+          $insertOnline = "INSERT INTO order_iteams (`user_id`, `prod_id`, `order_id`, `qty`, `price`, `product_id`, `date`, `month`, `year`, `Cost`, `syn_flag`)
+                           VALUES ('$user_id', '$prod_id', '$order_id', '$qty', '$price', '$product_id', '$date', '$month', '$year', '$Cost', '$syn_flag')";
+             $resOnlineUpdate = mysqli_query($con, $insertOnline);
+          if (!$mysqli->query($insertOnline)) {
+              die("Error inserting data: " . $mysqli->error);
+          }
+
+          // Update syn_flag in the offline table
+          $offlineUpdateSyn = "UPDATE order_iteams SET syn_flag = '1' WHERE order_id = '$order_id'";
+          if (!$mysqli->query($offlineUpdateSyn)) {
+              die("Error updating syn_flag: " . $mysqli->error);
+          }
       }
   }
+
 
 
 
@@ -821,6 +965,19 @@ $offline = "SELECT `user_id`, `fname`, `phone`, `address`, `total_price`, `disco
         $month = $detorRow['month'];
         $year = $detorRow['year'];
         $syn_flag =1;
+
+        $id = isset($id) ? mysqli_real_escape_string($mysqli, $id) : '';
+        $Owner_name = isset($Owner_name) ? mysqli_real_escape_string($mysqli, $Owner_name) : '';
+        $total_price = isset($total_price) ? mysqli_real_escape_string($mysqli, $total_price) : '';
+        $Mode_of_payment = isset($Mode_of_payment) ? mysqli_real_escape_string($mysqli, $Mode_of_payment) : '';
+        $pay = isset($pay) ? mysqli_real_escape_string($mysqli, $pay) : '';
+        $due = isset($due) ? mysqli_real_escape_string($mysqli, $due) : '';
+        $Payment_type = isset($Payment_type) ? mysqli_real_escape_string($mysqli, $Payment_type) : '';
+        $date = isset($date) ? mysqli_real_escape_string($mysqli, $date) : '';
+        $month = isset($month) ? mysqli_real_escape_string($mysqli, $month) : '';
+        $year = isset($year) ? mysqli_real_escape_string($mysqli, $year) : '';
+
+
           $selectOnlineProduct = "SELECT 'id' FROM payment_dues WHERE id  = '".$id."' AND syn_flag = '1'";
            $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
            if($resOnlineUpdate !== false && $resOnlineUpdate->num_rows > 0){
@@ -891,6 +1048,17 @@ $offline = "SELECT `user_id`, `fname`, `phone`, `address`, `total_price`, `disco
       $due = $detorRow['due'];
       $Payment_type = $detorRow['Payment_type'];
       $syn_flag =1;
+
+      $id = isset($id) ? mysqli_real_escape_string($mysqli, $id) : '';
+      $fname = isset($fname) ? mysqli_real_escape_string($mysqli, $fname) : '';
+      $total_price = isset($total_price) ? mysqli_real_escape_string($mysqli, $total_price) : '';
+      $Mode_of_payment = isset($Mode_of_payment) ? mysqli_real_escape_string($mysqli, $Mode_of_payment) : '';
+      $pay = isset($pay) ? mysqli_real_escape_string($mysqli, $pay) : '';
+      $due = isset($due) ? mysqli_real_escape_string($mysqli, $due) : '';
+      $Payment_type = isset($Payment_type) ? mysqli_real_escape_string($mysqli, $Payment_type) : '';
+
+
+
           $selectOnlineProduct = "SELECT 'id' FROM pos_deus WHERE id  = '".$id."' AND syn_flag = '1'";
            $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
            if($resOnlineUpdate !== false && $resOnlineUpdate->num_rows > 0){
@@ -965,6 +1133,26 @@ $offline = "SELECT `user_id`, `fname`, `phone`, `address`, `total_price`, `disco
         $year = $detorRow['year'];
         $user_id = $detorRow['user_id'];
         $syn_flag = 1;
+
+
+        $id = isset($id) ? mysqli_real_escape_string($mysqli, $id) : '';
+        $Name = isset($Name) ? mysqli_real_escape_string($mysqli, $Name) : '';
+        $Category = isset($Category) ? mysqli_real_escape_string($mysqli, $Category) : '';
+        $Cost = isset($Cost) ? mysqli_real_escape_string($mysqli, $Cost) : '';
+        $Price = isset($Price) ? mysqli_real_escape_string($mysqli, $Price) : '';
+        $Quantity = isset($Quantity) ? mysqli_real_escape_string($mysqli, $Quantity) : '';
+        $supplier = isset($supplier) ? mysqli_real_escape_string($mysqli, $supplier) : '';
+        $Quantity_level = isset($Quantity_level) ? mysqli_real_escape_string($mysqli, $Quantity_level) : '';
+        $Image = isset($Image) ? mysqli_real_escape_string($mysqli, $Image) : '';
+        $new_supply = isset($new_supply) ? mysqli_real_escape_string($mysqli, $new_supply) : '';
+        $Description = isset($Description) ? mysqli_real_escape_string($mysqli, $Description) : '';
+        $expiry_date = isset($expiry_date) ? mysqli_real_escape_string($mysqli, $expiry_date) : '';
+        $new_date = isset($new_date) ? mysqli_real_escape_string($mysqli, $new_date) : '';
+        $month = isset($month) ? mysqli_real_escape_string($mysqli, $month) : '';
+        $year = isset($year) ? mysqli_real_escape_string($mysqli, $year) : '';
+        $user_id = isset($user_id) ? mysqli_real_escape_string($mysqli, $user_id) : '';
+
+
           $selectOnlineProduct = "SELECT 'id' FROM products WHERE id  = '".$id."' AND syn_flag = '1'";
            $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
            if($resOnlineUpdate !== false && $resOnlineUpdate->num_rows > 0){
@@ -1046,6 +1234,23 @@ $offline = "SELECT `user_id`, `fname`, `phone`, `address`, `total_price`, `disco
         $month = $detorRow['month'];
         $year = $detorRow['year'];
         $syn_flag = 1;
+
+        $id = isset($detorRow['id']) ? mysqli_real_escape_string($mysqli, $detorRow['id']) : '';
+        $user_id = isset($detorRow['user_id']) ? mysqli_real_escape_string($mysqli, $detorRow['user_id']) : '';
+        $order_id = isset($detorRow['order_id']) ? mysqli_real_escape_string($mysqli, $detorRow['order_id']) : '';
+        $prod_name = isset($detorRow['prod_name']) ? mysqli_real_escape_string($mysqli, $detorRow['prod_name']) : '';
+        $pro_id = isset($detorRow['pro_id']) ? mysqli_real_escape_string($mysqli, $detorRow['pro_id']) : '';
+        $qty = isset($detorRow['qty']) ? mysqli_real_escape_string($mysqli, $detorRow['qty']) : '';
+        $price = isset($detorRow['price']) ? mysqli_real_escape_string($mysqli, $detorRow['price']) : '';
+        $total_vaccine_amount = isset($detorRow['total_vaccine_amount']) ? mysqli_real_escape_string($mysqli, $detorRow['total_vaccine_amount']) : '';
+        $subtotal = isset($detorRow['subtotal']) ? mysqli_real_escape_string($mysqli, $detorRow['subtotal']) : '';
+        $service = isset($detorRow['service']) ? mysqli_real_escape_string($mysqli, $detorRow['service']) : '';
+        $service_id = isset($detorRow['service_id']) ? mysqli_real_escape_string($mysqli, $detorRow['service_id']) : '';
+        $Amount = isset($detorRow['Amount']) ? mysqli_real_escape_string($mysqli, $detorRow['Amount']) : '';
+        $date = isset($detorRow['date']) ? mysqli_real_escape_string($mysqli, $detorRow['date']) : '';
+        $month = isset($detorRow['month']) ? mysqli_real_escape_string($mysqli, $detorRow['month']) : '';
+        $year = isset($detorRow['year']) ? mysqli_real_escape_string($mysqli, $detorRow['year']) : '';
+
 
          $selectOnlineProduct = "SELECT 'id' FROM service_items WHERE id  = '".$id."' AND syn_flag = '1'";
           $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
@@ -1133,6 +1338,34 @@ $offline = "SELECT `user_id`, `fname`, `phone`, `address`, `total_price`, `disco
       $new_due = $detorRow['new_due'];
       $bankName =$detorRow['bankName'];
       $syn_flag =1;
+
+
+      $id = isset($detorRow['id']) ? mysqli_real_escape_string($mysqli, $detorRow['id']) : '';
+      $user_id = isset($detorRow['user_id']) ? mysqli_real_escape_string($mysqli, $detorRow['user_id']) : '';
+      $Pet_name = isset($detorRow['Pet_name']) ? mysqli_real_escape_string($mysqli, $detorRow['Pet_name']) : '';
+      $Unregister = isset($detorRow['Unregister']) ? mysqli_real_escape_string($mysqli, $detorRow['Unregister']) : '';
+      $Owner_name = isset($detorRow['Owner_name']) ? mysqli_real_escape_string($mysqli, $detorRow['Owner_name']) : '';
+      $Phone = isset($detorRow['Phone']) ? mysqli_real_escape_string($mysqli, $detorRow['Phone']) : '';
+      $Next_vaccination_appointment = isset($detorRow['Next_vaccination_appointment']) ? mysqli_real_escape_string($mysqli, $detorRow['Next_vaccination_appointment']) : '';
+      $Next_appointments = isset($detorRow['Next_appointments']) ? mysqli_real_escape_string($mysqli, $detorRow['Next_appointments']) : '';
+      $total_price = isset($detorRow['total_price']) ? mysqli_real_escape_string($mysqli, $detorRow['total_price']) : '';
+      $order_status = isset($detorRow['order_status']) ? mysqli_real_escape_string($mysqli, $detorRow['order_status']) : '';
+      $Mode_of_payment = isset($detorRow['Mode_of_payment']) ? mysqli_real_escape_string($mysqli, $detorRow['Mode_of_payment']) : '';
+      $pay = isset($detorRow['pay']) ? mysqli_real_escape_string($mysqli, $detorRow['pay']) : '';
+      $due = isset($detorRow['due']) ? mysqli_real_escape_string($mysqli, $detorRow['due']) : '';
+      $Payment_type = isset($detorRow['Payment_type']) ? mysqli_real_escape_string($mysqli, $detorRow['Payment_type']) : '';
+      $cash_transfer = isset($detorRow['cash_transfer']) ? mysqli_real_escape_string($mysqli, $detorRow['cash_transfer']) : '';
+      $cash_pos = isset($detorRow['cash_pos']) ? mysqli_real_escape_string($mysqli, $detorRow['cash_pos']) : '';
+      $date = isset($detorRow['date']) ? mysqli_real_escape_string($mysqli, $detorRow['date']) : '';
+      $month = isset($detorRow['month']) ? mysqli_real_escape_string($mysqli, $detorRow['month']) : '';
+      $year = isset($detorRow['year']) ? mysqli_real_escape_string($mysqli, $detorRow['year']) : '';
+      $new_mode_of_payment = isset($detorRow['new_mode_of_payment']) ? mysqli_real_escape_string($mysqli, $detorRow['new_mode_of_payment']) : '';
+      $new_date = isset($detorRow['new_date']) ? mysqli_real_escape_string($mysqli, $detorRow['new_date']) : '';
+      $new_payment_user_id = isset($detorRow['new_payment_user_id']) ? mysqli_real_escape_string($mysqli, $detorRow['new_payment_user_id']) : '';
+      $new_due = isset($detorRow['new_due']) ? mysqli_real_escape_string($mysqli, $detorRow['new_due']) : '';
+      $bankName = isset($detorRow['bankName']) ? mysqli_real_escape_string($mysqli, $detorRow['bankName']) : '';
+
+
 
          $selectOnlineProduct = "SELECT 'id' FROM service_orders WHERE id  = '".$id."' AND syn_flag = '1'";
 
@@ -1222,6 +1455,21 @@ $resOffline = $mysqli->query($offline);
         $location_transfer = $detorRow['location_transfer'];
         $syn_flag = 1;
 
+        $id = isset($detorRow['id']) ? mysqli_real_escape_string($mysqli, $detorRow['id']) : '';
+        $user_id = isset($detorRow['user_id']) ? mysqli_real_escape_string($mysqli, $detorRow['user_id']) : '';
+        $prod_name = isset($detorRow['prod_name']) ? mysqli_real_escape_string($mysqli, $detorRow['prod_name']) : '';
+        $pro_id = isset($detorRow['pro_id']) ? mysqli_real_escape_string($mysqli, $detorRow['pro_id']) : '';
+        $qty = isset($detorRow['qty']) ? mysqli_real_escape_string($mysqli, $detorRow['qty']) : '';
+        $price = isset($detorRow['price']) ? mysqli_real_escape_string($mysqli, $detorRow['price']) : '';
+        $status = isset($detorRow['status']) ? mysqli_real_escape_string($mysqli, $detorRow['status']) : '';
+        $subtotal = isset($detorRow['subtotal']) ? mysqli_real_escape_string($mysqli, $detorRow['subtotal']) : '';
+        $date = isset($detorRow['date']) ? mysqli_real_escape_string($mysqli, $detorRow['date']) : '';
+        $month = isset($detorRow['month']) ? mysqli_real_escape_string($mysqli, $detorRow['month']) : '';
+        $year = isset($detorRow['year']) ? mysqli_real_escape_string($mysqli, $detorRow['year']) : '';
+        $moved = isset($detorRow['moved']) ? mysqli_real_escape_string($mysqli, $detorRow['moved']) : '';
+        $location_transfer = isset($detorRow['location_transfer']) ? mysqli_real_escape_string($mysqli, $detorRow['location_transfer']) : '';
+
+
         $selectOnlineProduct = "SELECT 'id' FROM shop_items WHERE id  = '".$id."' AND syn_flag = '1'";
          $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
          if($resOnlineUpdate !== false && $resOnlineUpdate->num_rows > 0){
@@ -1292,6 +1540,18 @@ $resOffline = $mysqli->query($offline);
         $date = $detorRow['date'];
         $syn_flag =1;
 
+        $id = isset($detorRow['id']) ? mysqli_real_escape_string($mysqli, $detorRow['id']) : '';
+        $Company_Name = isset($detorRow['Company_Name']) ? mysqli_real_escape_string($mysqli, $detorRow['Company_Name']) : '';
+        $Name = isset($detorRow['Name']) ? mysqli_real_escape_string($mysqli, $detorRow['Name']) : '';
+        $Email = isset($detorRow['Email']) ? mysqli_real_escape_string($mysqli, $detorRow['Email']) : '';
+        $Phone_Number = isset($detorRow['Phone_Number']) ? mysqli_real_escape_string($mysqli, $detorRow['Phone_Number']) : '';
+        $Address = isset($detorRow['Address']) ? mysqli_real_escape_string($mysqli, $detorRow['Address']) : '';
+        $City = isset($detorRow['City']) ? mysqli_real_escape_string($mysqli, $detorRow['City']) : '';
+        $State = isset($detorRow['State']) ? mysqli_real_escape_string($mysqli, $detorRow['State']) : '';
+        $date = isset($detorRow['date']) ? mysqli_real_escape_string($mysqli, $detorRow['date']) : '';
+
+
+
         $selectOnlineProduct = "SELECT 'id' FROM suppliers WHERE id  = '".$id."' AND syn_flag = '1'";
          $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
          if($resOnlineUpdate !== false && $resOnlineUpdate->num_rows > 0){
@@ -1352,6 +1612,15 @@ $resOffline = $mysqli->query($offline);
      $qty = $detorRow['qty'];
      $price = $detorRow['price'];
      $syn_flag =1;
+
+
+$id = isset($detorRow['id']) ? mysqli_real_escape_string($mysqli, $detorRow['id']) : '';
+$order_id = isset($detorRow['order_id']) ? mysqli_real_escape_string($mysqli, $detorRow['order_id']) : '';
+$items_name = isset($detorRow['items_name']) ? mysqli_real_escape_string($mysqli, $detorRow['items_name']) : '';
+$vaccine_id = isset($detorRow['vaccine_id']) ? mysqli_real_escape_string($mysqli, $detorRow['vaccine_id']) : '';
+$qty = isset($detorRow['qty']) ? mysqli_real_escape_string($mysqli, $detorRow['qty']) : '';
+$price = isset($detorRow['price']) ? mysqli_real_escape_string($mysqli, $detorRow['price']) : '';
+
 
         $selectOnlineProduct = "SELECT 'id' FROM vaccineiteams WHERE id  = '".$id."' AND syn_flag = '1'";
          $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
@@ -1429,6 +1698,29 @@ $resOffline = $mysqli->query($offline);
         $new_payment_user_id =$detorRow['new_payment_user_id'];
         $syn_flag =1;
 
+
+        $id = isset($detorRow['id']) ? mysqli_real_escape_string($mysqli, $detorRow['id']) : '';
+        $user_id = isset($detorRow['user_id']) ? mysqli_real_escape_string($mysqli, $detorRow['user_id']) : '';
+        $name = isset($detorRow['name']) ? mysqli_real_escape_string($mysqli, $detorRow['name']) : '';
+        $discount = isset($detorRow['discount']) ? mysqli_real_escape_string($mysqli, $detorRow['discount']) : '';
+        $phone = isset($detorRow['phone']) ? mysqli_real_escape_string($mysqli, $detorRow['phone']) : '';
+        $address = isset($detorRow['address']) ? mysqli_real_escape_string($mysqli, $detorRow['address']) : '';
+        $order_status = isset($detorRow['order_status']) ? mysqli_real_escape_string($mysqli, $detorRow['order_status']) : '';
+        $Mode_of_payment = isset($detorRow['Mode_of_payment']) ? mysqli_real_escape_string($mysqli, $detorRow['Mode_of_payment']) : '';
+        $cash_transfer = isset($detorRow['cash_transfer']) ? mysqli_real_escape_string($mysqli, $detorRow['cash_transfer']) : '';
+        $cash_pos = isset($detorRow['cash_pos']) ? mysqli_real_escape_string($mysqli, $detorRow['cash_pos']) : '';
+        $pay = isset($detorRow['pay']) ? mysqli_real_escape_string($mysqli, $detorRow['pay']) : '';
+        $due = isset($detorRow['due']) ? mysqli_real_escape_string($mysqli, $detorRow['due']) : '';
+        $total = isset($detorRow['total']) ? mysqli_real_escape_string($mysqli, $detorRow['total']) : '';
+        $Payment_type = isset($detorRow['Payment_type']) ? mysqli_real_escape_string($mysqli, $detorRow['Payment_type']) : '';
+        $date = isset($detorRow['date']) ? mysqli_real_escape_string($mysqli, $detorRow['date']) : '';
+        $month = isset($detorRow['month']) ? mysqli_real_escape_string($mysqli, $detorRow['month']) : '';
+        $year = isset($detorRow['year']) ? mysqli_real_escape_string($mysqli, $detorRow['year']) : '';
+        $new_mode_of_payment = isset($detorRow['new_mode_of_payment']) ? mysqli_real_escape_string($mysqli, $detorRow['new_mode_of_payment']) : '';
+        $new_date = isset($detorRow['new_date']) ? mysqli_real_escape_string($mysqli, $detorRow['new_date']) : '';
+        $bankName = isset($detorRow['bankName']) ? mysqli_real_escape_string($mysqli, $detorRow['bankName']) : '';
+        $new_due = isset($detorRow['new_due']) ? mysqli_real_escape_string($mysqli, $detorRow['new_due']) : '';
+        $new_payment_user_id = isset($detorRow['new_payment_user_id']) ? mysqli_real_escape_string($mysqli, $detorRow['new_payment_user_id']) : '';
 
         $selectOnlineProduct = "SELECT 'id' FROM vaccineorders WHERE id  = '".$id."' AND syn_flag = '1'";
          $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
@@ -1512,6 +1804,21 @@ $resOffline = $mysqli->query($offline);
         $supplier = $detorRow['supplier'];
         $syn_flag =1;
 
+        $id = isset($detorRow['id']) ? mysqli_real_escape_string($mysqli, $detorRow['id']) : '';
+        $user_id = isset($detorRow['user_id']) ? mysqli_real_escape_string($mysqli, $detorRow['user_id']) : '';
+        $Name = isset($detorRow['Name']) ? mysqli_real_escape_string($mysqli, $detorRow['Name']) : '';
+        $Cost = isset($detorRow['Cost']) ? mysqli_real_escape_string($mysqli, $detorRow['Cost']) : '';
+        $Price = isset($detorRow['Price']) ? mysqli_real_escape_string($mysqli, $detorRow['Price']) : '';
+        $Quantity = isset($detorRow['Quantity']) ? mysqli_real_escape_string($mysqli, $detorRow['Quantity']) : '';
+        $minimum = isset($detorRow['minimum']) ? mysqli_real_escape_string($mysqli, $detorRow['minimum']) : '';
+        $Image = isset($detorRow['Image']) ? mysqli_real_escape_string($mysqli, $detorRow['Image']) : '';
+        $expiry_date = isset($detorRow['expiry_date']) ? mysqli_real_escape_string($mysqli, $detorRow['expiry_date']) : '';
+        $new_supply = isset($detorRow['new_supply']) ? mysqli_real_escape_string($mysqli, $detorRow['new_supply']) : '';
+        $supply_date = isset($detorRow['supply_date']) ? mysqli_real_escape_string($mysqli, $detorRow['supply_date']) : '';
+        $brand = isset($detorRow['brand']) ? mysqli_real_escape_string($mysqli, $detorRow['brand']) : '';
+        $supplier = isset($detorRow['supplier']) ? mysqli_real_escape_string($mysqli, $detorRow['supplier']) : '';
+
+
         $selectOnlineProduct = "SELECT 'id' FROM vaccinestores WHERE id  = '".$id."' AND syn_flag = '1'";
          $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
          if($resOnlineUpdate !== false && $resOnlineUpdate->num_rows > 0){
@@ -1582,6 +1889,22 @@ $resOffline = $mysqli->query($offline);
         $salary = $detorRow['salary'];
         $resumption_time = $detorRow['resumption_time'];
         $syn_flag = 1;
+
+        $id = isset($detorRow['id']) ? mysqli_real_escape_string($mysqli, $detorRow['id']) : '';
+        $name = isset($detorRow['name']) ? mysqli_real_escape_string($mysqli, $detorRow['name']) : '';
+        $email = isset($detorRow['email']) ? mysqli_real_escape_string($mysqli, $detorRow['email']) : '';
+        $email_verified_at = isset($detorRow['email_verified_at']) ? mysqli_real_escape_string($mysqli, $detorRow['email_verified_at']) : '';
+        $password = isset($detorRow['password']) ? mysqli_real_escape_string($mysqli, $detorRow['password']) : '';
+        $two_factor_secret = isset($detorRow['two_factor_secret']) ? mysqli_real_escape_string($mysqli, $detorRow['two_factor_secret']) : '';
+        $two_factor_recovery_codes = isset($detorRow['two_factor_recovery_codes']) ? mysqli_real_escape_string($mysqli, $detorRow['two_factor_recovery_codes']) : '';
+        $remember_token = isset($detorRow['remember_token']) ? mysqli_real_escape_string($mysqli, $detorRow['remember_token']) : '';
+        $current_team_id = isset($detorRow['current_team_id']) ? mysqli_real_escape_string($mysqli, $detorRow['current_team_id']) : '';
+        $profile_photo_path = isset($detorRow['profile_photo_path']) ? mysqli_real_escape_string($mysqli, $detorRow['profile_photo_path']) : '';
+        $late_charge = isset($detorRow['late_charge']) ? mysqli_real_escape_string($mysqli, $detorRow['late_charge']) : '';
+        $salary = isset($detorRow['salary']) ? mysqli_real_escape_string($mysqli, $detorRow['salary']) : '';
+        $resumption_time = isset($detorRow['resumption_time']) ? mysqli_real_escape_string($mysqli, $detorRow['resumption_time']) : '';
+
+
 
         $selectOnlineProduct = "SELECT 'id' FROM users WHERE id = '$id' AND email = '$email'  AND syn_flag = '1'";
          $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
@@ -1742,7 +2065,7 @@ public function update_software() {
         file_put_contents($localZipPath, $zipFile);
 
         // Specify the path where you want to extract the repository contents
-        $extractPath = 'C:\xampp\htdocs';
+        $extractPath = 'C:\xampp\htdocs\test';
 
         // Remove the existing mavenvet folder if it exists
         $existingFolderPath = $extractPath . DIRECTORY_SEPARATOR . 'mavenvet';
