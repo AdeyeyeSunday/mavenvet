@@ -58,7 +58,7 @@
                                 <input type="hidden" name="month" value="{{ date('F') }}">
                                 <input type="hidden" name="year" value="{{ date('Y') }}">
                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" id="">
-                                @if (strtotime(date('H:i')) > strtotime(Auth::user()->resumption_time))
+                                @if (strtotime(date('H:i')) > strtotime(Auth::user()->resumption_time ?? ''))
                                 @if (!$check_tmer || $check_tmer->late_comment == null)
                                <center> <p style="color: red"> You're late. The charge: {{ number_format(Auth::user()->late_charge, 2) }}.Deducted from your salary.</p></center>
                                     <label for="lateReason">Reason for late coming</label>

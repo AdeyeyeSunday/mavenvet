@@ -460,7 +460,7 @@ class StoreController extends Controller
         }
        $order->total_price = $total;
 
-       if($request->input('Mode_of_payment') == "Pos" || $request->input('Transfer') == "Pos" || $request->input('Mode_of_payment') == "Cash" ){
+       if($request->input('Mode_of_payment') == "Pos" || $request->input('Mode_of_payment') == "Transfer" || $request->input('Mode_of_payment') == "Cash" ){
         $order->save();
         $cart = Service_cart::where('user_id',Auth::id())->get();
         foreach($cart as $cat){

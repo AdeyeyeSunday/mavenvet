@@ -138,7 +138,6 @@ if ($con === false) {
         $year  = $detorRow['year'];
         $location = $detorRow['location'];
         $syn_flag =1;
-
         $pet_id = isset($detorRow['pet_id']) ? mysqli_real_escape_string($mysqli, $detorRow['pet_id']) : null;
 $diagnosis = isset($detorRow['diagnosis']) ? mysqli_real_escape_string($mysqli, $detorRow['diagnosis']) : null;
 $amount = isset($detorRow['amount']) ? mysqli_real_escape_string($mysqli, $detorRow['amount']) : null;
@@ -149,8 +148,6 @@ $user_id = isset($detorRow['user_id']) ? mysqli_real_escape_string($mysqli, $det
 $month = isset($detorRow['month']) ? mysqli_real_escape_string($mysqli, $detorRow['month']) : null;
 $year = isset($detorRow['year']) ? mysqli_real_escape_string($mysqli, $detorRow['year']) : null;
 $location = isset($detorRow['location']) ? mysqli_real_escape_string($mysqli, $detorRow['location']) : null;
-
-
 
         $selectOnlineProduct = "SELECT 'pet_id' FROM admissions WHERE pet_id  = '".$pet_id."' AND syn_flag = '1'";
          $resOnlineUpdate = mysqli_query($con, $selectOnlineProduct);
