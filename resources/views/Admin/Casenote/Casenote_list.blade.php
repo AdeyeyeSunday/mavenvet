@@ -7,7 +7,7 @@
                   <div class="card">
                      <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                           <h6 class="card-title">Pet Case Note</h6>
+                           <h6 class="card-title">Pet case note</h6>
                         </div>
                      </div>
                      <div class="card-body">

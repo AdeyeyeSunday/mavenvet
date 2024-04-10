@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Brand;
+use App\Models\Casenote;
 use App\Models\Clinic;
 use App\Models\Clinic_cart;
 use App\Models\Product;
@@ -16,6 +17,7 @@ use App\Models\Clinic_expense;
 use App\Models\MVC_midwifery_vaccinestores;
 use App\Models\Newproduct;
 use App\Models\NewVaccine;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -64,6 +66,7 @@ class ClinicController extends Controller
             'year'=>'required',
             'user_id'=>'required'
         ]);
+
         if(request('pic')){
        $clinic['pic'] = request('pic')->store('petfolder');
        Clinic::create($clinic);
@@ -74,8 +77,39 @@ class ClinicController extends Controller
 
 
 
+public function encounter($id)
+{
+    $encounterId = Clinic::find($id);
+    $service=Service::get();
+    return view("Admin.Clinic.encounter",['encounterId'=>$encounterId,'service'=>$service]);
+}
 
 
+public function encounter_store(Request $request){
+    $casenote = request()->validate([
+        'physical_examination'=>'required',
+        'temp'=>'required',
+        'pulse'=>'required',
+        'resp'=>'required',
+        'diagnosis'=>'required',
+        'result'=>'required',
+         'visual_evaluation'=>'required',
+         'other_examination'=>'required',
+         'next_appointment'=>'required',
+         'next_vaccination'=>'required',
+    ]);
+    $casenote['case_id'] = $request->case_id;
+    $casenote['user_id'] = Auth::user()->id;
+    $casenote['date'] = date("d-F-Y");
+    $casenote['month'] = date("F");
+    $casenote['year'] = date("Y");
+
+    Casenote::create($casenote);
+     session()->flash('message','Treatment submitted!!!');
+
+    return back();
+
+     }
 
 
     public function Clinic_list(){

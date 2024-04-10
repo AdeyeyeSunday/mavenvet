@@ -90,6 +90,8 @@ Route::get('/Admin/Clinic/Vaccine_subtact', 'ClinicController@Vaccine_subtact')-
 Route::post('/Admin/Clinic/Clinic_store', 'ClinicController@Clinic_store')->name('Admin.Clinic.Clinic_store');
 Route::get('/Admin/Clinic/treatment', 'ClinicController@treatment')->name('Admin.Clinic.treatment');
 Route::get('/Admin/Clinic/{id}/Clinic_view', 'ClinicController@Clinic_view')->name('Admin.Clinic.Clinic_view');
+Route::get('/Admin/Clinic/{id}/encounter', 'ClinicController@encounter')->name('Admin.Clinic.encounter');
+Route::post('/Admin/Clinic/encounter_store', 'ClinicController@encounter_store')->name('Admin.Clinic.encounter_store');
 Route::get('/Admin/Clinic/{id}/destory', 'ClinicController@destory')->name('Admin.Clinic.destory');
 Route::get('/Admin/Clinic/{id}/Clinic_edit', 'ClinicController@Clinic_edit')->name('Admin.Clinic.Clinic_edit');
 Route::patch('/Admin/Clinic/{id}/Clinic_update', 'ClinicController@Clinic_update')->name('Admin.Clinic.Clinic_update');

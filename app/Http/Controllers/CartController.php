@@ -139,11 +139,12 @@ foreach ($qtyArr as $i => $qty) {
     }
 
     // Check if the requested quantity exceeds the available stock quantity
-    if ($cartItem->Quantity >= $qty) {
+    if ($cartItem->Quantity >= $qty ) {
         // If the requested quantity exceeds the available stock quantity, handle the error
         Session()->flash('message', 'Your request for ' . $cartItem->Name . ' exceeds the available stock quantity. Please try again.');
         return back();
     }
+
 }
 
 // If all checks pass, update the quantities in the cart

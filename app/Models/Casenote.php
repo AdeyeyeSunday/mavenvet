@@ -8,12 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Casenote extends Model
 {
     use HasFactory;
-
-
-    protected $fillable=['case_id','visual_evaluation','physical_examination','other_examination','result','diagnosis','treatment','temp','pulse','resp','Veterinarian','Status','date','month','year','user_id'];
-
-
-
+    protected $guarded = [];
     public function user(){
         return $this->belongsTo('App/Models/User');
 }

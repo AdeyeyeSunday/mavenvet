@@ -181,8 +181,7 @@ class PosController extends Controller
             }
            $order->total_price = $total;
            $order->Cost = $cost;
-
-           if($request->input('Mode_of_payment') == "Pos" || $request->input('Transfer') == "Pos" || $request->input('Mode_of_payment') == "Cash" ){
+           if($request->input('Mode_of_payment') == "Pos" || $request->input('Mode_of_payment') == "Transfer" || $request->input('Mode_of_payment') == "Cash" ){
             $order->save();
             $cart = Cart::where('user_id',Auth::id())->get();
             foreach($cart as $cat){

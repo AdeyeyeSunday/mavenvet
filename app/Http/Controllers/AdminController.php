@@ -1992,12 +1992,6 @@ function update2(){
             throw new Exception("Online database connection error: " . mysqli_connect_error());
         }
 
-        // Truncate table in offline database
-        // $truncateQuery = "TRUNCATE TABLE transferstores";
-        // if ($mysqli->query($truncateQuery) === false) {
-        //     throw new Exception("Error truncating table: " . $mysqli->error);
-        // }
-
         // Copy data from online table to offline table
         $selectQuery = "SELECT * FROM shop_items WHERE moved = 'moved' AND moved_status = 0 AND status = 'Head_Office_Breach_Office'";
         $result = mysqli_query($online_con, $selectQuery);
@@ -2023,6 +2017,20 @@ function update2(){
                 $created_at = $detorRow['created_at'];
                 $syn_flag = 1;
 
+                $id = isset($detorRow['id']) ? mysqli_real_escape_string($mysqli, $detorRow['id']) : '';
+                $user_id = isset($detorRow['user_id']) ? mysqli_real_escape_string($mysqli, $detorRow['user_id']) : '';
+                $prod_name = isset($detorRow['prod_name']) ? mysqli_real_escape_string($mysqli, $detorRow['prod_name']) : '';
+                $pro_id = isset($detorRow['pro_id']) ? mysqli_real_escape_string($mysqli, $detorRow['pro_id']) : '';
+                $qty = isset($detorRow['qty']) ? mysqli_real_escape_string($mysqli, $detorRow['qty']) : '';
+                $price = isset($detorRow['price']) ? mysqli_real_escape_string($mysqli, $detorRow['price']) : '';
+                $status = isset($detorRow['status']) ? mysqli_real_escape_string($mysqli, $detorRow['status']) : '';
+                $subtotal = isset($detorRow['subtotal']) ? mysqli_real_escape_string($mysqli, $detorRow['subtotal']) : '';
+                $date = isset($detorRow['current_team_id']) ? mysqli_real_escape_string($mysqli, $detorRow['date']) : '';
+                $month = isset($detorRow['month']) ? mysqli_real_escape_string($mysqli, $detorRow['month']) : '';
+                $year = isset($detorRow['year']) ? mysqli_real_escape_string($mysqli, $detorRow['year']) : '';
+                $moved = isset($detorRow['moved']) ? mysqli_real_escape_string($mysqli, $detorRow['moved']) : '';
+                $location_transfer = isset($detorRow['location_transfer']) ? mysqli_real_escape_string($mysqli, $detorRow['location_transfer']) : '';
+                $created_at = isset($detorRow['created_at']) ? mysqli_real_escape_string($mysqli, $detorRow['created_at']) : '';
                 // Insert data into offline table
                 $insertQuery = "INSERT INTO transferstores ( user_id, prod_name, pro_id, qty, price, status, subtotal, date, month, year, moved, location_transfer, syn_flag,created_at) VALUES ('$user_id', '$prod_name', '$pro_id', '$qty', '$price', '$status', '$subtotal', '$date', '$month', '$year', '$moved', '$location_transfer', '$syn_flag', '$created_at')";
                 $mysqli->query($insertQuery);
