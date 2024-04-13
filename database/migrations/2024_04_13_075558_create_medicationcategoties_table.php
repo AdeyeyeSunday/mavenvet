@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTestRequestsTable extends Migration
+class CreateMedicationcategotiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateTestRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('test_requests', function (Blueprint $table) {
+        Schema::create('medicationcategoties', function (Blueprint $table) {
             $table->id();
-            $table->string("token")->nullable();
-            $table->string("test_request")->nullable();
-            $table->string("user_id")->nullable();
+            $table->string("med_category_id")->nullable();
+            $table->string("med_desc")->nullable();
             $table->string("syn_flag")->default(0);
             $table->timestamps();
         });
@@ -30,6 +29,6 @@ class CreateTestRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('test_requests');
+        Schema::dropIfExists('medicationcategoties');
     }
 }

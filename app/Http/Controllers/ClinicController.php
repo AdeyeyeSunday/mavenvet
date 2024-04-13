@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admission;
 use App\Models\Brand;
 use App\Models\Casenote;
 use App\Models\Clinic;
@@ -14,10 +15,15 @@ use App\Models\Vaccineiteam;
 use App\Models\Vaccineorder;
 use App\Models\Vaccinestore;
 use App\Models\Clinic_expense;
+use App\Models\Medication;
+use App\Models\Medicationcategoty;
 use App\Models\MVC_midwifery_vaccinestores;
 use App\Models\Newproduct;
 use App\Models\NewVaccine;
+use App\Models\Refer;
 use App\Models\Service;
+use App\Models\Symptoms;
+use App\Models\TestRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -33,82 +39,218 @@ class ClinicController extends Controller
         $clinic = Clinic::all();
      return view('Admin.Clinic.Clinic',['clinic'=>$clinic]);
     }
-
-
-
-
     public function Vaccine_subtact(){
-
     $vaccine = Vaccinestore::get();
-
-
-
      return view('Admin.Clinic.Vaccine_subtact',['vaccine'=>$vaccine]);
     }
-
-
-
-    public function Clinic_store(){
-
-        $clinic = request()->validate([
-            'pic'=>'required',
-            'Pet_name'=>'required',
-            'Breed'=>'required',
-            'Gender'=>'required',
-            'Name_Of_Pet_Owner'=>'required',
-            'Owner_Phone_Number'=>'required',
-            'Pet_Card_Number'=>'required',
-            'Color'=>'required',
-            'Age'=>'required',
-            'Veterinarian'=>'required',
-            'date'=>'required',
-            'month'=>'required',
-            'year'=>'required',
-            'user_id'=>'required'
-        ]);
-
-        if(request('pic')){
-       $clinic['pic'] = request('pic')->store('petfolder');
-       Clinic::create($clinic);
-       session()->flash('message','Pet Registered !!!');
-       return redirect()->route('Admin.Casenote.Casenote');
-        }
-    }
-
 
 
 public function encounter($id)
 {
     $encounterId = Clinic::find($id);
+    $case_note = Casenote::where('case_id', $encounterId->Pet_Card_Number)->latest()->first();
+    $case_note_get_all = Casenote::where('case_id', $encounterId->Pet_Card_Number)->latest()->get();
+    $refer = Refer::where('pet_card_no', $encounterId->Pet_Card_Number)->latest()->first();
+    $syptoms = Symptoms::get();
+    $checkIfExit = Admission::where('pet_id', $encounterId->Pet_Card_Number)->where('status',0)->first();
     $service=Service::get();
-    return view("Admin.Clinic.encounter",['encounterId'=>$encounterId,'service'=>$service]);
+    $var =Medication :: get();
+    $medication = Medicationcategoty::get();
+    return view("Admin.Clinic.encounter",['encounterId'=>$encounterId,'service'=>$service,
+    'case_note'=>$case_note,'refer'=>$refer,'case_note_get_all'=>$case_note_get_all,
+    'checkIfExit'=>$checkIfExit,'syptoms'=>$syptoms,'var'=>$var,'medication'=>$medication]);
 }
 
 
+public function getSubcategories(Request $request)
+{
+    $categoryId = $request->input('category_id');
+    // Fetch subcategories based on the selected category ID
+    $subcategories = Medication::where('med_category_id', $categoryId)->get(['id','desc','price']);
+    return response()->json($subcategories);
+}
+
+
+public function getMedicationPrice(Request $request)
+{
+    $medicationId = $request->input('medication_id');
+    $medication = Medication::find($medicationId);
+    if ($medication) {
+        return response()->json(['price' => $medication->price, 'dosage'=>$medication->dosage,
+        'unit'=>$medication->unit,'allow_edit_price'=>$medication->allow_edit_price,'allow_edit_unit',$medication->allow_edit_unit,
+         'allow_edit_dosage',$medication->allow_edit_dosage]);
+    } else {
+        return response()->json(['price' => '', 'dosage'=>'','unit'=>'','allow_edit_dosage'=>'','allow_edit_unit'=>'','allow_edit_price'=>'']);
+    }
+}
+
+public function encounter_update(Request $request, $id)
+{
+    $id =$request->input('id');;
+    $case_note = $request-> input('case_note_edit');
+    $user_id = $request->input('user_id');
+    Casenote::whereId($id)->update([
+    'result'=> $case_note,
+    'user_id'=>$user_id,
+    ]);
+    return back();
+}
+
 public function encounter_store(Request $request){
+
+    $sym_pr =  "";
+    if($request->input('presenting_complain_symptoms') == "Other"){
+        $sym_pr  = $request->input('symptoms_template');
+    }else{
+        $sym_pr  = $request->input('presenting_complain_symptoms');
+    }
+
+    $t = '';
+    if ($request->filled('flexRadioDefault1')) {
+        $t = $request->input('flexRadioDefault1');
+    } elseif ($request->filled('flexRadioDefault2')) {
+        $t = $request->input('flexRadioDefault2');
+    } elseif ($request->filled('flexRadioDefault3')) {
+        $t = $request->input('flexRadioDefault3');
+    } elseif ($request->filled('flexRadioDefault4')) {
+        $t = $request->input('flexRadioDefault4');
+    } elseif ($request->filled('flexRadioDefault5')) {
+        $t = $request->input('flexRadioDefault5');
+    } elseif ($request->filled('flexRadioDefault6')) {
+        $t = $request->input('flexRadioDefault6');
+    }
+
+
+    $d = '';
+    if ($request->filled('flexRadioDefault7')) {
+        $d = $request->input('flexRadioDefault7');
+    } elseif ($request->filled('flexRadioDefault8')) {
+        $d = $request->input('flexRadioDefault8');
+    } elseif ($request->filled('flexRadioDefault9')) {
+        $d = $request->input('flexRadioDefault9');
+    } elseif ($request->filled('flexRadioDefault10')) {
+        $d = $request->input('flexRadioDefault10');
+    } elseif ($request->filled('flexRadioDefault11')) {
+        $d = $request->input('flexRadioDefault11');
+    } elseif ($request->filled('flexRadioDefault12')) {
+        $d = $request->input('flexRadioDefault12');
+    }
+
+    $diseases = '';
+    if ($request->filled('flexRadioDefault23')) {
+        $diseases = $request->input('flexRadioDefault23');
+    } elseif ($request->filled('flexRadioDefault20')) {
+        $diseases = $request->input('flexRadioDefault20');
+    } elseif ($request->filled('flexRadioDefault31')) {
+        $diseases = $request->input('flexRadioDefault31');
+    } elseif ($request->filled('flexRadioDefault41')) {
+        $diseases = $request->input('flexRadioDefault41');
+    } elseif ($request->filled('flexRadioDefault42')) {
+        $diseases = $request->input('flexRadioDefault42');
+    } elseif ($request->filled('flexRadioDefault43')) {
+        $diseases = $request->input('flexRadioDefault43');
+    }elseif ($request->filled('flexRadioDefault44')) {
+        $diseases = $request->input('flexRadioDefault44');
+    }
+
+
     $casenote = request()->validate([
-        'physical_examination'=>'required',
-        'temp'=>'required',
-        'pulse'=>'required',
-        'resp'=>'required',
-        'diagnosis'=>'required',
-        'result'=>'required',
+         'physical_examination'=>'required',
+         'temp'=>'required',
+         'pulse'=>'required',
+         'resp'=>'required',
+         'diagnosis'=>'required',
+         'result'=>'required',
          'visual_evaluation'=>'required',
-         'other_examination'=>'required',
+         'token'=>'required',
          'next_appointment'=>'required',
          'next_vaccination'=>'required',
     ]);
+    $casenote['other_examination'] = $request->other_examination;
+    $casenote['presenting_complain_symptoms'] = $sym_pr;
+    $casenote['history_presenting_illness'] = $request->history_presenting_illness;
     $casenote['case_id'] = $request->case_id;
+    $casenote['token'] = $request->token;
     $casenote['user_id'] = Auth::user()->id;
     $casenote['date'] = date("d-F-Y");
     $casenote['month'] = date("F");
     $casenote['year'] = date("Y");
-
+    $casenote['follow_up_status'] = $t;
+    $casenote['drug_compliance'] =  $d;
+    $casenote['diseases_type'] =  $diseases;
     Casenote::create($casenote);
-     session()->flash('message','Treatment submitted!!!');
 
+    $test = new TestRequest();
+    if( $request->input('test_request') == null){
+        $test->token = $request->input('token');
+        $test->test_request = $request->input('other_test_request');
+        $test->user_id = Auth::user()->id;
+        $test->save();
+    }
+    else{
+        $test->token = $request->input('token');
+        $test->test_request = $request->input('test_request');
+        $test->user_id = Auth::user()->id;
+        $test->save();
+    }
+    $admissionMessage ="";
+    $checkIfExists = Admission::where('pet_id', $request->case_id)->where('status',0)->first();
+    if ($checkIfExists) {
+        $admissionMessage = "Pet is already on admission";
+    }else {
+        if ($request->diagnosis == "Other" && $request->admit_to_ward == 1) {
+            $admit = new Admission();
+            $admit->pet_id = $request->case_id;
+            $admit->diagnosis = $request->other_examination;
+            $admit->amount = 2000;
+            $admit->date = date('m/d/Y');
+            $admit->month = date('F');
+            $admit->year = date('Y');
+            $admit->token = $request->input('token');
+            $admit->user_id = Auth::user()->id;
+            $admit->save();
+        } elseif ($request->admit_to_ward == 1) {
+            $admit = new Admission();
+            $admit->pet_id = $request->case_id;
+            $admit->diagnosis = $request->diagnosis;
+            $admit->amount = 2000;
+            $admit->date = date('m/d/Y');
+            $admit->month = date('F');
+            $admit->year = date('Y');
+            $admit->token = $request->input('token');
+            $admit->user_id = Auth::user()->id;
+            $admit->save();
+        }
+    }
+
+
+    // this is saving the template
+    if($request->input('save_checkbox_template') == 1){
+        $sym = new Symptoms();
+        $sym->symptoms = $request->input('symptoms_template');
+        $sym->desc = $request->input('history_presenting_illness');
+        $sym->save();
+    }
+
+     session()->flash('message','Your pet(s) treatment has been successfully submitted. .'.$admissionMessage.'.');
     return back();
+     }
 
+
+     public function refer_store(Request $request)
+      {
+        $refer = new Refer();
+        $refer->pet_card_no = $request->input('case_id');
+        $refer->clinic_name =  $request->input('clinic_name');
+        $refer->practitioner_name =  $request->input('practitioner_name');
+        $refer->purpose_of_referral =  $request->input('purpose_of_referral');
+        $refer->date =date("d-F-Y");
+        $refer->user_id = Auth::user()->id;
+        if($request->input('clinic_name') != null)
+        {
+         $refer->save();
+        }
+        return back();
      }
 
 

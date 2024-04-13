@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTestRequestsTable extends Migration
+class CreateRefersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateTestRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('test_requests', function (Blueprint $table) {
+        Schema::create('refers', function (Blueprint $table) {
             $table->id();
-            $table->string("token")->nullable();
-            $table->string("test_request")->nullable();
-            $table->string("user_id")->nullable();
+            $table->string("pet_card_no")->nullable();
+            $table->string("clinic_name")->nullable();
+            $table->string("practitioner_name")->nullable();
+            $table->string("purpose_of_referral")->nullable();
+            $table->string("date")->nullable();
+            $table->string("user_id")->default(0);
             $table->string("syn_flag")->default(0);
             $table->timestamps();
         });
@@ -30,6 +33,6 @@ class CreateTestRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('test_requests');
+        Schema::dropIfExists('refers');
     }
 }

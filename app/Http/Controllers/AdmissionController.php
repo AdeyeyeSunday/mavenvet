@@ -19,13 +19,7 @@ class AdmissionController extends Controller
     public function admission(){
 
         $clinic = DB::table('clinics')->get();
-
-
-        $admission =Admission::with('clinic')->where('staus','On admission')->get();;
-// dd($admission);
-
-        // $admission = DB::table('admissions')->where('staus','On admission')->get();
-
+        $admission =Admission::where('status','0')->get();;
         return view('Admin.admission.admission',['clinic'=>$clinic,'admission'=>$admission]);
 
     }
@@ -40,15 +34,15 @@ class AdmissionController extends Controller
             'date'=>'required',
             'month'=>'required',
             'year'=>'required',
-            'staus'=>'required',
+            'status'=>'required',
             'location'=>'required'
         ]);
-          $admission = DB::table('admissions')->where('staus','On admission')->count();
+          $admission = DB::table('admissions')->where('status','0')->count();
           if($admission < 4){
             Admission::create($inputs);
           }else{
 
-            session()->flash('room','No Available Room for your dog, Please Discharge one!!!!!!');
+            session()->flash('room','No available room for your dog, Please discharge one');
 
           }
 
@@ -57,19 +51,12 @@ class AdmissionController extends Controller
     }
 
     public function admission_update(Request $request,$id){
-        $status = DB::table('admissions')->where('id',$id)->update(['staus'=>'Discharge']);
+        $status = DB::table('admissions')->where('id',$id)->update(['status'=>'Discharge']);
         return back();
     }
 
-
-
-
     public function admission_payment_edit($id){
-
-        $admission_payment_edit =Admission::with('clinic')->where('id',$id)->first();
-
-        // $admission_payment_edit = DB::table('admissions')->where('id',$id)->first();
-
+        $admission_payment_edit =Admission::where('id',$id)->first();
        return view('Admin.admission.admission_payment_edit',['admission_payment_edit'=>$admission_payment_edit]);
     }
 

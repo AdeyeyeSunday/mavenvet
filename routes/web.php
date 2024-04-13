@@ -91,10 +91,18 @@ Route::post('/Admin/Clinic/Clinic_store', 'ClinicController@Clinic_store')->name
 Route::get('/Admin/Clinic/treatment', 'ClinicController@treatment')->name('Admin.Clinic.treatment');
 Route::get('/Admin/Clinic/{id}/Clinic_view', 'ClinicController@Clinic_view')->name('Admin.Clinic.Clinic_view');
 Route::get('/Admin/Clinic/{id}/encounter', 'ClinicController@encounter')->name('Admin.Clinic.encounter');
+Route::post('/Admin/Clinic/refer_store', 'ClinicController@refer_store')->name('Admin.Clinic.refer_store');
+Route::get('/Admin/Clinic/getPrice', 'ClinicController@getPrice')->name('Admin.Clinic.getPrice');
+Route::get('/Admin/Clinic/searchMedication', 'ClinicController@searchMedication')->name('Admin.Clinic.searchMedication');
+Route::get('/Admin/Clinic/getMedicationPrice','ClinicController@getMedicationPrice')->name('Admin.Clinic.getMedicationPrice');
+Route::get('/Admin/Clinic/getSubcategories','ClinicController@getSubcategories')->name('Admin.Clinic.getSubcategories');
 Route::post('/Admin/Clinic/encounter_store', 'ClinicController@encounter_store')->name('Admin.Clinic.encounter_store');
 Route::get('/Admin/Clinic/{id}/destory', 'ClinicController@destory')->name('Admin.Clinic.destory');
 Route::get('/Admin/Clinic/{id}/Clinic_edit', 'ClinicController@Clinic_edit')->name('Admin.Clinic.Clinic_edit');
 Route::patch('/Admin/Clinic/{id}/Clinic_update', 'ClinicController@Clinic_update')->name('Admin.Clinic.Clinic_update');
+
+Route::patch('/Admin/Clinic/{id}/encounter_update', 'ClinicController@encounter_update')->name('Admin.Clinic.encounter_update');
+
 Route::get('/Admin/Clinic/Clinic_list', 'ClinicController@Clinic_list')->name('Admin.Clinic.Clinic_list');
 Route::post('/Admin/Clinic/search', 'ClinicController@search')->name('Admin.Clinic.search');
 //clinic expenditure
@@ -165,20 +173,12 @@ Route::get('/Admin/Employee/salary_details', 'EmployeeController@salary_details'
 Route::post('/Admin/Employee/salary_store', 'EmployeeController@salary_store')->name('Admin.Employee.salary_store');
 Route::get('/Admin/Employee/{id}/leave_edit', 'EmployeeController@leave_edit')->name('Admin.Employee.leave_edit');
 
-// treatment start from here
-Route::post('/Admin/Treatment/treatment_store', 'TreatmentController@treatment_store')->name('Admin.Treatment.treatment_store');
-Route::get('/Admin/Treatment/treatment_list', 'TreatmentController@treatment_list')->name('Admin.Treatment.treatment_list');
-Route::get('/Admin/Treatment/{id}/Treatment_view', 'TreatmentController@Treatment_view')->name('Admin.Treatment.Treatment_view');
-Route::get('/Admin/Treatment/{id}/Treatment_edit', 'TreatmentController@Treatment_edit')->name('Admin.Treatment.Treatment_edit');
-Route::patch('/Admin/Treatment/{id}/Treatment_update', 'TreatmentController@Treatment_update')->name('Admin.Treatment.Treatment_update');
-//case note start from here
-Route::get('/Admin/Casenote/Casenote', 'CasenoteController@Casenote')->name('Admin.Casenote.Casenote');
-Route::post('/Admin/Casenote/Casenote_store', 'CasenoteController@Casenote_store')->name('Admin.Casenote.Casenote_store');
-Route::get('/Admin/Casenote/Casenote_list', 'CasenoteController@Casenote_list')->name('Admin.Casenote.Casenote_list');
-Route::get('/Admin/Casenote/{id}/Casenote_view', 'CasenoteController@Casenote_view')->name('Admin.Casenote.Casenote_view');
-Route::get('/Admin/Casenote/{id}/Casenote_edit', 'CasenoteController@Casenote_edit')->name('Admin.Casenote.Casenote_edit');
-Route::patch('/Admin/Casenote/{id}/Casenote_update', 'CasenoteController@Casenote_update')->name('Admin.Casenote.Casenote_update');
-Route::delete('/Admin/Casenote/{id}/Casenote_destory', 'CasenoteController@Casenote_destory')->name('Admin.Casenote.Casenote_destory');
+
+// Route::post('/Admin/Casenote/Casenote_store', 'CasenoteController@Casenote_store')->name('Admin.Casenote.Casenote_store');
+// Route::get('/Admin/Casenote/{id}/Casenote_view', 'CasenoteController@Casenote_view')->name('Admin.Casenote.Casenote_view');
+// Route::get('/Admin/Casenote/{id}/Casenote_edit', 'CasenoteController@Casenote_edit')->name('Admin.Casenote.Casenote_edit');
+// Route::patch('/Admin/Casenote/{id}/Casenote_update', 'CasenoteController@Casenote_update')->name('Admin.Casenote.Casenote_update');
+// Route::delete('/Admin/Casenote/{id}/Casenote_destory', 'CasenoteController@Casenote_destory')->name('Admin.Casenote.Casenote_destory');
 
 //make payment start from here
 Route::get('/Admin/Payment/Payment', 'PaymentController@Payment')->name('Admin.Payment.Payment');

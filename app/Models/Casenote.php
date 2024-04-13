@@ -14,9 +14,6 @@ class Casenote extends Model
 }
 
 
-
-
-
 public function clinic()
 {
     return $this->hasOne('App\Models\Clinic','id', 'case_id');

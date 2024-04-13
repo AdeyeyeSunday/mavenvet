@@ -59,8 +59,6 @@
                         </a>
                     </li>
 
-
-
                     <li class="">
                         <a href="{{ route('Admin.Clinic.Clinic_supplier') }}">
                             <i class="las la-minus"></i><span>Add Supplier</span>
@@ -71,6 +69,11 @@
             </div>
         </div>
 
+        <li class="">
+            <a href="{{ route('Admin.Clinic.Clinic_list') }}">
+                <i class="las la-minus"></i><span> Pet Record</span>
+            </a>
+        </li>
 
         <li class="">
             <a href="{{ route('Admin.Payment.Payment') }}">
@@ -84,38 +87,11 @@
             </a>
         </li>
 
-
         <li class="">
             <a href="{{ route('Admin.Payment.Payment_list') }}">
                 <i class="las la-minus"></i><span>Daily Payment List</span>
             </a>
         </li>
-        <li class="">
-            <a href="{{ route('Admin.Clinic.Clinic_list') }}">
-                <i class="las la-minus"></i><span> Registration List</span>
-            </a>
-        </li>
-
-
-
-        {{-- <li class="">
-            <a href="{{route('Admin.Treatment.treatment_list')}}">
-                <i class="las la-minus"></i><span> Vaccination Record</span>
-            </a>
-    </li> --}}
-
-        <li class="">
-            <a href="{{ route('Admin.Casenote.Casenote') }}">
-                <i class="las la-minus"></i><span>Medical Case Note</span>
-            </a>
-        </li>
-
-        <li class="">
-            <a href="{{ route('Admin.Casenote.Casenote_list') }}">
-                <i class="las la-minus"></i><span> Medical History</span>
-            </a>
-        </li>
-
 
 
 
@@ -124,11 +100,6 @@
                 <i class="las la-minus"></i><span>Admission</span>
             </a>
         </li>
-
-
-
-
-
         <li class="">
             <a href="{{ route('Admin.Clinic.expenditure') }}">
                 <i class="las la-minus"></i><span>Clinic Expenditure</span>

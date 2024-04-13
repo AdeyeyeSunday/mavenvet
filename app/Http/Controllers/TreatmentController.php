@@ -49,7 +49,7 @@ class TreatmentController extends Controller
 
     public function treatment_list(){
 
-        $treatment = Treatment::with(['clinic'])->get();
+        $treatment = Treatment::get();
 
         // $service = Service_order::with('service_item')->get();
         // dd($service);
