@@ -18,6 +18,13 @@
     <script type="text/javascript" src="{{ asset("https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.24/webcam.js") }}"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <style>
+        .toast-success {
+        background-color: #007bff !important; /* Blue background color */
+    }
+    </style>
 </head>
 
 <body class=" color- ">
@@ -104,14 +111,20 @@
     <div class="iq-top-navbar">
         <div class="iq-navbar-custom">
             <nav class="navbar navbar-expand-lg navbar- p-0">
-
-                <div class="iq-search-bar device-search">
-
-                    <div class="dropdown show">
-                        <a href="{{ route('update2') }}" class="btn sidebar-bottom-btn btn-lg">Update product</a>
-
-                    </div>
-                </div>
+                <div class="form-group">
+                    <label for=""></label>
+                    <select class="form-control mb-3" onchange="location = this.value;">
+                    <option selected=""> <h6>Synchronize</h6></option>
+                   <option value="{{ route('sync') }}"> Sync Data to cloud</option>
+                   <option value="{{ route('update2') }}">Fatch product from cloud</option>
+                    </select>
+                 </div>
+                 <div class="form-group">
+                    @php
+                        $clinic_name = App\Models\Systemconfiguration::first("clinic_name");
+                    @endphp
+                  <h6>Current facility : {{ $clinic_name->clinic_name }}</h6>
+                 </div>
 
                 @if (Session::has('pro'))
                     <center>
@@ -120,8 +133,6 @@
                         </div>
                     </center>
                 @endif
-
-
                 @if (Session::has('update'))
                     <center>
                         <div class="alert alert-primary" role="alert">
@@ -129,17 +140,6 @@
                         </div>
                     </center>
                 @endif
-
-
-
-                {{-- @if (Session::has('success'))
-                    <center>
-                        <div class="alert alert-success" role="alert">
-                            <div class="iq-alert-text">{{ Session::get('success') }}</div>
-                        </div>
-                    </center>
-                @endif --}}
-
 
 
                 @if (Session::has('sale'))
@@ -176,15 +176,9 @@
                         aria-label="Toggle navigation">
                         <i class="ri-menu-3-line"></i>
                     </button>
-
+                    <h6>{{ Auth::user()->name }}</h6>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-auto navbar-list align-items-center">
-
-                            <div>
-                                <a href="{{ route('sync') }}" class="btn btn-dark btn-lg">
-                                    Push button
-                                </a>
-                            </div>
                             <li class="nav-item nav-icon dropdown caption-content">
                                 <a href="#" class="search-toggle dropdown-toggle" id="dropdownMenuButton4"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

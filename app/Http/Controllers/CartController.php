@@ -50,10 +50,11 @@ class CartController extends Controller
                 $data['month'] = date('F');
                 $data['year'] = date('Y');
                 Cart::create($data);
-                return response()->json([
-                    'message' => 'Product added to cart successfully',
-                    'status'=>200
-                ]);
+
+            return response()->json([
+                'status'=>200,
+                'message'=>"Item added to cart successfully."
+            ]);
             } else {
                 return response()->json(['message' => 'Product not found for the scanned barcode'], 404);
             }
@@ -73,47 +74,26 @@ class CartController extends Controller
         $data['year']=$request->year;
         $data['Qty']=$request->Qty;
         $data['Cost']=$request->Cost;
-
         $check = Cart::where('Name', $data['Name'])->where('Quantity',$data['Quantity'])->where('Price',$data['Price'])->where('product_id',$data['product_id'])
         ->where('date',$data['date'])->where('month',$data['month'])->where('year',$data['year'])->where('Qty',$data['Qty'])->where('Cost',$data['Cost'])->get();
-
         if(count($check) > 0){
-            session()->flash('message','Already in cart');
+            return response()->json([
+                'status'=>200,
+                'message'=>"Already in cart"
+            ]);
         }else{
             Cart::create($data);
+
+            return response()->json([
+                'status'=>200,
+                'message'=>"Item added to cart successfully."
+            ]);
         }
-        return back();
+
+        // dd("am ehre");
+
+        // return back();
     }
-
-
-    // public function fetch_cart(){
-    //     $get_cart = Cart::all();
-    //     $total = 0;
-    //     return view('Admin.Pos.Pos', compact('get_cart', 'total'));
-    // }
-
-    // public function update_cart(Request $request,$id){
-
-    //     $data_update = request()->validate([
-    //         'Quantity'=>'required',
-    //         // 'Qty'=>'required'
-    //     ]);
-    //     $cart = Cart::where('id',$id)->first();
-
-    //   $cart1 = $request->input('Quantity');
-
-    //     if ($cart1 < $cart->Qty or $cart1 == $cart->Qty ) {
-    //         Cart::whereId($id)->update($data_update);
-    //         return back();
-    //     }else {
-
-    //         session()->flash('message','The new order has exceeded quantity in stock please reduce quantity !!!');
-    //     // echo 'much';
-    //     return back();
-    // }
-    // }
-
-
 
     public function update_cart_all()
     {

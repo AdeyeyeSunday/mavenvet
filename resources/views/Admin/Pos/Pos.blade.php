@@ -1,5 +1,6 @@
 <x-admin-master>
     @section('content')
+    <br>
         <div class="container-fluid add-form-list">
             <div class="row">
                 <div class="col-sm-12">
@@ -488,8 +489,6 @@
                                                                         <br>
                                                                     </div>
                                                                 </div>
-
-
                                                                 <div
                                                                     class="custom-control custom-checkbox custom-checkbox-color-check custom-control-inline">
                                                                     <input type="checkbox"
@@ -542,7 +541,6 @@
                                                         </div>
                                                     </form>
                                                 @endif
-
 
                                                 <form action="{{ route('Admin.Pos.Pos_store') }}" method="post"
                                                     enctype="multipart/form-data">
@@ -639,7 +637,6 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody class="-body">
-
                                                             @foreach ($product as $product)
                                                                 <tr>
                                                                     <form action="{{ route('Admin.Cart.add_cart') }}"
@@ -720,6 +717,8 @@
                     </div>
                 </div>
             </div>
+
+
 
             <script>
                 $(document).ready(function() {

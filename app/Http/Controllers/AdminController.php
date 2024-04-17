@@ -2234,8 +2234,8 @@ function dashboard()
          $month = date('F');
          $expenses = DB::table('expenses')->where('month',$month)->sum('amount');
          $employee = DB::table('employees')->count();
-         $admission = DB::table('admissions')->where('staus','On admission')->count();
-         $admission2 = DB::table('admissions')->where('staus','Discharge')->count();
+         $admission = DB::table('admissions')->where('status','On admission')->count();
+         $admission2 = DB::table('admissions')->where('status','Discharge')->count();
          $clinics = DB::table('clinics')->count();
         //  $service_amount =  Service_item::where('month', $month)->where('year',$year)->sum('total_vaccine_amount');
          $profit = DB::table('profits')->first();

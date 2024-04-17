@@ -1,5 +1,6 @@
 <x-admin-master>
     @section('content')
+    <br>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12 col-lg-6">
@@ -24,7 +25,7 @@
                         </div>
 
                         <div class="card-body">
-                            <form id="attendanceForm" action="{{ route('Admin.attendance.attendance_store') }}"
+                            <form id="attendance_form" action="{{ route('Admin.attendance.attendance_store') }}"
                                 method="post" enctype="multipart/form-data">
                                 @csrf
 
@@ -67,7 +68,7 @@
                                 @endif
                             @endif
                                 <br>
-                                <button type="submit" class="btn sidebar-bottom-btn  btn-lg btn-block">Process</button>
+                                <button type="submit" id="process_attendance" class="btn sidebar-bottom-btn  btn-lg btn-block">Process</button>
                             </form>
                         </div>
                     </div>
@@ -121,7 +122,45 @@
         </div>
         </div>
         </div>
+        <script>
+            // this for instacting referring.....
+            $(document).ready(function() {
+                       $('#attendance_form').on('submit', function(e) {
+                           e.preventDefault();
+                           var formData = new FormData(this);
+                           $('#process_attendance').text
+                           $.ajax({
+                               url: '{{ route('Admin.attendance.attendance_store') }}',
+                               type: 'POST',
+                               data: formData,
+                               processData: false,
+                               contentType: false,
+                               beforeSend: function() {
+                                   $('#process_attendance').text('Processing...');
+                               },
+                               success: function(response) {
+                                   toastr.success(response.message, 'Success!', {
+                                       closeButton: true,
+                                       progressBar: true,
+                                       showMethod: 'slideDown',
+                                       hideMethod: 'slideUp',
+                                       timeOut: 3000
+                                   });
+                                   $('#attendance_form')[0].reset();
+                                   $(".table").load(location.href + " .table");
+                                   // $('.lateReason').modal('hide');
+                                   // window.location.reload();
 
+                                   $('#process_attendance').text('Process');
+                               },
+                               error: function(xhr, status, error) {
+                                   toastr.error('An error occurred. Please try again later.', 'Error!');
+                                   $('#process_attendance').text('Process');
+                               }
+                           });
+                       });
+                   });
+       </script>
         {{-- <script>
             document.getElementById('attendanceForm').addEventListener('submit', function(event) {
                 // Check if the image is captured or not

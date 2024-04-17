@@ -96,7 +96,11 @@ Route::get('/Admin/Clinic/getPrice', 'ClinicController@getPrice')->name('Admin.C
 Route::get('/Admin/Clinic/searchMedication', 'ClinicController@searchMedication')->name('Admin.Clinic.searchMedication');
 Route::get('/Admin/Clinic/getMedicationPrice','ClinicController@getMedicationPrice')->name('Admin.Clinic.getMedicationPrice');
 Route::get('/Admin/Clinic/getSubcategories','ClinicController@getSubcategories')->name('Admin.Clinic.getSubcategories');
+Route::get('/Admin/Clinic/getSubservices','ClinicController@getSubservices')->name('Admin.Clinic.getSubservices');
+Route::post('/Admin/Clinic/encounter_store_image', 'ClinicController@encounter_store_image')->name('Admin.Clinic.encounter_store_image');
+Route::post('/Admin/Clinic/encounter_store_medication', 'ClinicController@encounter_store_medication')->name('Admin.Clinic.encounter_store_medication');
 Route::post('/Admin/Clinic/encounter_store', 'ClinicController@encounter_store')->name('Admin.Clinic.encounter_store');
+Route::post('/Admin/Clinic/service_store', 'ClinicController@service_store')->name('Admin.Clinic.service_store');
 Route::get('/Admin/Clinic/{id}/destory', 'ClinicController@destory')->name('Admin.Clinic.destory');
 Route::get('/Admin/Clinic/{id}/Clinic_edit', 'ClinicController@Clinic_edit')->name('Admin.Clinic.Clinic_edit');
 Route::patch('/Admin/Clinic/{id}/Clinic_update', 'ClinicController@Clinic_update')->name('Admin.Clinic.Clinic_update');

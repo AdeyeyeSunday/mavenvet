@@ -15,12 +15,17 @@ use App\Models\Vaccineiteam;
 use App\Models\Vaccineorder;
 use App\Models\Vaccinestore;
 use App\Models\Clinic_expense;
+use App\Models\Diagnoses;
+use App\Models\Laboratory_test;
 use App\Models\Medication;
+use App\Models\Medication_request;
 use App\Models\Medicationcategoty;
 use App\Models\MVC_midwifery_vaccinestores;
 use App\Models\Newproduct;
 use App\Models\NewVaccine;
+use App\Models\Physical_examination;
 use App\Models\Refer;
+use App\Models\Request_images;
 use App\Models\Service;
 use App\Models\Symptoms;
 use App\Models\TestRequest;
@@ -49,34 +54,83 @@ public function encounter($id)
 {
     $encounterId = Clinic::find($id);
     $case_note = Casenote::where('case_id', $encounterId->Pet_Card_Number)->latest()->first();
+
     $case_note_get_all = Casenote::where('case_id', $encounterId->Pet_Card_Number)->latest()->get();
-    $refer = Refer::where('pet_card_no', $encounterId->Pet_Card_Number)->latest()->first();
+
+    $refer = Refer::where('pet_card_no', $encounterId->Pet_Card_Number)->where('token', $case_note->token ?? '')->latest()->first();
     $syptoms = Symptoms::get();
     $checkIfExit = Admission::where('pet_id', $encounterId->Pet_Card_Number)->where('status',0)->first();
     $service=Service::get();
     $var =Medication :: get();
-    $medication = Medicationcategoty::get();
+    
+    $medication = Medicationcategoty::where('med_desc' ,'!=', 'Service')->WHERE('med_desc' ,'!=', 'laboratory')->get();
+    $services = Service::get();
+    $lab = Laboratory_test::get();
+    $phy_exam= Physical_examination::get();
+    $dia = Diagnoses::get();
+
+    $req_medicaton = Medication_request::where('request_medication_token', $case_note->token ?? '')->get();
+
     return view("Admin.Clinic.encounter",['encounterId'=>$encounterId,'service'=>$service,
     'case_note'=>$case_note,'refer'=>$refer,'case_note_get_all'=>$case_note_get_all,
-    'checkIfExit'=>$checkIfExit,'syptoms'=>$syptoms,'var'=>$var,'medication'=>$medication]);
+    'checkIfExit'=>$checkIfExit,'syptoms'=>$syptoms,'var'=>$var,'medication'=>$medication,
+    'req_medicaton'=>$req_medicaton,'lab'=>$lab,'services'=>$services,'phy_exam'=>$phy_exam,'dia'=>$dia]);
 }
 
 
 public function getSubcategories(Request $request)
 {
     $categoryId = $request->input('category_id');
-    // Fetch subcategories based on the selected category ID
-    $subcategories = Medication::where('med_category_id', $categoryId)->get(['id','desc','price']);
+    $subcategories = Medication::where('med_category_id', $categoryId)->get(['id','desc','unit']);
+    // dd($subcategories );
     return response()->json($subcategories);
 }
 
+
+public function getSubservices(Request $request)
+{
+    $categoryId = $request->input('category_id');
+
+    $subservice = Service::where('service_id', $categoryId)->first();
+
+    return response()->json(['amount' => $subservice->amount,'service_category'=>$subservice->service_category,'service'=>$subservice->service]);
+}
+
+
+public function Clinic_store() {
+    $inout = request()->validate([
+        'Pet_name'=>'required',
+        'Breed'=>"required",
+        'Gender'=>"required",
+        "Name_Of_Pet_Owner"=>"required",
+        "Owner_Phone_Number"=>"required",
+        "Pet_Card_Number"=>"required",
+        "Color"=>"required",
+        "Age"=>"required",
+        "allergy"=>"required",
+        "date"=>"required",
+        "month"=>"required",
+        "year"=>"required",
+        "user_id"=>"required",
+    ]);
+    $inout["Veterinarian"] = Auth::user()->name;
+
+    // dd($inout);
+    Clinic::create($inout);
+    return response()->json([
+        'status'=>200,
+        'message'=>"Patient created successfully"
+    ]);
+
+
+}
 
 public function getMedicationPrice(Request $request)
 {
     $medicationId = $request->input('medication_id');
     $medication = Medication::find($medicationId);
     if ($medication) {
-        return response()->json(['price' => $medication->price, 'dosage'=>$medication->dosage,
+        return response()->json(['price' => $medication->price, 'dosage'=>$medication->dosage,'desc'=>$medication->desc,
         'unit'=>$medication->unit,'allow_edit_price'=>$medication->allow_edit_price,'allow_edit_unit',$medication->allow_edit_unit,
          'allow_edit_dosage',$medication->allow_edit_dosage]);
     } else {
@@ -93,11 +147,134 @@ public function encounter_update(Request $request, $id)
     'result'=> $case_note,
     'user_id'=>$user_id,
     ]);
-    return back();
+   return back();
 }
 
-public function encounter_store(Request $request){
 
+
+public function encounter_store_image(Request $request)
+{
+    $fileNames = [];
+    foreach($request->filess as $file){
+        $fileName = time() . '.'.$file->getClientOriginalName();
+        $file->move(public_path('files'), $fileName);
+        $fileNames[] = 'files/'.$fileName;
+    }
+    $userId = Auth::user()->id;
+    $insertData = [];
+    for($x = 0; $x < count($request->names); $x++){
+        $insertData[] = [
+            'name' => $request->names[$x],
+            'file' => $fileNames[$x],
+            'image_token'=>$request->token,
+            'user_id'=>$userId,
+            'pet_id'=>$request->case_id,
+        ];
+    }
+    $checkIfExsit = Request_images::where('image_token',$request->token)->get();
+   if($checkIfExsit){
+    if($checkIfExsit  != null){
+        foreach ($checkIfExsit as $d){
+            $d ->delete();
+        }
+        Request_images::insert($insertData);
+     return response()->json([
+        'status'=>200,
+        'message'=>"Document uploaded successfully"
+    ]);
+    }
+   }else{
+     Request_images::insert($insertData);
+     return response()->json([
+        'status'=>200,
+        'message'=>"Document uploaded successfully"
+    ]);
+   }
+}
+
+
+
+public function encounter_store_medication(Request $request)
+{
+    $userId = Auth::user()->id;
+    $insertData = [];
+    for($x = 0; $x < count($request->med_category); $x++){
+        $insertData[] = [
+            'med_category' => $request->med_category[$x],
+             'medication' => $request->main_name[$x],
+             'price' => $request->price[$x],
+             'qty' => $request->qty[$x],
+             'total_cost'=>$request->price[$x] * $request->qty[$x],
+             'duration' => $request->duration[$x],
+             'unit' => $request->unit[$x],
+             'how_offen' => $request->how_offen[$x],
+             'days_weeks' => $request->days_weeks[$x],
+             'request_medication_token'=>$request->token,
+             'user_id'=>$userId,
+             'pet_id'=>$request->case_id,
+        ];
+        // dd($insertData);
+    }
+    $checkIfExsit = Medication_request::where('request_medication_token',$request->token)->get();
+   if($checkIfExsit){
+    if($checkIfExsit  != null){
+        foreach ($checkIfExsit as $d){
+            $d ->delete();
+        }
+        Medication_request::insert($insertData);
+     return response()->json([
+        'status'=>200,
+        'message'=>"Medication request successfully"
+    ]);
+    }
+   }else{
+    Medication_request::insert($insertData);
+     return response()->json([
+        'status'=>200,
+        'message'=>"Medication request successfully"
+    ]);
+   }
+}
+
+
+public function service_store(Request $request)
+{
+    $userId = Auth::user()->id;
+    $insertData = [];
+    for($x = 0; $x < count($request->service); $x++){
+        $insertData[] = [
+             'med_category' => $request->ser_category,
+             'medication' => $request->main_name[$x],
+             'price' => $request->price[$x],
+             'qty' => $request->qty[$x],
+             'request_medication_token'=>$request->token,
+             'user_id'=>$userId,
+             'pet_id'=>$request->case_id,
+        ];
+    }
+    $checkIfExsit = Medication_request::where('request_medication_token',$request->token)->where('med_category', $request->ser_category)->get();
+   if($checkIfExsit){
+    if($checkIfExsit  != null){
+        foreach ($checkIfExsit as $d){
+            $d ->delete();
+        }
+        Medication_request::insert($insertData);
+     return response()->json([
+        'status'=>200,
+        'message'=>"Medication request successfully"
+    ]);
+    }
+   }else{
+    Medication_request::insert($insertData);
+     return response()->json([
+        'status'=>200,
+        'message'=>"Medication request successfully"
+    ]);
+   }
+}
+
+
+public function encounter_store(Request $request){
     $sym_pr =  "";
     if($request->input('presenting_complain_symptoms') == "Other"){
         $sym_pr  = $request->input('symptoms_template');
@@ -153,7 +330,6 @@ public function encounter_store(Request $request){
         $diseases = $request->input('flexRadioDefault44');
     }
 
-
     $casenote = request()->validate([
          'physical_examination'=>'required',
          'temp'=>'required',
@@ -166,6 +342,11 @@ public function encounter_store(Request $request){
          'next_appointment'=>'required',
          'next_vaccination'=>'required',
     ]);
+    if(request('pet_document')){
+        $casenote['file']= request('pet_document')->store('employee');
+    }
+
+    // dd(request('pet_document'));
     $casenote['other_examination'] = $request->other_examination;
     $casenote['presenting_complain_symptoms'] = $sym_pr;
     $casenote['history_presenting_illness'] = $request->history_presenting_illness;
@@ -178,25 +359,46 @@ public function encounter_store(Request $request){
     $casenote['follow_up_status'] = $t;
     $casenote['drug_compliance'] =  $d;
     $casenote['diseases_type'] =  $diseases;
-    Casenote::create($casenote);
+     Casenote::create($casenote);
 
     $test = new TestRequest();
     if( $request->input('test_request') == null){
         $test->token = $request->input('token');
         $test->test_request = $request->input('other_test_request');
         $test->user_id = Auth::user()->id;
-        $test->save();
+         $test->save();
     }
     else{
+
+
+        $selectedOption = $request->input('test_request');
+        $parts = explode('|', $selectedOption);
+        $labcategory= $parts[0];
+        $labDesc = $parts[1];
+        $labPrice = $parts[2];
+        $userId = Auth::user()->id;
+
         $test->token = $request->input('token');
-        $test->test_request = $request->input('test_request');
+        $test->test_request = $parts[1];
         $test->user_id = Auth::user()->id;
         $test->save();
+
+        $lab_request = new Medication_request();
+        $lab_request->med_category = $labcategory;
+        $lab_request->medication = $labDesc;
+        $lab_request->price = $labPrice;
+        $lab_request->qty = 1;
+
+        $lab_request->request_medication_token =  $request->input('token');
+        $lab_request->user_id = $userId;
+        $lab_request->pet_id = $request->case_id;
+        $lab_request->save();
     }
+
     $admissionMessage ="";
     $checkIfExists = Admission::where('pet_id', $request->case_id)->where('status',0)->first();
     if ($checkIfExists) {
-        $admissionMessage = "Pet is already on admission";
+        $admissionMessage = "Pet is already on admission', 'Warning!";
     }else {
         if ($request->diagnosis == "Other" && $request->admit_to_ward == 1) {
             $admit = new Admission();
@@ -222,8 +424,6 @@ public function encounter_store(Request $request){
             $admit->save();
         }
     }
-
-
     // this is saving the template
     if($request->input('save_checkbox_template') == 1){
         $sym = new Symptoms();
@@ -231,8 +431,8 @@ public function encounter_store(Request $request){
         $sym->desc = $request->input('history_presenting_illness');
         $sym->save();
     }
-
      session()->flash('message','Your pet(s) treatment has been successfully submitted. .'.$admissionMessage.'.');
+     session()->flash('toastr', 'success');
     return back();
      }
 
@@ -244,13 +444,17 @@ public function encounter_store(Request $request){
         $refer->clinic_name =  $request->input('clinic_name');
         $refer->practitioner_name =  $request->input('practitioner_name');
         $refer->purpose_of_referral =  $request->input('purpose_of_referral');
+        $refer->token =  $request->input('token');
         $refer->date =date("d-F-Y");
         $refer->user_id = Auth::user()->id;
         if($request->input('clinic_name') != null)
         {
          $refer->save();
         }
-        return back();
+        return response()->json([
+        'status'=>200,
+        'message'=>"Successfully referred patient"
+    ]);
      }
 
 

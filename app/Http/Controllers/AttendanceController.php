@@ -87,9 +87,16 @@ class AttendanceController extends Controller
         'clockout'=>'clockout','Timeout'=>date(" H:i A")
     ]);
   }
-  session()->flash('message','Time mark');
 
-  return back();
+  return response()->json([
+    'status'=>200,
+    'message'=>"You clocked in successfully"
+]);
+
+
+//   session()->flash('message','Time mark');
+
+//   return back();
     }
 
 }

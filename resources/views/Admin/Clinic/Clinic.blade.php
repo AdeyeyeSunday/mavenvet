@@ -12,17 +12,14 @@
                  </div>
                  <div class="card-body">
                     <p>Make Sure the Full Treatment is made well and input the amount and the outstanding payment</p>
-                    <form action="{{route('Admin.Clinic.Clinic_store')}}" method="post" enctype="multipart/form-data">
+                    <form action="{{route('Admin.Clinic.Clinic_store')}}" id="cliinic_form" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Image</label>
                                 <input type="file" class="form-control image-file" name="pic" accept="image/*">
                             </div>
-
                         </div>
-
-
                        <div class="form-row">
                           <div class="col-md-6 mb-3">
                              <label for="validationDefault01">Pet name</label>
@@ -53,15 +50,11 @@
                              <input type="text" class="form-control" name="Pet_Card_Number" required>
                           </div>
                        </div>
-
-
                        <div class="form-row">
                         <div class="col-md-6 mb-3">
                             <label for="validationDefault04">Color</label>
                             <input type="test" class="form-control" name="Color" required>
                         </div>
-
-
 
                         <div class="col-md-6 mb-3">
                            <label for="validationDefault02">
@@ -69,14 +62,17 @@
                            <input type="date" class="form-control"  name="Age" required>
                         </div>
 
+                        <div class="col-md-6 mb-3">
+                            <label for="validationDefault02">
+                                Allergy</label>
+                            <input type="text" class="form-control" name="allergy" id="">
+                         </div>
 
                         <div class="col-md-6 mb-3">
                            <label for="validationDefault05">Veterinarian</label>
                            <input type="text" readonly
                             value="Dr. {{auth()->user()->name}}" class="form-control" name="Veterinarian" required>
                         </div>
-
-
 
                      </div>
                         <input type="hidden" class="form-control" value="{{date('d/m/y')}}" name="date" required>
