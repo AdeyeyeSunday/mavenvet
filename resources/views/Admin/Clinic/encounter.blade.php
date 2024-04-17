@@ -318,8 +318,7 @@
 
                                 {{-- medical history start from here --}}
                                 <div id="profile2" class="tab-pane fade">
-                                    <center><img src="{{ asset('assets/images/logo.png') }}"
-                                            class="logo-invoice img-fluid mb-3"></center>
+                                    <img src="{{ asset('assets/images/logo.png') }}" class="logo-invoice img-fluid mb-3">
                                     <h5>Assesssment note for {{ $encounterId->Pet_name }} <strong>-</strong>
 
                                         [ {{ $encounterId->Pet_Card_Number }}] <strong>-</strong>
@@ -845,71 +844,88 @@
                     <div class="card card-block card-stretch card-height">
                         <div class="card-body">
 
-                            @if ($system_config->allow_doc__to_recieve_payment == 1)
-                                <ul class="nav nav-tabs" id="myTab-three" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" id="home-tab-three" data-toggle="tab"
-                                            href="#home-three" role="tab" aria-controls="home"
-                                            aria-selected="true">Payment section</a>
-                                    </li>
+                            @php
+                                $totalSum = 0;
+                            @endphp
 
-                                    @php
-                                        $totalSum = 0;
-                                    @endphp
+                            @foreach ($req_medicaton as $p)
+                                @php
+                                    $totalSum += $p->total_cost;
+                                @endphp
+                            @endforeach
 
-                                    @foreach ($req_medicaton as $p)
-                                        @php
-                                            $totalSum += $p->total_cost;
-                                        @endphp
-                                    @endforeach
+                            @if (!$totalSum <= 0)
+                                {{-- @else --}}
+                                @if ($system_config->allow_doc__to_recieve_payment == 1)
+                                    <ul class="nav nav-tabs" id="myTab-three" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="home-tab-three" data-toggle="tab"
+                                                href="#home-three" role="tab" aria-controls="home"
+                                                aria-selected="true">Payment section</a>
+                                        </li>
 
-                                    <h5 style="color: red">Overall cost: {{ $totalSum }}</h5>
-                                </ul>
-                                <div class="tab-content" id="myTabContent-4">
-                                    <div class="tab-pane fade show active" id="home-three" role="tabpanel"
-                                        aria-labelledby="home-tab-three">
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <label for="">Enter amount</label>
-                                                <input type="text" placeholder="Enter amount" class="form-control"
-                                                    name="amount_paid" id="">
-                                                <br>
-                                            </div>
 
-                                            <div class="col-md-4">
-                                                <button class="btn sidebar-bottom-btn btn-lg btn-block">Process
-                                                    payment</button>
-                                            </div>
 
-                                            <div class="col-md-12">
-                                                <div class="radio d-inline-block mr-2">
-                                                    <input type="radio" name="bsradio" id="radio1" checked="">
-                                                    <label for="radio1">Cash</label>
+                                        <h5 style="color: red">Overall cost: {{ $totalSum }}</h5>
+                                    </ul>
+
+                                    <div class="col-md-12">
+                                        <div class="checkbox d-inline-block mr-3">
+                                            <input type="checkbox" class="checkbox-input" id="checkbox1"> Select all item(s)
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="col-md-10">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <h6 for="">Ref. Number</h6>
+                                                    <p>78363563 <strong>-</strong> 12-02-2025</p>
+
                                                 </div>
-                                                <div class="radio d-inline-block mr-2">
-                                                    <input type="radio" name="bsradio" id="radio2">
-                                                    <label for="radio2">Pos</label>
-                                                </div>
-                                                <div class="radio d-inline-block mr-1">
-                                                    <input type="radio" name="bsradio" id="radio3">
-                                                    <label for="radio3">Transfer</label>
-                                                </div>
-                                                @if ($system_config->allow_doube_mode_of_payment == 1)
-                                                    <div class="radio d-inline-block mr-1">
-                                                        <input type="radio" name="bsradio" id="radio3">
-                                                        <label for="radio3">Cash & Transfer</label>
+                                                <div class="col-md-5">
+                                                    <h6 for="">Details</h6>
+                                                    <div class="checkbox d-inline-block mr-3">
+                                                        <input type="checkbox" class="checkbox-input" id="checkbox1"> Blood chemistry profile
                                                     </div>
-
-                                                    <div class="radio d-inline-block mr-1">
-                                                        <input type="radio" name="bsradio" id="radio3">
-                                                        <label for="radio3">Cash & Pos</label>
-                                                    </div>
-                                                @endif
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <h6 for="">Amount</h6>
+                                                    <p>1000.10</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <hr>
+                                    <hr>
+                                    <div class="tab-content" id="myTabContent-4">
+                                        <div class="tab-pane fade show active" id="home-three" role="tabpanel"
+                                            aria-labelledby="home-tab-three">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <label for="">Payment type</label>
+                                                   <select name="" id="" class="form-control">
+                                                    <option value="" selected></option>
+                                                    <option value="">Cash</option>
+                                                    <option value="">Pos</option>
+                                                    <option value="">Trasfer</option>
+                                                    @if ($system_config->allow_doube_mode_of_payment == 1)
+                                                    <option value="">Cash & Transfer</option>
+                                                    <option value="">Cash & POS</option>
+                                                    @endif
+                                                   </select>
+                                                    <br>
+                                                </div>
+                                                    <div class="col-md-4">
+                                                        <button class="btn sidebar-bottom-btn btn-lg btn-block">Process
+                                                            payment</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                @endif
                             @endif
 
                             <div class="d-flex align-items-center mb-3">

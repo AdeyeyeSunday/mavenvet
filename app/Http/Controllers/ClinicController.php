@@ -56,13 +56,15 @@ public function encounter($id)
     $case_note = Casenote::where('case_id', $encounterId->Pet_Card_Number)->latest()->first();
 
     $case_note_get_all = Casenote::where('case_id', $encounterId->Pet_Card_Number)->latest()->get();
+    $refer = Refer::where('pet_card_no', $encounterId->Pet_Card_Number)->latest()->first();
 
     $refer = Refer::where('pet_card_no', $encounterId->Pet_Card_Number)->where('token', $case_note->token ?? '')->latest()->first();
     $syptoms = Symptoms::get();
     $checkIfExit = Admission::where('pet_id', $encounterId->Pet_Card_Number)->where('status',0)->first();
     $service=Service::get();
     $var =Medication :: get();
-    
+    $medication = Medicationcategoty::get();
+
     $medication = Medicationcategoty::where('med_desc' ,'!=', 'Service')->WHERE('med_desc' ,'!=', 'laboratory')->get();
     $services = Service::get();
     $lab = Laboratory_test::get();
