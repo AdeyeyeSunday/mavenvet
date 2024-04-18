@@ -28,6 +28,7 @@ use App\Models\Refer;
 use App\Models\Request_images;
 use App\Models\Service;
 use App\Models\Symptoms;
+use App\Models\Systemconfiguration;
 use App\Models\TestRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -72,7 +73,19 @@ public function encounter($id)
     $dia = Diagnoses::get();
 
     $req_medicaton = Medication_request::where('request_medication_token', $case_note->token ?? '')->get();
-    $outstandingPayment = Medication_request::where('pet_id', $encounterId->Pet_Card_Number)->where('payment_status', 0)->get();
+
+    $sys_config = Systemconfiguration::first();
+
+    if( $sys_config ->allow_doc_see_paid_recent_only == 1){
+        $outstandingPayment = Medication_request::where('pet_id', $encounterId->Pet_Card_Number)->where('payment_status', 0)
+        ->where('request_medication_token', $case_note->token ?? '')->get();
+    }
+    else{
+        $outstandingPayment = Medication_request::where('pet_id', $encounterId->Pet_Card_Number)->where('payment_status', 0)->get();
+    }
+
+
+
 
     return view("Admin.Clinic.encounter",['encounterId'=>$encounterId,'service'=>$service,
     'case_note'=>$case_note,'refer'=>$refer,'case_note_get_all'=>$case_note_get_all,
@@ -217,6 +230,7 @@ public function encounter_store_medication(Request $request)
              'user_id'=>$userId,
              'pet_id'=>$request->case_id,
              'tracking_no'=>$request->tracking_no,
+             'date'=>now()
         ];
         //  dd($insertData);
     }
@@ -257,6 +271,7 @@ public function service_store(Request $request)
              'user_id'=>$userId,
              'pet_id'=>$request->case_id,
              'tracking_no'=>$request->tracking_no,
+             'date'=>now()
         ];
     }
     $checkIfExsit = Medication_request::where('request_medication_token',$request->token)->where('med_category', $request->ser_category)->get();
@@ -399,6 +414,7 @@ public function encounter_store(Request $request){
         $lab_request->user_id = $userId;
         $lab_request->pet_id = $request->case_id;
         $lab_request->tracking_no =  $request->tracking_no;
+        $lab_request->date = now();
         $lab_request->save();
     }
 

@@ -850,9 +850,11 @@
                     <div class="card card-block card-stretch card-height">
                         <div class="card-body">
 
-                            @if ($outstandingPayment)
+                            {{-- {{ $outstandingPayment-> }}; --}}
+                            @if ($outstandingPayment-> isNotEmpty())
                             <x-paymentSecton    :attribute1="$system_config" :attribute2="$outstandingPayment"></x-paymentSecton>
                             @endif
+
 
                         <div class="d-flex align-items-center mb-3">
                             <div class="col-md-8">
