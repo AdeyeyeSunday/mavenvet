@@ -36,19 +36,29 @@
             </div>
             <hr>
             @foreach ($attribute2 as $o)
-                <div class="col-md-4">
-                    <p>{{ $o->tracking_no }} <strong>-</strong> 12-02-2025</p>
-                </div>
+            @if ($o->payment_status == 1)
+            <div class="col-md-4" style="border-left: 3px solid green; padding-left: 10px;">
+                <p>{{ $o->tracking_no }} <strong>-</strong>{{ $o->date }}</p>
+            </div>
+            @else
+            <div class="col-md-4" style="border-left: 3px solid red; padding-left: 10px;">
+                <p>{{ $o->tracking_no }} <strong>-</strong> {{ $o->date }}</p>
+            </div>
+            @endif
                 @php
                     $category_name = App\Models\Medicationcategoty::where('id', $o->med_category)->first();
                 @endphp
-
                 <div class="col-md-5">
                     @if ($attribute1->allow_doc_see_paid_recent_only ==  1)
 
                         {{ $category_name->med_desc }} <br>
-                        <p> {{ $o->medication }}</p>
-
+                        <p> {{ $o->medication }}
+                            @if ($o->payment_status == 1)
+                            <span class="mt-2 badge border border-success text-success mt-2">Paid</span>
+                            @else
+                            <span class="mt-2 badge border border-danger text-danger mt-2">Not paid</span>
+                            @endif
+                        </p>
                     @else
                     <div class="checkbox d-inline-block mr-3">
                         {{ $category_name->med_desc }} <br>
@@ -62,6 +72,7 @@
                     <p>{{ number_format($o->total_cost, 2) }}</p>
                 </div>
             @endforeach
+
             @if ($attribute1->allow_doc_see_paid_recent_only ==  0)
             <h5 style="margin-left: 60%">Total: <span id="totalAmount">0</span></h5>
             <h6>Print invoice ?<div class="checkboxPrintInvoice d-inline-block mr-3">

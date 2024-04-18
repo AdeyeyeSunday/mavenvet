@@ -66,7 +66,7 @@ public function encounter($id)
     $var =Medication :: get();
     $medication = Medicationcategoty::get();
 
-    $medication = Medicationcategoty::where('med_desc' ,'!=', 'Service')->WHERE('med_desc' ,'!=', 'laboratory')->get();
+    $medication = Medicationcategoty::where('med_desc' ,'!=', 'Service')->where('med_desc' ,'!=', 'laboratory')->get();
     $services = Service::get();
     $lab = Laboratory_test::get();
     $phy_exam= Physical_examination::get();
@@ -77,16 +77,13 @@ public function encounter($id)
     $sys_config = Systemconfiguration::first();
 
     if( $sys_config ->allow_doc_see_paid_recent_only == 1){
-        $outstandingPayment = Medication_request::where('pet_id', $encounterId->Pet_Card_Number)->where('payment_status', 0)
-        ->where('request_medication_token', $case_note->token ?? '')->get();
+        // this show all the recent item order
+        $outstandingPayment = Medication_request::where('pet_id', $encounterId->Pet_Card_Number)->where('request_medication_token', $case_note->token ?? '')->get();
     }
     else{
+        // this show all the outstading and new item order
         $outstandingPayment = Medication_request::where('pet_id', $encounterId->Pet_Card_Number)->where('payment_status', 0)->get();
     }
-
-
-
-
     return view("Admin.Clinic.encounter",['encounterId'=>$encounterId,'service'=>$service,
     'case_note'=>$case_note,'refer'=>$refer,'case_note_get_all'=>$case_note_get_all,
     'checkIfExit'=>$checkIfExit,'syptoms'=>$syptoms,'var'=>$var,'medication'=>$medication,
