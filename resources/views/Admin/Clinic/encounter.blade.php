@@ -572,7 +572,13 @@
                                                 id="token">
                                             <input type="hidden" value="{{ $encounterId->Pet_Card_Number }}"
                                                 name="case_id" id="">
-
+                                            @php
+                                                $randomNumber = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT); // Generate a random 6-digit number
+                                                $timestamp = time() % 100; // Get last 2 digits of current timestamp (seconds)
+                                                $uniqueNumber = $randomNumber . sprintf('%02d', $timestamp);
+                                            @endphp
+                                            <input type="hidden" name="tracking_no" value="{{ $uniqueNumber }}"
+                                                id="">
                                             <h6 class=" mb-1">Physical examination</h6>
                                             <select class="form-control" aria-label="Physical Examination"
                                                 name="physical_examination" required>
@@ -844,228 +850,151 @@
                     <div class="card card-block card-stretch card-height">
                         <div class="card-body">
 
-                            @php
-                                $totalSum = 0;
-                            @endphp
-
-                            @foreach ($req_medicaton as $p)
-                                @php
-                                    $totalSum += $p->total_cost;
-                                @endphp
-                            @endforeach
-
-                            @if (!$totalSum <= 0)
-                                {{-- @else --}}
-                                @if ($system_config->allow_doc__to_recieve_payment == 1)
-                                    <ul class="nav nav-tabs" id="myTab-three" role="tablist">
-                                        <li class="nav-item">
-                                            <a class="nav-link active" id="home-tab-three" data-toggle="tab"
-                                                href="#home-three" role="tab" aria-controls="home"
-                                                aria-selected="true">Payment section</a>
-                                        </li>
-
-
-
-                                        <h5 style="color: red">Overall cost: {{ $totalSum }}</h5>
-                                    </ul>
-
-                                    <div class="col-md-12">
-                                        <div class="checkbox d-inline-block mr-3">
-                                            <input type="checkbox" class="checkbox-input" id="checkbox1"> Select all item(s)
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-
-                                        <div class="col-md-10">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <h6 for="">Ref. Number</h6>
-                                                    <p>78363563 <strong>-</strong> 12-02-2025</p>
-
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <h6 for="">Details</h6>
-                                                    <div class="checkbox d-inline-block mr-3">
-                                                        <input type="checkbox" class="checkbox-input" id="checkbox1"> Blood chemistry profile
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <h6 for="">Amount</h6>
-                                                    <p>1000.10</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="tab-content" id="myTabContent-4">
-                                        <div class="tab-pane fade show active" id="home-three" role="tabpanel"
-                                            aria-labelledby="home-tab-three">
-                                            <div class="row">
-                                                <div class="col-md-8">
-                                                    <label for="">Payment type</label>
-                                                   <select name="" id="" class="form-control">
-                                                    <option value="" selected></option>
-                                                    <option value="">Cash</option>
-                                                    <option value="">Pos</option>
-                                                    <option value="">Trasfer</option>
-                                                    @if ($system_config->allow_doube_mode_of_payment == 1)
-                                                    <option value="">Cash & Transfer</option>
-                                                    <option value="">Cash & POS</option>
-                                                    @endif
-                                                   </select>
-                                                    <br>
-                                                </div>
-                                                    <div class="col-md-4">
-                                                        <button class="btn sidebar-bottom-btn btn-lg btn-block">Process
-                                                            payment</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                @endif
+                            @if ($outstandingPayment)
+                            <x-paymentSecton    :attribute1="$system_config" :attribute2="$outstandingPayment"></x-paymentSecton>
                             @endif
 
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="col-md-8">
-                                    <h6 class="mb-0"> {{ $encounterId->Pet_name }} [<small>
-                                            {{ $encounterId->Pet_Card_Number }}</small>]</h6>
-                                    <p class="mb-0">Breed: {{ $encounterId->Breed }}</p>
-                                    <p class="mb-0">Gender: {{ $encounterId->Gender }}</p>
-                                </div>
-                                <div class="col-md-4">
-                                    @if ($checkIfExit != null)
-                                        <img src="{{ asset('assets/images/icons8-hospital-bed-64.png') }}"
-                                            class="logo-invoice img-fluid mb-3">
-                                        <h6 style="color: red">On admission</h6>
-                                    @endif
-                                </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="col-md-8">
+                                <h6 class="mb-0"> {{ $encounterId->Pet_name }} [<small>
+                                        {{ $encounterId->Pet_Card_Number }}</small>]</h6>
+                                <p class="mb-0">Breed: {{ $encounterId->Breed }}</p>
+                                <p class="mb-0">Gender: {{ $encounterId->Gender }}</p>
                             </div>
+                            <div class="col-md-4">
+                                @if ($checkIfExit != null)
+                                    <img src="{{ asset('assets/images/icons8-hospital-bed-64.png') }}"
+                                        class="logo-invoice img-fluid mb-3">
+                                    <h6 style="color: red">On admission</h6>
+                                @endif
+                            </div>
+                        </div>
 
-                            @if ($encounterId->allergy ?? '' != null)
-                                <div class="alert text-white bg-secondary" role="alert">
-                                    <div class="iq-alert-icon">
-                                        <i class="ri-information-line"></i>
-                                    </div>
-                                    <div class="iq-alert-text">Allergy to <b> {{ $encounterId->allergy ?? '' }}</b> Please
-                                        check it out!</div>
+                        @if ($encounterId->allergy ?? '' != null)
+                            <div class="alert text-white bg-secondary" role="alert">
+                                <div class="iq-alert-icon">
+                                    <i class="ri-information-line"></i>
                                 </div>
-                            @endif
+                                <div class="iq-alert-text">Allergy to <b> {{ $encounterId->allergy ?? '' }}</b> Please
+                                    check it out!</div>
+                            </div>
+                        @endif
 
-                            <ul class="list-inline p-0 m-0">
-                                <li class="mb-2">
-                                    <div class="d-flex align-items-center">
-                                        <svg class="svg-icon mr-3" height="16" width="16"
-                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        </svg>
-                                        <p class="mb-0">{{ $encounterId->address ?? '' }}</p>
-                                    </div>
-                                </li>
+                        <ul class="list-inline p-0 m-0">
+                            <li class="mb-2">
+                                <div class="d-flex align-items-center">
+                                    <svg class="svg-icon mr-3" height="16" width="16"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                    <p class="mb-0">{{ $encounterId->address ?? '' }}</p>
+                                </div>
+                            </li>
 
-                                <li class="mb-2">
-                                    <div class="d-flex align-items-center">
-                                        <svg class="svg-icon mr-3" height="16" width="16"
-                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z" />
-                                        </svg>
-                                        <p class="mb-0">Date of birth : {{ $encounterId->Age ?? '' }}</p>
-                                    </div>
-                                </li>
-                                <li class="mb-2">
-                                    <div class="d-flex align-items-center">
-                                        <svg class="svg-icon mr-3" height="16" width="16"
-                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                                        </svg>
-                                        <p class="mb-0">{{ $encounterId->Owner_Phone_Number ?? '' }}</p>
-                                    </div>
-                                </li>
+                            <li class="mb-2">
+                                <div class="d-flex align-items-center">
+                                    <svg class="svg-icon mr-3" height="16" width="16"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z" />
+                                    </svg>
+                                    <p class="mb-0">Date of birth : {{ $encounterId->Age ?? '' }}</p>
+                                </div>
+                            </li>
+                            <li class="mb-2">
+                                <div class="d-flex align-items-center">
+                                    <svg class="svg-icon mr-3" height="16" width="16"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                    </svg>
+                                    <p class="mb-0">{{ $encounterId->Owner_Phone_Number ?? '' }}</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="d-flex align-items-center">
+                                    <svg class="svg-icon mr-3" height="16" width="16"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg>
+                                    <p class="mb-0">{{ $encounterId->Name_Of_Pet_Owner }}</p>
+                                </div>
+                            </li>
+                            <hr>
+
+                            @if ($case_note)
+                                <p>
+                                    Last visit: {{ $case_note->date ?? '' }}
+
+                                <h6 class=" mb-1">Veterinary Doctor</h6>
+                                @php
+                                    $username = App\Models\User::where('id', $case_note->user_id ?? '')->first();
+                                @endphp
+                                <p class="mb-0 font-size-14">{!! nl2br(e($username->name ?? '')) !!}</p>
+                                </p>
                                 <li>
                                     <div class="d-flex align-items-center">
-                                        <svg class="svg-icon mr-3" height="16" width="16"
-                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                        </svg>
-                                        <p class="mb-0">{{ $encounterId->Name_Of_Pet_Owner }}</p>
+                                        <button class="btn sidebar-bottom-btn btn-lg btn-block" data-toggle="modal"
+                                            data-target="#exampleModalLong">Pet medical history</button>
                                     </div>
                                 </li>
-                                <hr>
+                            @endif
+                        </ul>
 
-                                @if ($case_note)
-                                    <p>
-                                        Last visit: {{ $case_note->date ?? '' }}
-
-                                    <h6 class=" mb-1">Veterinary Doctor</h6>
-                                    @php
-                                        $username = App\Models\User::where('id', $case_note->user_id ?? '')->first();
-                                    @endphp
-                                    <p class="mb-0 font-size-14">{!! nl2br(e($username->name ?? '')) !!}</p>
-                                    </p>
-                                    <li>
-                                        <div class="d-flex align-items-center">
-                                            <button class="btn sidebar-bottom-btn btn-lg btn-block" data-toggle="modal"
-                                                data-target="#exampleModalLong">Pet medical history</button>
-                                        </div>
-                                    </li>
-                                @endif
-                            </ul>
-
-                            <br>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <a href="">Request for Imaging</a>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <a href="">Request Others</a>
-                                </div>
-
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="">Request for Imaging</a>
                             </div>
-                            <br>
-                            {{-- <br> --}}
-                            {{-- refer pat start from here --}}
-                            <p>You have the option to transfer the pet to another clinic for treatment</p>
-                            <form action="{{ route('Admin.Clinic.refer_store') }}" id="referred_form" method="POST"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <input type="hidden" value="{{ $encounterId->Pet_Card_Number }}" name="case_id"
-                                    id="case_id">
-                                <h6 class=" mb-1">Refer to a different clinic</h6>
-                                <input type="text" placeholder="Refer to a different clinic" class="form-control"
-                                    name="clinic_name" id="clinic_name">
-                                <br>
-                                <h6 class=" mb-1">Medical practitioner's name</h6>
-                                <input type="text" class="form-control" placeholder="Medical practitioner's name"
-                                    name="practitioner_name" id="practitioner_name">
-                                <br>
-                                <h6 class=" mb-1">Purpose of referral</h6>
-                                <textarea id="" class="form-control" name="purpose_of_referral" cols="3" rows="3"></textarea>
-                                <br>
-                                @if ($system_config->disable_refer == 1)
-                                    <button type="submit" id="process_button"
-                                        class="btn sidebar-bottom-btn btn-lg btn-block">Process</button>
-                                @else
-                                    <button type="submit" disabled id="process_button"
-                                        class="btn sidebar-bottom-btn btn-lg btn-block">Process</button>
-                                @endif
-                            </form>
+
+                            <div class="col-md-6">
+                                <a href="">Request Others</a>
+                            </div>
+
                         </div>
+                        <br>
+                        {{-- <br> --}}
+                        {{-- refer pat start from here --}}
+                        <p>You have the option to transfer the pet to another clinic for treatment</p>
+                        <form action="{{ route('Admin.Clinic.refer_store') }}" id="referred_form" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+                            <input type="hidden" value="{{ $encounterId->Pet_Card_Number }}" name="case_id"
+                                id="case_id">
+
+
+
+                            <h6 class=" mb-1">Refer to a different clinic</h6>
+                            <input type="text" placeholder="Refer to a different clinic" class="form-control"
+                                name="clinic_name" id="clinic_name">
+                            <br>
+                            <h6 class=" mb-1">Medical practitioner's name</h6>
+                            <input type="text" class="form-control" placeholder="Medical practitioner's name"
+                                name="practitioner_name" id="practitioner_name">
+                            <br>
+                            <h6 class=" mb-1">Purpose of referral</h6>
+                            <textarea id="" class="form-control" name="purpose_of_referral" cols="3" rows="3"></textarea>
+                            <br>
+                            @if ($system_config->disable_refer == 1)
+                                <button type="submit" id="process_button"
+                                    class="btn sidebar-bottom-btn btn-lg btn-block">Process</button>
+                            @else
+                                <button type="submit" disabled id="process_button"
+                                    class="btn sidebar-bottom-btn btn-lg btn-block">Process</button>
+                            @endif
+                        </form>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
         </div>
         </div>
@@ -1323,11 +1252,11 @@
         <x-viewMedication :attribute1="$req_medicaton"></x-viewMedication>
 
         {{-- medication request --}}
-        <x-request_medication :var="$var" :medication="$medication" :token="$token"
-            :attribute2="$encounterId->Pet_Card_Number"></x-request_medication>
+        <x-request_medication :var="$var" :medication="$medication" :token="$token" :attribute2="$encounterId->Pet_Card_Number"
+            :uniqueNumber="$uniqueNumber"></x-request_medication>
 
         {{-- view Others request --}}
-        <x-other_service :attribute1="$token" :attribute2="$encounterId->Pet_Card_Number" :services="$services"></x-other_service>
+        <x-other_service :attribute1="$token" :attribute2="$encounterId->Pet_Card_Number" :services="$services" :uniqueNumber="$uniqueNumber"></x-other_service>
 
 
 

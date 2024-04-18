@@ -14,6 +14,8 @@
                     <div>
                         <input type="hidden" value="{{ $attribute1 }}" name="token" id="">
                         <input type="hidden" value="{{ $attribute2 }}" name="case_id" id="">
+                        <input type="hidden" name="tracking_no" value="{{ $uniqueNumber }}"
+                        id="">
                         <div class="row firstRow3" id="medication-field">
                             <input type="hidden"  name="ser_category" id="ser_category" class="form-control category-input">
                             <div class="col-md-5 form-group">

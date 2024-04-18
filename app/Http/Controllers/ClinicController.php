@@ -72,11 +72,13 @@ public function encounter($id)
     $dia = Diagnoses::get();
 
     $req_medicaton = Medication_request::where('request_medication_token', $case_note->token ?? '')->get();
+    $outstandingPayment = Medication_request::where('pet_id', $encounterId->Pet_Card_Number)->where('payment_status', 0)->get();
 
     return view("Admin.Clinic.encounter",['encounterId'=>$encounterId,'service'=>$service,
     'case_note'=>$case_note,'refer'=>$refer,'case_note_get_all'=>$case_note_get_all,
     'checkIfExit'=>$checkIfExit,'syptoms'=>$syptoms,'var'=>$var,'medication'=>$medication,
-    'req_medicaton'=>$req_medicaton,'lab'=>$lab,'services'=>$services,'phy_exam'=>$phy_exam,'dia'=>$dia]);
+    'req_medicaton'=>$req_medicaton,'lab'=>$lab,'services'=>$services,'phy_exam'=>$phy_exam,
+    'dia'=>$dia,'outstandingPayment'=>$outstandingPayment]);
 }
 
 
@@ -214,8 +216,9 @@ public function encounter_store_medication(Request $request)
              'request_medication_token'=>$request->token,
              'user_id'=>$userId,
              'pet_id'=>$request->case_id,
+             'tracking_no'=>$request->tracking_no,
         ];
-        // dd($insertData);
+        //  dd($insertData);
     }
     $checkIfExsit = Medication_request::where('request_medication_token',$request->token)->get();
    if($checkIfExsit){
@@ -249,9 +252,11 @@ public function service_store(Request $request)
              'medication' => $request->main_name[$x],
              'price' => $request->price[$x],
              'qty' => $request->qty[$x],
+             'total_cost'=>$request->price[$x] * $request->qty[$x],
              'request_medication_token'=>$request->token,
              'user_id'=>$userId,
              'pet_id'=>$request->case_id,
+             'tracking_no'=>$request->tracking_no,
         ];
     }
     $checkIfExsit = Medication_request::where('request_medication_token',$request->token)->where('med_category', $request->ser_category)->get();
@@ -298,7 +303,6 @@ public function encounter_store(Request $request){
     } elseif ($request->filled('flexRadioDefault6')) {
         $t = $request->input('flexRadioDefault6');
     }
-
 
     $d = '';
     if ($request->filled('flexRadioDefault7')) {
@@ -354,6 +358,7 @@ public function encounter_store(Request $request){
     $casenote['history_presenting_illness'] = $request->history_presenting_illness;
     $casenote['case_id'] = $request->case_id;
     $casenote['token'] = $request->token;
+    $casenote['tracking_no'] = $request->tracking_no;
     $casenote['user_id'] = Auth::user()->id;
     $casenote['date'] = date("d-F-Y");
     $casenote['month'] = date("F");
@@ -379,7 +384,6 @@ public function encounter_store(Request $request){
         $labDesc = $parts[1];
         $labPrice = $parts[2];
         $userId = Auth::user()->id;
-
         $test->token = $request->input('token');
         $test->test_request = $parts[1];
         $test->user_id = Auth::user()->id;
@@ -390,10 +394,11 @@ public function encounter_store(Request $request){
         $lab_request->medication = $labDesc;
         $lab_request->price = $labPrice;
         $lab_request->qty = 1;
-
+        $lab_request->total_cost = $labPrice * $lab_request->qty;
         $lab_request->request_medication_token =  $request->input('token');
         $lab_request->user_id = $userId;
         $lab_request->pet_id = $request->case_id;
+        $lab_request->tracking_no =  $request->tracking_no;
         $lab_request->save();
     }
 
