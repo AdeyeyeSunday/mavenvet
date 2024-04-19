@@ -849,9 +849,6 @@
                         <div class="card-body">
 
                             {{-- {{ $outstandingPayment-> }}; --}}
-                            @if ($outstandingPayment-> isNotEmpty())
-                            <x-paymentSecton    :attribute1="$system_config" :attribute2="$outstandingPayment" :attribute3="$case_note->id" ></x-paymentSecton>
-                            @endif
 
 
                         <div class="d-flex align-items-center mb-3">
@@ -949,6 +946,10 @@
                             @endif
                         </ul>
 
+                        @if ($outstandingPayment-> isNotEmpty())
+                        <x-paymentSecton    :attribute1="$system_config" :attribute2="$outstandingPayment" :attribute3="$case_note->id" ></x-paymentSecton>
+                        @endif
+
                         <br>
                         <div class="row">
                             <div class="col-md-6">
@@ -961,6 +962,8 @@
 
                         </div>
                         <br>
+
+
                         {{-- <br> --}}
                         {{-- refer pat start from here --}}
                         <p>You have the option to transfer the pet to another clinic for treatment</p>
