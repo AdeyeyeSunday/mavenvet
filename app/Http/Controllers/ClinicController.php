@@ -71,19 +71,8 @@ public function encounter($id)
     $lab = Laboratory_test::get();
     $phy_exam= Physical_examination::get();
     $dia = Diagnoses::get();
-
     $req_medicaton = Medication_request::where('request_medication_token', $case_note->token ?? '')->get();
-
-    $sys_config = Systemconfiguration::first();
-
-    if( $sys_config ->allow_doc_see_paid_recent_only == 1){
-        // this show all the recent item order
-        $outstandingPayment = Medication_request::where('pet_id', $encounterId->Pet_Card_Number)->where('request_medication_token', $case_note->token ?? '')->get();
-    }
-    else{
-        // this show all the outstading and new item order
-        $outstandingPayment = Medication_request::where('pet_id', $encounterId->Pet_Card_Number)->where('payment_status', 0)->get();
-    }
+    $outstandingPayment = Medication_request::where('pet_id', $encounterId->Pet_Card_Number)->where('request_medication_token', $case_note->token ?? '')->get();
     return view("Admin.Clinic.encounter",['encounterId'=>$encounterId,'service'=>$service,
     'case_note'=>$case_note,'refer'=>$refer,'case_note_get_all'=>$case_note_get_all,
     'checkIfExit'=>$checkIfExit,'syptoms'=>$syptoms,'var'=>$var,'medication'=>$medication,
@@ -92,10 +81,25 @@ public function encounter($id)
 }
 
 
+public function encounter_payment(Request $request,$id){
+
+    $getid = $id;
+    $checkedItems = $request->input('checked_items');
+    $payment_type = $request->payment_type;
+    $amount_paid = $request->amount_paid;
+    Casenote::where('id', $getid)->update(["amount_paid"=> $amount_paid, "payment_type"=>$payment_type]);
+    foreach($checkedItems as $key => $checkedItem){
+        Medication_request::where('id', $checkedItem)->update(['payment_status' => 1, 'payment_type'=>$payment_type]);
+    }
+ return redirect()->route("Admin.Clinic.Clinic_list");
+}
+
+
 public function getSubcategories(Request $request)
 {
     $categoryId = $request->input('category_id');
     $subcategories = Medication::where('med_category_id', $categoryId)->get(['id','desc','unit']);
+
     // dd($subcategories );
     return response()->json($subcategories);
 }
@@ -163,7 +167,6 @@ public function encounter_update(Request $request, $id)
     ]);
    return back();
 }
-
 
 
 public function encounter_store_image(Request $request)
@@ -348,38 +351,6 @@ public function encounter_store(Request $request){
         $diseases = $request->input('flexRadioDefault44');
     }
 
-    $casenote = request()->validate([
-         'physical_examination'=>'required',
-         'temp'=>'required',
-         'pulse'=>'required',
-         'resp'=>'required',
-         'diagnosis'=>'required',
-         'result'=>'required',
-         'visual_evaluation'=>'required',
-         'token'=>'required',
-         'next_appointment'=>'required',
-         'next_vaccination'=>'required',
-    ]);
-    if(request('pet_document')){
-        $casenote['file']= request('pet_document')->store('employee');
-    }
-
-    // dd(request('pet_document'));
-    $casenote['other_examination'] = $request->other_examination;
-    $casenote['presenting_complain_symptoms'] = $sym_pr;
-    $casenote['history_presenting_illness'] = $request->history_presenting_illness;
-    $casenote['case_id'] = $request->case_id;
-    $casenote['token'] = $request->token;
-    $casenote['tracking_no'] = $request->tracking_no;
-    $casenote['user_id'] = Auth::user()->id;
-    $casenote['date'] = date("d-F-Y");
-    $casenote['month'] = date("F");
-    $casenote['year'] = date("Y");
-    $casenote['follow_up_status'] = $t;
-    $casenote['drug_compliance'] =  $d;
-    $casenote['diseases_type'] =  $diseases;
-     Casenote::create($casenote);
-
     $test = new TestRequest();
     if( $request->input('test_request') == null){
         $test->token = $request->input('token');
@@ -414,6 +385,43 @@ public function encounter_store(Request $request){
         $lab_request->date = now();
         $lab_request->save();
     }
+
+
+    $casenote = request()->validate([
+         'physical_examination'=>'required',
+         'temp'=>'required',
+         'pulse'=>'required',
+         'resp'=>'required',
+         'diagnosis'=>'required',
+         'result'=>'required',
+         'visual_evaluation'=>'required',
+         'token'=>'required',
+         'next_appointment'=>'required',
+         'next_vaccination'=>'required',
+    ]);
+    if(request('pet_document')){
+        $casenote['file']= request('pet_document')->store('employee');
+    }
+
+    //  this select all the item that was order with the token to all d todtal amount from d request_medication/
+    $getamountBills = Medication_request::where('request_medication_token',  $request->token)->where('tracking_no', $request->tracking_no)->sum('total_cost');
+
+    // dd(request('pet_document'));
+    $casenote['other_examination'] = $request->other_examination;
+    $casenote['presenting_complain_symptoms'] = $sym_pr;
+    $casenote['history_presenting_illness'] = $request->history_presenting_illness;
+    $casenote['case_id'] = $request->case_id;
+    $casenote['token'] = $request->token;
+    $casenote['tracking_no'] = $request->tracking_no;
+    $casenote['user_id'] = Auth::user()->id;
+    $casenote['date'] = date("d-F-Y");
+    $casenote['amt_charged'] = $getamountBills;
+    $casenote['month'] = date("F");
+    $casenote['year'] = date("Y");
+    $casenote['follow_up_status'] = $t;
+    $casenote['drug_compliance'] =  $d;
+    $casenote['diseases_type'] =  $diseases;
+     Casenote::create($casenote);
 
     $admissionMessage ="";
     $checkIfExists = Admission::where('pet_id', $request->case_id)->where('status',0)->first();

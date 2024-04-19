@@ -844,15 +844,13 @@
                     </div>
                 </div>
 
-
-
                 <div class="col-lg-4 card-profile">
                     <div class="card card-block card-stretch card-height">
                         <div class="card-body">
 
                             {{-- {{ $outstandingPayment-> }}; --}}
                             @if ($outstandingPayment-> isNotEmpty())
-                            <x-paymentSecton    :attribute1="$system_config" :attribute2="$outstandingPayment"></x-paymentSecton>
+                            <x-paymentSecton    :attribute1="$system_config" :attribute2="$outstandingPayment" :attribute3="$case_note->id" ></x-paymentSecton>
                             @endif
 
 
@@ -934,7 +932,7 @@
 
                             @if ($case_note)
                                 <p>
-                                    Last visit: {{ $case_note->date ?? '' }}
+                                Last visit: {{ $case_note->date ?? '' }}
 
                                 <h6 class=" mb-1">Veterinary Doctor</h6>
                                 @php
@@ -1374,7 +1372,6 @@
 
             document.getElementById('customCheck-4').addEventListener('change', function() {
                 var progressDropdown = document.getElementById('progressDropdown');
-
                 if (this.checked) {
                     progressDropdown.style.display = 'none';
                 }
