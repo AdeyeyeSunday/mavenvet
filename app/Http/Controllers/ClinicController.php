@@ -72,35 +72,68 @@ public function encounter($id)
     $phy_exam= Physical_examination::get();
     $dia = Diagnoses::get();
     $req_medicaton = Medication_request::where('request_medication_token', $case_note->token ?? '')->get();
+
+    $sumDue = Casenote::where('case_id', $encounterId->Pet_Card_Number)->sum("due");
+
     $outstandingPayment = Medication_request::where('pet_id', $encounterId->Pet_Card_Number)->where('request_medication_token', $case_note->token ?? '')->get();
+
+
     return view("Admin.Clinic.encounter",['encounterId'=>$encounterId,'service'=>$service,
     'case_note'=>$case_note,'refer'=>$refer,'case_note_get_all'=>$case_note_get_all,
     'checkIfExit'=>$checkIfExit,'syptoms'=>$syptoms,'var'=>$var,'medication'=>$medication,
     'req_medicaton'=>$req_medicaton,'lab'=>$lab,'services'=>$services,'phy_exam'=>$phy_exam,
-    'dia'=>$dia,'outstandingPayment'=>$outstandingPayment]);
+    'dia'=>$dia,'outstandingPayment'=>$outstandingPayment,'sumDue'=>$sumDue]);
 }
 
 
 public function encounter_payment(Request $request,$id){
-
     $getid = $id;
-    $checkedItems = $request->input('checked_items');
     $payment_type = $request->payment_type;
     $amount_paid = $request->amount_paid;
-    Casenote::where('id', $getid)->update(["amount_paid"=> $amount_paid, "payment_type"=>$payment_type]);
+    $due =$request->amount_charge - $request->amount_paid;
+    $checkedItemsAmount = $request->input('checked_items_amount');
+    $amountInputed = $request->input('amount_inputed');
+    $price_cost = $request->input('price_cost');
+    $checkedItems = $request->input('checked_items');
+    Casenote::where('id', $getid)->update(["amount_paid"=> $amount_paid, "payment_type"=>$payment_type, 'due'=>$due]);
     foreach($checkedItems as $key => $checkedItem){
-        Medication_request::where('id', $checkedItem)->update(['payment_status' => 1, 'payment_type'=>$payment_type]);
+
+        $amount = $checkedItemsAmount[$checkedItem] ?? $amountInputed[$checkedItem];
+        $due = $price_cost[$checkedItem] - $amountInputed[$checkedItem];
+        Medication_request::where('id', $checkedItem)->update(['payment_status' => 1, 'payment_type'=>$payment_type,'amount_paid'=>$amount, 'due'=>$due]);
     }
  return redirect()->route("Admin.Clinic.Clinic_list");
 }
+
+
+public function encounter_payment_update(Request $request,$id){
+    $id = $request->update_id;
+    dd($id);
+
+    // $update_payment = $request->new__payment;
+    // $tracking_no = $request->tracking_no;
+    // $getPreviousPayment =  Medication_request::where('id', $id)->first();
+    // $getCasePrivious = Casenote::where('tracking_no', $tracking_no)->first();
+    // $newCaseUpdatePayment =  $getCasePrivious->amount_paid  + $update_payment;
+    // $newCaseUpdatePaymentDue = $getCasePrivious->due -$update_payment;
+    //  $newPayment =  $update_payment  +  $getPreviousPayment->amount_paid;
+    //  $newDue =  $update_payment - $getPreviousPayment->due;
+    //
+    // Medication_request::where('id', $id)->update(['amount_paid'=> $newPayment, 'due'=>$newDue]);
+    // Casenote::where('tracking_no', $tracking_no)->update(['amount_paid'=>$newCaseUpdatePayment, 'due'=>$newCaseUpdatePaymentDue]);
+    // return response()->json([
+    //     'status'=>200,
+    //     'message'=>"Payment updated successfully"
+    // ]);
+}
+
+
 
 
 public function getSubcategories(Request $request)
 {
     $categoryId = $request->input('category_id');
     $subcategories = Medication::where('med_category_id', $categoryId)->get(['id','desc','unit']);
-
-    // dd($subcategories );
     return response()->json($subcategories);
 }
 
@@ -108,10 +141,11 @@ public function getSubcategories(Request $request)
 public function getSubservices(Request $request)
 {
     $categoryId = $request->input('category_id');
-
     $subservice = Service::where('service_id', $categoryId)->first();
-
-    return response()->json(['amount' => $subservice->amount,'service_category'=>$subservice->service_category,'service'=>$subservice->service]);
+    return response()->json(['amount' => $subservice->amount,
+    'service_category'=>$subservice->service_category,
+    'service'=>$subservice->service,
+    'allow_double_payment'=>$subservice->allow_double_payment]);
 }
 
 
@@ -147,13 +181,31 @@ public function getMedicationPrice(Request $request)
 {
     $medicationId = $request->input('medication_id');
     $medication = Medication::find($medicationId);
+
     if ($medication) {
-        return response()->json(['price' => $medication->price, 'dosage'=>$medication->dosage,'desc'=>$medication->desc,
-        'unit'=>$medication->unit,'allow_edit_price'=>$medication->allow_edit_price,'allow_edit_unit',$medication->allow_edit_unit,
-         'allow_edit_dosage',$medication->allow_edit_dosage]);
+        return response()->json([
+            'price' => $medication->price,
+            'dosage' => $medication->dosage,
+            'desc' => $medication->desc,
+            'unit' => $medication->unit,
+            'allow_edit_price' => $medication->allow_edit_price,
+            'allow_edit_unit' => $medication->allow_edit_unit,
+            'allow_edit_dosage' => $medication->allow_edit_dosage,
+            'allow_double_payment' => $medication->allow_double_payment
+        ]);
     } else {
-        return response()->json(['price' => '', 'dosage'=>'','unit'=>'','allow_edit_dosage'=>'','allow_edit_unit'=>'','allow_edit_price'=>'']);
+        return response()->json([
+            'price' => '',
+            'dosage' => '',
+            'desc' => '',
+            'unit' => '',
+            'allow_edit_dosage' => '',
+            'allow_edit_unit' => '',
+            'allow_edit_price' => '',
+            'allow_double_payment' => ''
+        ]);
     }
+
 }
 
 public function encounter_update(Request $request, $id)
@@ -225,6 +277,7 @@ public function encounter_store_medication(Request $request)
              'duration' => $request->duration[$x],
              'unit' => $request->unit[$x],
              'how_offen' => $request->how_offen[$x],
+             'allow_double_payment' => $request->allow_double_payment[$x],
              'days_weeks' => $request->days_weeks[$x],
              'request_medication_token'=>$request->token,
              'user_id'=>$userId,
@@ -267,6 +320,7 @@ public function service_store(Request $request)
              'price' => $request->price[$x],
              'qty' => $request->qty[$x],
              'total_cost'=>$request->price[$x] * $request->qty[$x],
+             'allow_double_payment' => $request->allow_double_payment[$x],
              'request_medication_token'=>$request->token,
              'user_id'=>$userId,
              'pet_id'=>$request->case_id,
@@ -274,6 +328,8 @@ public function service_store(Request $request)
              'date'=>now()
         ];
     }
+
+    // dd($insertData);
     $checkIfExsit = Medication_request::where('request_medication_token',$request->token)->where('med_category', $request->ser_category)->get();
    if($checkIfExsit){
     if($checkIfExsit  != null){

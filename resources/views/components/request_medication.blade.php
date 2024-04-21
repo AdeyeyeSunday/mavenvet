@@ -41,8 +41,13 @@
                                                                                 <h6 for="">Price</h6>
                                                                                 <input type="text" class="form-control price-input" id="price" name="price[]" required
                                                                                     placeholder="Enter amount" class="w-100">
+                                                                                    <input type="text" class="form-control allow_double_payment_input" id="allow_double_payment" name="allow_double_payment[]" required
+                                                                                    placeholder="Enter amount">
 
                                                                             </div>
+
+
+
                                                                             <div class="col-md-1 form-group">
                                                                                 <h6 for="">Dose</h6>
                                                                                 <select name="qty[]" id="qty" class="form-control" required>
@@ -148,9 +153,10 @@
                                                                             <div class="col-md-2 form-group" hidden>
                                                                                 <input type="text" class="form-control price-input" id="price" name="price[]" required
                                                                                     placeholder="Enter amount" class="w-100">
+                                                                                    <input type="text" class="form-control allow_double_payment_input" id="allow_double_payment" name="allow_double_payment[]" required
+                                                                                    placeholder="Enter amount">
                                                                             </div>
                                                                             <div class="col-md-1 form-group">
-
                                                                                 <select name="qty[]" id="qty" class="form-control" required>
                                                                                     @for ($i = 1; $i <= 30; $i++)
                                                                                         <option value="{{ $i }}">{{ $i }}</option>
@@ -158,7 +164,6 @@
                                                                                </select>
                                                                             </div>
                                                                             <div class="col-md-2 form-group">
-
                                                                                 <select name="how_offen[]" id="how_offen" class="form-control" required>
                                                                                    <option value="" selected></option>
                                                                                    <option value="Once daily">Once daily</option>
@@ -301,16 +306,19 @@
                                         var dosageInput = $(this).closest('.row').find('.dosage-input');
                                         var unitInput = $(this).closest('.row').find('.unit-input');
                                         var medicationMain_name = $(this).closest('.row').find('.main_name');
-                                        // var qty = $(this).closest('.medication-qty').find('.medication-qty');
+                                        var allowDoublePaymentInput = $(this).closest('.row').find('.allow_double_payment_input');
+
                                         $.ajax({
                                             url: '/Admin/Clinic/getMedicationPrice',
                                             type: 'GET',
                                             data: { medication_id: medicationId },
                                             success: function(response) {
+                                                // console.log(response)
                                                 priceInput.val(response.price);
                                                 dosageInput.val(response.dosage);
                                                 unitInput.val(response.unit);
-                                                medicationMain_name.val(response.desc)
+                                                medicationMain_name.val(response.desc);
+                                              allowDoublePaymentInput.val(response.allow_double_payment);
                                                 // Assuming your input field has an id of "myInput"
                                                 document.getElementById("").removeAttribute("readonly");
 

@@ -13,7 +13,7 @@
                                 role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active show" data-toggle="pill" href="#profile1" role="tab"
-                                        aria-selected="false"> Pet history</a>
+                                        aria-selected="false"> {{ $encounterId->Pet_name }} history</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" data-toggle="pill" href="#profile2" role="tab"
@@ -35,7 +35,7 @@
                                                 weight, vaccinations, medications, surgeries, and hospital visits. Also,
                                                 note any tests conducted and their outcomes.</p>
                                             @if ($case_note)
-                                                <h5>Past health status</h5>
+                                                {{-- <p>Past health status</p> --}}
                                                 <br>
                                                 <ul class="list-inline p-0 m-0 w-100">
                                                     <li>
@@ -852,17 +852,20 @@
 
 
                         <div class="d-flex align-items-center mb-3">
-                            <div class="col-md-8">
-                                <h6 class="mb-0"> {{ $encounterId->Pet_name }} [<small>
-                                        {{ $encounterId->Pet_Card_Number }}</small>]</h6>
+                            <div class="col-md-6">
+                                <h5 class="mb-0"> {{ $encounterId->Pet_name }} [
+                                        {{ $encounterId->Pet_Card_Number }}]</h5>
                                 <p class="mb-0">Breed: {{ $encounterId->Breed }}</p>
                                 <p class="mb-0">Gender: {{ $encounterId->Gender }}</p>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 @if ($checkIfExit != null)
                                     <img src="{{ asset('assets/images/icons8-hospital-bed-64.png') }}"
                                         class="logo-invoice img-fluid mb-3">
                                     <h6 style="color: red">On admission</h6>
+                                @endif
+                                @if ($sumDue > 0)
+                                <center> <a href=""><h5>Unpaid charges  {{ number_format($sumDue,2) }} </h5> </a> </center>
                                 @endif
                             </div>
                         </div>
@@ -925,6 +928,8 @@
                                     <p class="mb-0">{{ $encounterId->Name_Of_Pet_Owner }}</p>
                                 </div>
                             </li>
+
+
                             <hr>
 
                             @if ($case_note)
@@ -951,7 +956,7 @@
                         @endif
 
                         <br>
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-md-6">
                                 <a href="">Request for Imaging</a>
                             </div>
@@ -961,7 +966,7 @@
                             </div>
 
                         </div>
-                        <br>
+                        <br> --}}
 
 
                         {{-- <br> --}}
@@ -1001,6 +1006,7 @@
         </div>
         </div>
         </div>
+
 
 
         {{-- ViewMedicalHistory modal --}}
@@ -1248,7 +1254,7 @@
 
 
         {{-- //this calling upload document function --}}
-        <x-image_request :attribute1="$token" :attribute2="$encounterId->Pet_Card_Number" />f
+        <x-image_request :attribute1="$token" :attribute2="$encounterId->Pet_Card_Number" />
         </div>
 
         {{-- view medication --}}
@@ -1451,6 +1457,9 @@
                     });
                 });
             });
+
+
+
 
 
             // this for updaing case note

@@ -1,160 +1,251 @@
-@if ($attribute1->allow_doc__to_recieve_payment == 1)
-    <ul class="nav nav-tabs" id="myTab-three" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" id="home-tab-three" data-toggle="tab" href="#home-three" role="tab"
-                aria-controls="home" aria-selected="true">
-                    Most recent doctor's orders
-            </a>
-        </li>
-    </ul>
-
-    <div class="col-md-12">
-        <br>
-        <div class="row">
-            <div class="col-md-4">
-                <h6 for="">Ref. Number</h6>
-            </div>
-            <div class="col-md-5">
-                <h6 for="">Details</h6>
-            </div>
-            <div class="col-md-3">
-                <h6 for="">Amount</h6>
-            </div>
-            <hr>
-            @foreach ($attribute2 as $o)
-                @if ($o->payment_status == 1)
-                    <div class="col-md-4" style="border-left: 5px solid green; padding-left: 10px;">
-                        <p>{{ $o->tracking_no }} <strong>-</strong>{{ $o->date }}</p>
-                    </div>
-                @else
-                    <div class="col-md-4" style="border-left: 5px solid orange; padding-left: 10px;">
-                        <p>{{ $o->tracking_no }} <strong>-</strong> {{ $o->date }}</p>
-                    </div>
-                @endif
-                @php
-                    $category_name = App\Models\Medicationcategoty::where('id', $o->med_category)->first();
-                @endphp
-                <div class="col-md-5">
-                    @if ($attribute1->allow_doc_see_paid_recent_only == 1)
-                        {{ $category_name->med_desc }} <br>
-                        <p> {{ $o->medication }}
-                            @if ($o->payment_status == 1)
-                                <span class="mt-2 badge border border-success text-success mt-2">Paid</span>
-                            @else
-                                <span class="mt-2 badge border border-danger text-danger mt-2">Not paid</span>
-                            @endif
-                        </p>
-                    @else
-                        <div class="checkbox d-inline-block mr-3">
-                            <form action="{{ route("Admin.Clinic.encounter_payment",$attribute3 )  }}" enctype="multipart/form-data" method="POST">
-                                @csrf
-                                {{ $category_name->med_desc }} <br>
+<form action="{{ route('Admin.Clinic.encounter_payment', $attribute3) }}" enctype="multipart/form-data" method="POST">
+    @csrf
+    @if (
+        ($attribute1->allow_doc__to_recieve_payment == 1 && $attribute1->allow_doc_see_paid_recent_only == 0) ||
+            ($attribute1->allow_doc__to_recieve_payment == 0 && $attribute1->allow_doc_see_paid_recent_only == 1))
+        <div class="col-md-12">
+            <ul class="nav nav-" id="myTab-three" role="tablist">
+                <li class="nav-item">
+                    <br>
+                    <h5 id="home-tab-three" data-toggle="tab" href="#home-three" role="tab" aria-controls="home"
+                        aria-selected="true">Most recent doctor order(s)</h5>
+                    <hr>
+                </li>
+            </ul>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ref. Number</th>
+                        <th>Details</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($attribute2 as $o)
+                        {{-- this update payment --}}
+                        <tr>
+                            <td>
                                 @if ($o->payment_status == 1)
-                                {{-- <input type="" disabled name="checked_items[]" value="{{ $o->id }}" class="checkbox-input checkbox-item" data-cost="{{ $o->total_cost }}"> --}}
-                                {{ $o->medication }}<span class="mt-2 badge border border-success text-success mt-2">Paid</span>
+                                    <div style="border-left: 5px solid green; padding-left: 10px;">
+                                        <p>{{ $o->tracking_no }} <strong>-</strong>{{ $o->date }}</p>
+                                    </div>
                                 @else
-                                <input type="checkbox" name="checked_items[]" value="{{ $o->id }}" class="checkbox-input checkbox-item" data-cost="{{ $o->total_cost }}">
-                                {{ $o->medication }}
+                                    <div style="border-left: 5px solid orange; padding-left: 10px;">
+                                        <p>{{ $o->tracking_no }} <strong>-</strong> {{ $o->date }}</p>
+                                    </div>
                                 @endif
+                            </td>
+                            <td>
+                                @php
+                                    $category_name = App\Models\Medicationcategoty::where(
+                                        'id',
+                                        $o->med_category,
+                                    )->first();
+                                @endphp
 
-                        </div>
+
+                                @if ($attribute1->allow_doc_see_paid_recent_only == 1)
+                                    {{ $category_name->med_desc }} <br>
+                                    <p> {{ $o->medication }}
+                                        @if ($o->payment_status == 1)
+                                            <span class="mt-2 badge border border-success text-success mt-2">Paid</span>
+                                        @else
+                                            <span class="mt-2 badge border border-danger text-danger mt-2">Not
+                                                paid</span>
+                                        @endif
+                                    </p>
+                                @else
+                                    <div class="checkbox d-inline-block mr-3">
+                                        {{ $category_name->med_desc }} <br>
+                                        @if ($o->payment_status == 1)
+                                            {{ $o->medication }}<span
+                                                class="mt-2 badge border border-success text-success mt-2">Paid</span>
+                                        @else
+                                            <input type="checkbox" name="checked_items[]" value="{{ $o->id }}"
+                                                class="checkbox-input checkbox-item" data-cost="{{ $o->total_cost }}">
+                                            {{ $o->medication }}
+                                        @endif
+                                    </div>
+                                @endif
+                            </td>
+
+                            <td>
+                                @if ($o->payment_status == 1)
+                                    @if ($o->amount_paid != $o->total_cost)
+                                        <strike>
+                                            <p>{{ number_format($o->total_cost, 2) }}</p>
+                                        </strike>
+                                        @if ($o->due > 0)
+                                            <p style="color: maroon">Balance: {{ number_format($o->due, 2) }}</p>
+                                        @endif
+
+                                        <button type="button" class="btn btn-sm"
+                                            onclick="updatePayment({{ $o->id }}, {{ $o->due }} ,{{ $o->tracking_no }})"
+                                            data-toggle="modal" data-target="#exampleModalCenterUpdatePayment2"
+                                            style="color: red">Update payment</button>
+
+
+                                        <script>
+                                            function updatePayment(value, due) {
+                                                // Set the value and amount in the form fields
+                                                document.getElementById("selected_id").value = value;
+                                                document.getElementById("due").value = due;
+                                                document.getElementById("tracking_no").value = tracking_no;
+                                            }
+                                        </script>
+                                    @else
+                                        <p>{{ number_format($o->amount_paid, 2) }}</p>
+                                    @endif
+                                @else
+                                    <p>{{ number_format($o->total_cost, 2) }}</p>
+                                @endif
+                                <input type="hidden" value="{{ number_format($o->total_cost, 2) }}"
+                                    name="price_cost[{{ $o->id }}]" style="width: 90%">
+                                @if ($attribute1->allow_doc_see_paid_recent_only != 1)
+                                    @if ($o->payment_status != 1)
+                                        <input type="hidden" value="{{ $o->total_cost }}"
+                                            name="price_cost[{{ $o->id }}]" class="form-control"
+                                            style="width: 100%">
+
+                                        @if ($o->allow_double_payment == 1)
+                                            <input type="number" value="{{ $o->total_cost }}"
+                                                name="amount_inputed[{{ $o->id }}]" class="form-control"
+                                                style="width: 100%">
+                                            <small style="color: maroon">Part payment (optional) </small>
+                                        @else
+                                            <input type="hidden" value="{{ $o->total_cost }}"
+                                                name="amount_inputed[{{ $o->id }}]" class="form-control"
+                                                style="width: 100%">
+                                        @endif
+                                    @endif
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+                <tfoot>
+                    @if ($attribute1->allow_doc_see_paid_recent_only == 0 && $o->payment_status != 1)
+                        <tr>
+                            <td colspan="3">
+                                <div class="checkbox d-inline-block mr-3">
+                                    <input type="checkbox" class="checkbox-input" id="selectAll"> Pay for all
+                                    item(s)
+                                </div>
+                            </td>
+                        </tr>
                     @endif
-                </div>
-                <div class="col-md-3">
-                    <p>{{ number_format($o->total_cost, 2) }}</p>
-                </div>
-            @endforeach
-            @if ($o->payment_status != 1)
-            <div class="col-md-12">
-                <div class="checkbox d-inline-block mr-3">
-                    <input type="checkbox" class="checkbox-input" id="selectAll"> <strong> Pay for all
-                        item(s)</strong>
-                </div>
-        </div>
-        @endif
-
-            @if ($attribute1->allow_doc_see_paid_recent_only == 0)
-            @if ($o->payment_status != 1)
+                </tfoot>
+            </table>
+            @if ($attribute1->allow_doc_see_paid_recent_only == 0 && $o->payment_status != 1)
                 <h5 style="margin-left: 60%">Total: <span id="totalAmount">0</span></h5>
-                <h6>Print invoice ?<div class="checkboxPrintInvoice d-inline-block mr-3">
+                <label>Print invoice ?
+                    <div class="checkboxPrintInvoice d-inline-block mr-3">
                         <label for=""></label> <input type="checkbox" class="checkbox-input"
                             id="checkbox1PrintInvoice">
                     </div>
-                </h6>
-                @endif
+                </label>
             @endif
         </div>
-    </div>
-    {{-- </div> --}}
-    <hr>
-    @if ($attribute1->allow_doc_see_paid_recent_only == 0)
-    @if ($o->payment_status != 1)
-        <div class="tab-content" id="myTabContent-4">
-            <div class="tab-pane fade show active" id="home-three" role="tabpanel" aria-labelledby="home-tab-three">
-                <div class="row">
-                    <div class="card-body">
-                        <div class="form-group row">
-                            <label class="control-label col-sm-4 align-self-center" for="pwd1">Payment type:</label>
-                            <div class="col-sm-7">
-                                <select name="payment_type" id="payment_type" class="form-control" required>
-                                    <option value="" selected></option>
-                                    <option value="Cash">Cash</option>
-                                    <option value="Pos">Pos</option>
-                                    <option value="Trasfer">Trasfer</option>
-                                    @if ($attribute1->allow_doube_mode_of_payment == 1)
-                                        <option value="Cash & Transfer">Cash & Transfer</option>
-                                        <option value="Cash & Pos">Cash & POS</option>
-                                    @endif
-                                </select>
-                                <br>
-                            </div>
-                            <label class="control-label col-sm-4 align-self-center" for="pwd1">Amount paid</label>
-                            <div class="col-sm-7">
-                                <input type="number" readonly id="amount_paid" class="form-control" name="amount_paid" required>
-                                <br>
-                            </div>
-                            <label class="control-label col-sm-4 align-self-center" for="pwd1">Remark</label>
-                            <div class="col-sm-7">
-                                <textarea name="remark" id=""class="form-control" cols="3" rows="3"></textarea>
-                                <br>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
+        <hr>
+        @if ($attribute1->allow_doc_see_paid_recent_only == 0)
+            @if ($o->payment_status != 1)
+                <div class="tab-content" id="myTabContent-4">
+                    <div class="tab-pane fade show active" id="home-three" role="tabpanel"
+                        aria-labelledby="home-tab-three">
                         <div class="row">
-                            <div class="col-8">
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label class="control-label col-sm-4 align-self-center" for="pwd1">Payment
+                                        type:</label>
+                                    <div class="col-sm-7">
+                                        <select name="payment_type" id="payment_type" class="form-control" required>
+                                            <option value="" selected></option>
+                                            <option value="Cash">Cash</option>
+                                            <option value="Pos">Pos</option>
+                                            <option value="Trasfer">Trasfer</option>
+                                            @if ($attribute1->allow_doube_mode_of_payment == 1)
+                                                <option value="Cash & Transfer">Cash & Transfer</option>
+                                                <option value="Cash & Pos">Cash & POS</option>
+                                            @endif
+                                        </select>
+                                        <br>
+                                    </div>
+
+                                    <input type="hidden" name="amount_charge" id="amount_paid" style="width: 90%">
+                                    <label class="control-label col-sm-4 align-self-center" for="pwd1">Amount
+                                        paid</label>
+                                    <div class="col-sm-7">
+                                        <input type="number" id="amount_paid" class="form-control" name="amount_paid"
+                                            required>
+                                        <br>
+                                    </div>
+                                    <label class="control-label col-sm-4 align-self-center"
+                                        for="pwd1">Remark</label>
+                                    <div class="col-sm-7">
+                                        <textarea name="remark" id=""class="form-control" cols="3" rows="3"></textarea>
+                                        {{-- <br> --}}
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-4">
-                                <button class="btn sidebar-bottom-btn btn-lg btn-block">Process
-                                    payment</button>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-8">
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="submit"
+                                            class="btn sidebar-bottom-btn btn-lg btn-block submit_payment">Process
+                                            payment</button>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
-                </form>
                 </div>
-            </div>
-        </div>
+            @endif
         @endif
     @endif
 
-@endif
+</form>
+
+
+<x-updatePaymentModel />
+
+
 
 <script>
     $(document).ready(function() {
         function updateTotalAmount() {
             var total = 0;
+            var atLeastOneChecked = false;
+
+            // Calculate total and check if at least one checkbox is checked
             $('.checkbox-item:checked').each(function() {
                 total += parseFloat($(this).data('cost'));
+                atLeastOneChecked = true;
             });
+
+            // Update total amount
             $('#totalAmount').text(total.toFixed(2));
             $('#amount_paid').val(total.toFixed(2));
+
+            // Enable or disable the button based on whether at least one checkbox is checked
+            if (atLeastOneChecked) {
+                $('.submit_payment').prop('disabled', false);
+            } else {
+                $('.submit_payment').prop('disabled', true);
+            }
         }
+
+        // Bind change event to checkboxes
         $('#selectAll').change(function() {
             $('.checkbox-item').prop('checked', $(this).prop('checked')).trigger('change');
         });
         $('.checkbox-item').change(function() {
             updateTotalAmount();
         });
+
+        // Initial update of the total
         updateTotalAmount();
     });
 </script>

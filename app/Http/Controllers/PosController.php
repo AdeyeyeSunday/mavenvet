@@ -670,13 +670,11 @@ return view('Admin.Pos.daily_sales_edit',['daily_sales_edit'=>$daily_sales_edit]
         ini_set('memory_limit', '256M');
         $month =date('F');
         $date = (date('Y-d-m'));
+        $year = (date("Y"));
         $new_date = date('d/m/y');
-        $daily = Order::with('orderIteams')->where('month',$month)->where('order_status','success')->orWhere('new_date',$new_date)->get();
-
-
+        // dd($year);
+        $daily = Order::with('orderIteams')->where('month',$month)->where('year',$year)->where('order_status','success')->orWhere('new_date',$new_date)->get();
         $cash = DB::table('orders')->where('date', $date)->where('order_status','success')->where('Mode_of_payment','Cash')->sum('pay');
-
-
         $new_pos = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Pos')->sum('new_due');
         $new_transfer= DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Transfer')->sum('new_due');
         $new_cash = DB::table('orders')->where('new_date', $new_date)->where('order_status','success')->where('new_mode_of_payment','Cash')->sum('new_due');

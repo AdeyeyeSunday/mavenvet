@@ -123,7 +123,7 @@
                     @php
                         $clinic_name = App\Models\Systemconfiguration::first("clinic_name");
                     @endphp
-                  <h6>Current facility : {{ $clinic_name->clinic_name }}</h6>
+                  <p  class="mb-0 font-size-16">Current clinic : <strong>{{ $clinic_name->clinic_name }}</strong></p>
                  </div>
 
                 @if (Session::has('pro'))

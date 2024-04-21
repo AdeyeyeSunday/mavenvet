@@ -28,6 +28,7 @@
                                     @endforeach
                                 </select>
                                 <input type="hidden" name="main_name[]" class="form-control main_name" id="">
+                                <input type="hidden" name="allow_double_payment[]" class="form-control allow_double_payment_input" id="">
                             </div>
                             <div class="col-md-3 form-group">
                                 <h6 for="">Price</h6>
@@ -69,6 +70,7 @@
                                     @endforeach
                                 </select>
                                 <input type="hidden" name="main_name[]" class="form-control main_name" id="">
+                                <input type="hidden" name="allow_double_payment[]" class="form-control allow_double_payment_input" id="">
                             </div>
                             <div class="col-md-3 form-group">
                                 <input type="number" class="form-control price-input" id="price" name="price[]"
@@ -101,6 +103,7 @@
                 var ser_categoryInput = $(this).closest('.row').find('.category-input');
                 var main_nameInput = $(this).closest('.row').find('.main_name');
                 var priceInput = $(this).closest('.row').find('.price-input');
+                var doubleInput = $(this).closest('.row').find('.allow_double_payment_input');
                 $.ajax({
                     url: '/Admin/Clinic/getSubservices',
                     type: 'GET',
@@ -112,6 +115,7 @@
                         priceInput.val(response.amount);
                         ser_categoryInput.val(response.service_category);
                         main_nameInput.val(response.service);
+                        doubleInput.val(response.allow_double_payment);
                     },
                     error: function() {
                         console.log('Error fetching subcategories');
