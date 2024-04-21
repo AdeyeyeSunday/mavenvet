@@ -15,15 +15,9 @@
                     <div class="col-md-4 offset-md-4">
                         <form action="" enctype="multipart/form-data" method="POST" id="updatePaymentForm">
                             @csrf
-                            <input type="text" name="selected_id" id="selected_id">
-                            <input type="text" name="due" id="due">
+                            <input type="hidden" name="update_id" id="selected_id">
                             <input type="text" name="tracking_no" id="tracking_no">
-                            {{-- <input type="text" name="update_id" value="{{ $id }}" hidden id="update_id">
-                            <input type="text" value="{{ $tracking }}" hidden name="tracking_no" id="">
-                            <input type="number" readonly value="{{ $due }}" class="form-control"
-                                name="new__payment" id="">
-                            <br> --}}
-                            kjwrqn
+                            <input type="text" class="form-control" readonly name="new__payment" id="due">
                             <button type="submit" class="btn sidebar-bottom-btn btn-lg btn-block"
                                 id="submitForm">Update
                                 payment</button>

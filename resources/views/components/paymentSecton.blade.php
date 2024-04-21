@@ -83,16 +83,6 @@
                                             onclick="updatePayment({{ $o->id }}, {{ $o->due }} ,{{ $o->tracking_no }})"
                                             data-toggle="modal" data-target="#exampleModalCenterUpdatePayment2"
                                             style="color: red">Update payment</button>
-
-
-                                        <script>
-                                            function updatePayment(value, due) {
-                                                // Set the value and amount in the form fields
-                                                document.getElementById("selected_id").value = value;
-                                                document.getElementById("due").value = due;
-                                                document.getElementById("tracking_no").value = tracking_no;
-                                            }
-                                        </script>
                                     @else
                                         <p>{{ number_format($o->amount_paid, 2) }}</p>
                                     @endif
@@ -214,6 +204,15 @@
 
 
 <script>
+
+    // this is passing parameter to the updatePayment models
+    function updatePayment(value, due, tracking_no) {
+        document.getElementById("selected_id").value = value;
+        document.getElementById("due").value = due;
+        document.getElementById("tracking_no").value = tracking_no;
+    }
+
+
     $(document).ready(function() {
         function updateTotalAmount() {
             var total = 0;
