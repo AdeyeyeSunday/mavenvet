@@ -23,6 +23,10 @@
     <style>
         .toast-success {
         background-color: #007bff !important; /* Blue background color */
+
+    }
+    .toast-error {
+        background-color: rgb(106, 17, 17)!important; /* red background color */
     }
     </style>
 </head>

@@ -93,7 +93,7 @@ Route::get('/Admin/Clinic/{id}/Clinic_view', 'ClinicController@Clinic_view')->na
 Route::get('/Admin/Clinic/{id}/encounter', 'ClinicController@encounter')->name('Admin.Clinic.encounter');
 Route::post('/Admin/Clinic/{id}/encounter_payment', 'ClinicController@encounter_payment')->name('Admin.Clinic.encounter_payment');
 
-Route::post('/Admin/Clinic/{id}/encounter_payment_update', 'ClinicController@encounter_payment_update')->name('Admin.Clinic.encounter_payment_update');
+Route::post('/Admin/Clinic/encounter_payment_update', 'ClinicController@encounter_payment_update')->name('Admin.Clinic.encounter_payment_update');
 Route::post('/Admin/Clinic/refer_store', 'ClinicController@refer_store')->name('Admin.Clinic.refer_store');
 Route::get('/Admin/Clinic/getPrice', 'ClinicController@getPrice')->name('Admin.Clinic.getPrice');
 Route::get('/Admin/Clinic/searchMedication', 'ClinicController@searchMedication')->name('Admin.Clinic.searchMedication');

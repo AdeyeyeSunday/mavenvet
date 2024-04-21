@@ -851,112 +851,112 @@
                             {{-- {{ $outstandingPayment-> }}; --}}
 
 
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="col-md-6">
-                                <h5 class="mb-0"> {{ $encounterId->Pet_name }} [
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="col-md-6">
+                                    <h5 class="mb-0"> {{ $encounterId->Pet_name }} [
                                         {{ $encounterId->Pet_Card_Number }}]</h5>
-                                <p class="mb-0">Breed: {{ $encounterId->Breed }}</p>
-                                <p class="mb-0">Gender: {{ $encounterId->Gender }}</p>
+                                    <p class="mb-0">Breed: {{ $encounterId->Breed }}</p>
+                                    <p class="mb-0">Gender: {{ $encounterId->Gender }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    @if ($checkIfExit != null)
+                                        <img src="{{ asset('assets/images/icons8-hospital-bed-64.png') }}"
+                                            class="logo-invoice img-fluid mb-3">
+                                        <h6 style="color: red">On admission</h6>
+                                    @endif
+                                    @if ($sumDue > 0)
+                                        <center> <a href="">
+                                                <h5>Unpaid charges {{ number_format($sumDue, 2) }} </h5>
+                                            </a> </center>
+                                    @endif
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                @if ($checkIfExit != null)
-                                    <img src="{{ asset('assets/images/icons8-hospital-bed-64.png') }}"
-                                        class="logo-invoice img-fluid mb-3">
-                                    <h6 style="color: red">On admission</h6>
-                                @endif
-                                @if ($sumDue > 0)
-                                <center> <a href=""><h5>Unpaid charges  {{ number_format($sumDue,2) }} </h5> </a> </center>
-                                @endif
-                            </div>
-                        </div>
 
-                        @if ($encounterId->allergy ?? '' != null)
-                            <div class="alert text-white bg-secondary" role="alert">
-                                <div class="iq-alert-icon">
-                                    <i class="ri-information-line"></i>
+                            @if ($encounterId->allergy ?? '' != null)
+                                <div class="alert text-white bg-secondary" role="alert">
+                                    <div class="iq-alert-icon">
+                                        <i class="ri-information-line"></i>
+                                    </div>
+                                    <div class="iq-alert-text">Allergy to <b> {{ $encounterId->allergy ?? '' }}</b> Please
+                                        check it out!</div>
                                 </div>
-                                <div class="iq-alert-text">Allergy to <b> {{ $encounterId->allergy ?? '' }}</b> Please
-                                    check it out!</div>
-                            </div>
-                        @endif
+                            @endif
 
-                        <ul class="list-inline p-0 m-0">
-                            <li class="mb-2">
-                                <div class="d-flex align-items-center">
-                                    <svg class="svg-icon mr-3" height="16" width="16"
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    </svg>
-                                    <p class="mb-0">{{ $encounterId->address ?? '' }}</p>
-                                </div>
-                            </li>
-
-                            <li class="mb-2">
-                                <div class="d-flex align-items-center">
-                                    <svg class="svg-icon mr-3" height="16" width="16"
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z" />
-                                    </svg>
-                                    <p class="mb-0">Date of birth : {{ $encounterId->Age ?? '' }}</p>
-                                </div>
-                            </li>
-                            <li class="mb-2">
-                                <div class="d-flex align-items-center">
-                                    <svg class="svg-icon mr-3" height="16" width="16"
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                                    </svg>
-                                    <p class="mb-0">{{ $encounterId->Owner_Phone_Number ?? '' }}</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="d-flex align-items-center">
-                                    <svg class="svg-icon mr-3" height="16" width="16"
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                    </svg>
-                                    <p class="mb-0">{{ $encounterId->Name_Of_Pet_Owner }}</p>
-                                </div>
-                            </li>
-
-
-                            <hr>
-
-                            @if ($case_note)
-                                <p>
-                                Last visit: {{ $case_note->date ?? '' }}
-
-                                <h6 class=" mb-1">Veterinary Doctor</h6>
-                                @php
-                                    $username = App\Models\User::where('id', $case_note->user_id ?? '')->first();
-                                @endphp
-                                <p class="mb-0 font-size-14">{!! nl2br(e($username->name ?? '')) !!}</p>
-                                </p>
-                                <li>
+                            <ul class="list-inline p-0 m-0">
+                                <li class="mb-2">
                                     <div class="d-flex align-items-center">
-                                        <button class="btn sidebar-bottom-btn btn-lg btn-block" data-toggle="modal"
-                                            data-target="#exampleModalLong">Pet medical history</button>
+                                        <svg class="svg-icon mr-3" height="16" width="16"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        <p class="mb-0">{{ $encounterId->address ?? '' }}</p>
                                     </div>
                                 </li>
+
+                                <li class="mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <svg class="svg-icon mr-3" height="16" width="16"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z" />
+                                        </svg>
+                                        <p class="mb-0">Date of birth : {{ $encounterId->Age ?? '' }}</p>
+                                    </div>
+                                </li>
+                                <li class="mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <svg class="svg-icon mr-3" height="16" width="16"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                        </svg>
+                                        <p class="mb-0">{{ $encounterId->Owner_Phone_Number ?? '' }}</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="d-flex align-items-center">
+                                        <svg class="svg-icon mr-3" height="16" width="16"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                        </svg>
+                                        <p class="mb-0">{{ $encounterId->Name_Of_Pet_Owner }}</p>
+                                    </div>
+                                </li>
+                                <hr>
+                                @if ($case_note)
+                                    <p>
+                                        Last visit: {{ $case_note->date ?? '' }}
+
+                                    <h6 class=" mb-1">Veterinary Doctor</h6>
+                                    @php
+                                        $username = App\Models\User::where('id', $case_note->user_id ?? '')->first();
+                                    @endphp
+                                    <p class="mb-0 font-size-14">{!! nl2br(e($username->name ?? '')) !!}</p>
+                                    </p>
+                                    <li>
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn sidebar-bottom-btn btn-lg btn-block" data-toggle="modal"
+                                                data-target="#exampleModalLong">Pet medical history</button>
+                                        </div>
+                                    </li>
+                                @endif
+                            </ul>
+
+                            @if ($outstandingPayment->isNotEmpty())
+                                <x-paymentSecton :attribute1="$system_config" :attribute2="$outstandingPayment" :attribute3="$case_note->id"
+                                    :paymentType="$paymentType"></x-paymentSecton>
                             @endif
-                        </ul>
 
-                        @if ($outstandingPayment-> isNotEmpty())
-                        <x-paymentSecton    :attribute1="$system_config" :attribute2="$outstandingPayment" :attribute3="$case_note->id" ></x-paymentSecton>
-                        @endif
-
-                        <br>
-                        {{-- <div class="row">
+                            <br>
+                            {{-- <div class="row">
                             <div class="col-md-6">
                                 <a href="">Request for Imaging</a>
                             </div>
@@ -968,42 +968,41 @@
                         </div>
                         <br> --}}
 
+                            {{-- <br> --}}
+                            {{-- refer pat start from here --}}
+                            <div class="card-body">
 
-                        {{-- <br> --}}
-                        {{-- refer pat start from here --}}
-                        <p>You have the option to transfer the pet to another clinic for treatment</p>
-                        <form action="{{ route('Admin.Clinic.refer_store') }}" id="referred_form" method="POST"
-                            enctype="multipart/form-data">
-                            @csrf
-                            <input type="hidden" value="{{ $encounterId->Pet_Card_Number }}" name="case_id"
-                                id="case_id">
-
-
-
-                            <h6 class=" mb-1">Refer to a different clinic</h6>
-                            <input type="text" placeholder="Refer to a different clinic" class="form-control"
-                                name="clinic_name" id="clinic_name">
-                            <br>
-                            <h6 class=" mb-1">Medical practitioner's name</h6>
-                            <input type="text" class="form-control" placeholder="Medical practitioner's name"
-                                name="practitioner_name" id="practitioner_name">
-                            <br>
-                            <h6 class=" mb-1">Purpose of referral</h6>
-                            <textarea id="" class="form-control" name="purpose_of_referral" cols="3" rows="3"></textarea>
-                            <br>
-                            @if ($system_config->disable_refer == 1)
-                                <button type="submit" id="process_button"
-                                    class="btn sidebar-bottom-btn btn-lg btn-block">Process</button>
-                            @else
-                                <button type="submit" disabled id="process_button"
-                                    class="btn sidebar-bottom-btn btn-lg btn-block">Process</button>
-                            @endif
-                        </form>
+                                <p>You have the option to transfer the pet to another clinic for treatment</p>
+                                <form action="{{ route('Admin.Clinic.refer_store') }}" id="referred_form" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="hidden" value="{{ $encounterId->Pet_Card_Number }}" name="case_id"
+                                        id="case_id">
+                                    <h6 class=" mb-1">Refer to a different clinic</h6>
+                                    <input type="text" placeholder="Refer to a different clinic" class="form-control"
+                                        name="clinic_name" id="clinic_name" required>
+                                    <br>
+                                    <h6 class=" mb-1">Medical practitioner's name</h6>
+                                    <input type="text" class="form-control" placeholder="Medical practitioner's name"
+                                        name="practitioner_name" id="practitioner_name" required>
+                                    <br>
+                                    <h6 class=" mb-1">Purpose of referral</h6>
+                                    <textarea id="" class="form-control" name="purpose_of_referral" cols="3" rows="3" required></textarea>
+                                    <br>
+                                    @if ($system_config->disable_refer == 1)
+                                        <button type="submit" id="process_button"
+                                            class="btn sidebar-bottom-btn btn-lg btn-block">Process</button>
+                                    @else
+                                        <button type="submit" disabled id="process_button"
+                                            class="btn sidebar-bottom-btn btn-lg btn-block">Process</button>
+                                    @endif
+                                </form>
+                            </div>
+                        </div>
                     </div>
+                    {{-- </div> --}}
                 </div>
             </div>
-        </div>
-        </div>
         </div>
         </div>
 
@@ -1331,6 +1330,7 @@
 
 
         <script>
+
             document.getElementById('diagnosis').addEventListener('change', function() {
                 var otherDiagnosis = document.getElementById('otherDiagnosis');
                 var otherExamination = document.getElementById('other_examination');

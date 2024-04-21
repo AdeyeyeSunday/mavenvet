@@ -1,10 +1,12 @@
-<form action="{{ route('Admin.Clinic.encounter_payment', $attribute3) }}" enctype="multipart/form-data" method="POST">
+<form action="{{ route('Admin.Clinic.encounter_payment', $attribute3) }}" enctype="multipart/form-data" id="payment_form" method="POST">
     @csrf
     @if (
         ($attribute1->allow_doc__to_recieve_payment == 1 && $attribute1->allow_doc_see_paid_recent_only == 0) ||
             ($attribute1->allow_doc__to_recieve_payment == 0 && $attribute1->allow_doc_see_paid_recent_only == 1))
-        <div class="col-md-12">
-            <ul class="nav nav-" id="myTab-three" role="tablist">
+
+<div id="reloadAmount">
+      <div class="col-md-12"  >
+            <ul class="nav nav-" id="myTab-three" role="tablist" >
                 <li class="nav-item">
                     <br>
                     <h5 id="home-tab-three" data-toggle="tab" href="#home-three" role="tab" aria-controls="home"
@@ -20,7 +22,7 @@
                         <th>Amount</th>
                     </tr>
                 </thead>
-                <tbody>
+                {{-- <tbody id="reloadAmount"> --}}
                     @foreach ($attribute2 as $o)
                         {{-- this update payment --}}
                         <tr>
@@ -60,6 +62,7 @@
                                         @if ($o->payment_status == 1)
                                             {{ $o->medication }}<span
                                                 class="mt-2 badge border border-success text-success mt-2">Paid</span>
+
                                         @else
                                             <input type="checkbox" name="checked_items[]" value="{{ $o->id }}"
                                                 class="checkbox-input checkbox-item" data-cost="{{ $o->total_cost }}">
@@ -69,20 +72,26 @@
                                 @endif
                             </td>
 
-                            <td>
+                            <td  >
                                 @if ($o->payment_status == 1)
+
+
                                     @if ($o->amount_paid != $o->total_cost)
+
                                         <strike>
                                             <p>{{ number_format($o->total_cost, 2) }}</p>
                                         </strike>
+
+                                        {{-- <div id="reloadAmount"> --}}
                                         @if ($o->due > 0)
                                             <p style="color: maroon">Balance: {{ number_format($o->due, 2) }}</p>
                                         @endif
-
+                                        {{-- </div> --}}
                                         <button type="button" class="btn btn-sm"
                                             onclick="updatePayment({{ $o->id }}, {{ $o->due }} ,{{ $o->tracking_no }})"
                                             data-toggle="modal" data-target="#exampleModalCenterUpdatePayment2"
                                             style="color: red">Update payment</button>
+
                                     @else
                                         <p>{{ number_format($o->amount_paid, 2) }}</p>
                                     @endif
@@ -137,6 +146,8 @@
             @endif
         </div>
         <hr>
+
+</div>
         @if ($attribute1->allow_doc_see_paid_recent_only == 0)
             @if ($o->payment_status != 1)
                 <div class="tab-content" id="myTabContent-4">
@@ -150,17 +161,12 @@
                                     <div class="col-sm-7">
                                         <select name="payment_type" id="payment_type" class="form-control" required>
                                             <option value="" selected></option>
-                                            <option value="Cash">Cash</option>
-                                            <option value="Pos">Pos</option>
-                                            <option value="Trasfer">Trasfer</option>
-                                            @if ($attribute1->allow_doube_mode_of_payment == 1)
-                                                <option value="Cash & Transfer">Cash & Transfer</option>
-                                                <option value="Cash & Pos">Cash & POS</option>
-                                            @endif
+                                            @foreach ($paymentType as $p)
+                                                <option value="{{ $p->payment_type }}">{{ $p->payment_type }}</option>
+                                            @endforeach
                                         </select>
                                         <br>
                                     </div>
-
                                     <input type="hidden" name="amount_charge" id="amount_paid" style="width: 90%">
                                     <label class="control-label col-sm-4 align-self-center" for="pwd1">Amount
                                         paid</label>
@@ -183,10 +189,9 @@
                                     </div>
                                     <div class="col-4">
                                         <button type="submit"
-                                            class="btn sidebar-bottom-btn btn-lg btn-block submit_payment">Process
+                                            class="btn sidebar-bottom-btn btn-lg btn-block submit_payment" id="submit_payment_payment">Process
                                             payment</button>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -195,15 +200,57 @@
             @endif
         @endif
     @endif
-
 </form>
-
-
-<x-updatePaymentModel />
-
+<x-updatePaymentModel :paymentType="$paymentType" />
 
 
 <script>
+$(document).ready(function() {
+    $('#payment_form').on('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $('#submit_payment_payment').text
+        $.ajax({
+            url: '{{ route('Admin.Clinic.encounter_payment', $attribute3) }}',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                $('#submit_payment_payment').text('Processing...');
+            },
+            success: function(response) {
+                if (response.status === 200) {
+                    toastr.success(response.message, 'Success!', {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'slideDown',
+                        hideMethod: 'slideUp',
+                        timeOut: 5000
+                    });
+                    setTimeout(function() {
+                        window.location.href = '{{ route("Admin.Clinic.Clinic_list") }}';
+                    }, 2000);
+                } else {
+                    toastr.error(response.message, 'Error!', {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'slideDown',
+                        hideMethod: 'slideUp',
+                        timeOut: 3000
+                    });
+                }
+                $('#submit_payment_payment').text('Process payment');
+            },
+            error: function(xhr, status, error) {
+                toastr.error('An error occurred. Please try again later.', 'Error!');
+                $('#process_button').text('Process');
+            }
+        });
+    });
+});
+
+
 
     // this is passing parameter to the updatePayment models
     function updatePayment(value, due, tracking_no) {

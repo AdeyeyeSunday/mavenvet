@@ -23,6 +23,7 @@ use App\Models\Medicationcategoty;
 use App\Models\MVC_midwifery_vaccinestores;
 use App\Models\Newproduct;
 use App\Models\NewVaccine;
+use App\Models\Payment_type;
 use App\Models\Physical_examination;
 use App\Models\Refer;
 use App\Models\Request_images;
@@ -77,12 +78,13 @@ public function encounter($id)
 
     $outstandingPayment = Medication_request::where('pet_id', $encounterId->Pet_Card_Number)->where('request_medication_token', $case_note->token ?? '')->get();
 
+    $paymentType = Payment_type::where('status', 0)->get();
 
     return view("Admin.Clinic.encounter",['encounterId'=>$encounterId,'service'=>$service,
     'case_note'=>$case_note,'refer'=>$refer,'case_note_get_all'=>$case_note_get_all,
     'checkIfExit'=>$checkIfExit,'syptoms'=>$syptoms,'var'=>$var,'medication'=>$medication,
     'req_medicaton'=>$req_medicaton,'lab'=>$lab,'services'=>$services,'phy_exam'=>$phy_exam,
-    'dia'=>$dia,'outstandingPayment'=>$outstandingPayment,'sumDue'=>$sumDue]);
+    'dia'=>$dia,'outstandingPayment'=>$outstandingPayment,'sumDue'=>$sumDue, 'paymentType'=>$paymentType]);
 }
 
 
@@ -95,36 +97,47 @@ public function encounter_payment(Request $request,$id){
     $amountInputed = $request->input('amount_inputed');
     $price_cost = $request->input('price_cost');
     $checkedItems = $request->input('checked_items');
-    Casenote::where('id', $getid)->update(["amount_paid"=> $amount_paid, "payment_type"=>$payment_type, 'due'=>$due]);
+    $totalAmountPaid = array_sum($amountInputed);
+    // dd($totalAmountPaid);
+if($totalAmountPaid == $amount_paid){
     foreach($checkedItems as $key => $checkedItem){
-
         $amount = $checkedItemsAmount[$checkedItem] ?? $amountInputed[$checkedItem];
         $due = $price_cost[$checkedItem] - $amountInputed[$checkedItem];
         Medication_request::where('id', $checkedItem)->update(['payment_status' => 1, 'payment_type'=>$payment_type,'amount_paid'=>$amount, 'due'=>$due]);
     }
- return redirect()->route("Admin.Clinic.Clinic_list");
+    Casenote::where('id', $getid)->update(["amount_paid"=> $amount_paid, "payment_type"=>$payment_type, 'due'=>$due]);
+//  return redirect()->route("Admin.Clinic.Clinic_list");
+ return response()->json([
+    'status'=>200,
+    'message' => "Payment successful",
+]);
+}else{
+    return response()->json([
+        'status'=>404,
+        'message' => "Wrong total amount inputted",
+    ]);
+}
+
 }
 
 
-public function encounter_payment_update(Request $request,$id){
+public function encounter_payment_update(Request $request){
     $id = $request->update_id;
-    dd($id);
-
-    // $update_payment = $request->new__payment;
-    // $tracking_no = $request->tracking_no;
-    // $getPreviousPayment =  Medication_request::where('id', $id)->first();
-    // $getCasePrivious = Casenote::where('tracking_no', $tracking_no)->first();
-    // $newCaseUpdatePayment =  $getCasePrivious->amount_paid  + $update_payment;
-    // $newCaseUpdatePaymentDue = $getCasePrivious->due -$update_payment;
-    //  $newPayment =  $update_payment  +  $getPreviousPayment->amount_paid;
-    //  $newDue =  $update_payment - $getPreviousPayment->due;
-    //
-    // Medication_request::where('id', $id)->update(['amount_paid'=> $newPayment, 'due'=>$newDue]);
-    // Casenote::where('tracking_no', $tracking_no)->update(['amount_paid'=>$newCaseUpdatePayment, 'due'=>$newCaseUpdatePaymentDue]);
-    // return response()->json([
-    //     'status'=>200,
-    //     'message'=>"Payment updated successfully"
-    // ]);
+    $update_payment = $request->new__payment;
+    $tracking_no = $request->tracking_no;
+    $payment_type = $request->payment_type;
+    $getPreviousPayment =  Medication_request::where('id', $id)->first();
+    $getCasePrivious = Casenote::where('tracking_no', $tracking_no)->first();
+    $newCaseUpdatePayment =  $getCasePrivious->amount_paid  + $update_payment;
+    $newCaseUpdatePaymentDue = $getCasePrivious->due -$update_payment;
+     $newPayment =  $update_payment  +  $getPreviousPayment->amount_paid;
+     $newDue =  $update_payment - $getPreviousPayment->due;
+    Medication_request::where('id', $id)->update(['amount_paid'=> $newPayment, 'due'=>$newDue,'payment_type'=>$payment_type]);
+    Casenote::where('tracking_no', $tracking_no)->update(['amount_paid'=>$newCaseUpdatePayment, 'due'=>$newCaseUpdatePaymentDue]);
+    return response()->json([
+        'status'=>200,
+        'message'=>"Payment updated successfully"
+    ]);
 }
 
 
